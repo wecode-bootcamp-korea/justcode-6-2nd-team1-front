@@ -1,5 +1,9 @@
+import styled from 'styled-components';
+
+const StyledProduct = styled.div``;
+
 const Product = () => {
-  return <div>Product</div>;
+  return <StyledProduct>Product</StyledProduct>;
 };
 
 export default Product;

@@ -5,8 +5,17 @@ import theme from './theme';
 const GlobalStyle = createGlobalStyle`
   ${reset}
 
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
   body {
     background: ${theme.mainColor};
+    padding-top: 70px;
   }
 `;
 

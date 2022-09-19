@@ -2,7 +2,7 @@ import styled from "styled-components";
 import logo from '../../assets/ilcha_logo_reverse.png'
 import { BsPerson } from "react-icons/bs";
 import { FiLock } from "react-icons/fi";
-import { useLocation,Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const StyledLogin = styled.div`
@@ -42,7 +42,7 @@ const StyledLogin = styled.div`
     color: gray;
     position: absolute;
     margin-top: 14px;
-    left: 36px;
+    left: 43px;
   }
 
   form {
@@ -91,7 +91,7 @@ const Login = () => {
         </div>
         <div>
           <input type="password" placeholder="비밀번호"></input>
-          <FiLock className="icon" size="24px" />
+          <FiLock className="icon" size="23px" />
         </div>
 
         <button>로그인</button>
@@ -99,9 +99,9 @@ const Login = () => {
       <div className="signUp">
         <Link to="/signup">회원가입</Link>
         <Line></Line>
-        <button>아이디 찾기</button>
+        <Link to="/findId">아이디 찾기</Link>
         <Line></Line>
-        <button>비밀번호 찾기</button>
+        <Link to="/findPw">비밀번호 찾기</Link>
       </div>
     </StyledLogin>
   );

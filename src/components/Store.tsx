@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import combi from "../assets/combination.jpeg";
+import order from "../assets/order.jpeg";
 
 const StyledStore = styled.div`
   heigth: 100%;
@@ -65,6 +66,7 @@ const Store = () => {
       </StyledStore>
       <StyledCombi>
         <img src={combi}></img>
+        <img src={order}></img>
       </StyledCombi>
     </div>
   );

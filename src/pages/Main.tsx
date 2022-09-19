@@ -10,6 +10,7 @@ import slide_3 from "../assets/main_slide/슬라이드3.jpg";
 import slide_4 from "../assets/main_slide/슬라이드4.jpeg";
 import slide_5 from "../assets/main_slide/슬라이드5.jpeg";
 import Store from "../components/Store";
+import Footer from "../components/Footer";
 
 const Container = styled.div`
   background: white;
@@ -116,6 +117,7 @@ const Main = () => {
             </div>
           </Slider>
           <Store></Store>
+          <Footer></Footer>
         </Container>
       </div>
     </>

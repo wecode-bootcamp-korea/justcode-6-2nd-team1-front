@@ -111,12 +111,16 @@ const StyledNav = styled.nav<{ menu: boolean }>`
       }
 
       ul.inner-menu {
-        background-color: #ffffff;
-        padding: 0 10px;
+        background-color: #efeae4;
 
         & > li {
           font-size: 6vw;
-          padding: 15px 0;
+          padding: 15px 10px;
+          border-bottom: 1px solid lightgray;
+
+          &:last-of-type {
+            border-bottom: none;
+          }
         }
       }
     }

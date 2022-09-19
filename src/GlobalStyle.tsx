@@ -7,6 +7,7 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: border-box;
+
   }
 
   a {
@@ -16,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     background: ${theme.mainColor};
     padding-top: 20vw;
+    font-family: 'Noto Sans KR', sans-serif;
   }
 `;
 

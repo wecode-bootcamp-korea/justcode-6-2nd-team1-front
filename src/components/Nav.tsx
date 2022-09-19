@@ -127,7 +127,7 @@ const Nav = () => {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
 
-  const closeHandler: React.MouseEventHandler<HTMLElement> = e => {
+  const closeHandler: React.MouseEventHandler<HTMLDivElement> = e => {
     if (e.target instanceof HTMLElement) {
       setMenu(false);
     }
@@ -193,6 +193,9 @@ const Nav = () => {
               <li onClick={() => pageTransition('/store')}>매장 찾기</li>
               <li>가맹점 개설 문의</li>
             </ul>
+          </li>
+          <li onClick={() => pageTransition('/notice')}>
+            <h3>공지사항</h3>
           </li>
         </ul>
       </StyledNav>

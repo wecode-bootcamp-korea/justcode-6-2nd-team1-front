@@ -79,7 +79,6 @@ const Line = styled.div`
 `;
 
 const Login = () => {
-  const location = useLocation();
   return (
     <StyledLogin>
       <div className="logoBox">

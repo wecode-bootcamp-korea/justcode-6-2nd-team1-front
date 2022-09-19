@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import react,{useState} from "react";
 const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
@@ -11,29 +11,34 @@ const StyledSignUp = styled.div`
     width: 100%;
     background-color: #eee;
     span {
-      color:gray;
+      color: gray;
       width: 33%;
       padding: 25px;
     }
     .inColor {
       background-color: #af3030;
+      color: white;
+      border-radius: 0 40px 40px 0;
+    }
+    .fullColor {
+      background-color: #af3030;
       color:white;
-      border-radius:0 40px 40px 0;
     }
   }
   .nextBtn {
-    position:fixed;
-    bottom:0px;
-    width:100%;
-    height:60px;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 60px;
     font-size: 20px;
     color: black;
-    background-color:white;
-    border:none;
+    background-color: white;
+    border: none;
+  }
+  .on {
+    opacity: 0.6;
   }
 `;
-
-
 
 const Line = styled.div`
   margin: 25px 2px 0 0;
@@ -77,43 +82,60 @@ const CheckList = styled.form`
   }
 `;
 const Signup = () => {
-  return (
-    <StyledSignUp>
-      <div className="header">
-        <span className="inColor">약관동의</span>
-        <span>회원정보</span>
-        <Line></Line>
-        <span>가입완료</span>
-      </div>
-      <AgreeBtn>
-        <button>전체동의</button>
-        <span>선택 동의 사항이 포함되어 있습니다.</span>
-        <span>만 14세 이상만 가입 가능합니다.</span>
-      </AgreeBtn>
-      <CheckList>
-        <div className="check">
-          <input type="checkbox" />
-          <label>공차 멤버십 회원 이용약관 동의 (필수)</label>
+  const [page, setPage] = useState(0);
+  const [btn, setBtn] = useState(true);
+  if (page === 0) {
+    return (
+      <StyledSignUp>
+        <div className="header">
+          <span className="inColor">약관동의</span>
+          <span>회원정보</span>
+          <Line></Line>
+          <span>가입완료</span>
         </div>
 
-        <div className="check">
-          <input type="checkbox" />
-          <label>개인정보 수집 및 이용 동의 (필수)</label>
-        </div>
+        <AgreeBtn>
+          <button>전체동의</button>
+          <span>선택 동의 사항이 포함되어 있습니다.</span>
+          <span>만 14세 이상만 가입 가능합니다.</span>
+        </AgreeBtn>
+        <CheckList>
+          <div className="check">
+            <input type="checkbox" />
+            <label>공차 멤버십 회원 이용약관 동의 (필수)</label>
+          </div>
 
-        <div className="check">
-          <input type="checkbox" />
-          <label>위치기반 서비스 이용약관 동의 (선택)</label>
-        </div>
+          <div className="check">
+            <input type="checkbox" />
+            <label>개인정보 수집 및 이용 동의 (필수)</label>
+          </div>
 
-        <div className="check">
-          <input type="checkbox" />
-          <label>마케팅 수신 동의 (선택)</label>
+          <div className="check">
+            <input type="checkbox" />
+            <label>위치기반 서비스 이용약관 동의 (선택)</label>
+          </div>
+
+          <div className="check">
+            <input type="checkbox" />
+            <label>마케팅 수신 동의 (선택)</label>
+          </div>
+        </CheckList>
+        <button className={`nextBtn ${btn&&'on'}`} onClick={() => setPage(1)}>
+          다음
+        </button>
+      </StyledSignUp>
+    );
+  } else if (page === 1) {
+    return (
+      <StyledSignUp>
+        <div className="header">
+          <span className="fullColor">약관동의</span>
+          <span className="inColor">회원정보</span>
+          <span>가입완료</span>
         </div>
-      </CheckList>
-      <button className="nextBtn">다음</button>
-    </StyledSignUp>
-  );
+      </StyledSignUp>
+    );
+  }
 };
 
 export default Signup;

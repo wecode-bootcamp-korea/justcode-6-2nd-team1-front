@@ -6,6 +6,7 @@ import Brand from './pages/brand/Brand';
 import Cart from './pages/cart/Cart';
 import Login from './pages/login/Login';
 import Main from './pages/Main';
+import Notice from './pages/notice/Notice';
 import Order from './pages/order/Order';
 import Product from './pages/product/Product';
 import ProductDetail from './pages/product/ProductDetail';
@@ -50,11 +51,12 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/brand' element={<Brand />} />
-        <Route path='/order' element={<Order />} />
         <Route path='/store' element={<Store userInfo={userInfo} />} />
 
+        <Route path='/order' element={<Order />} />
+        <Route path='/notice' element={<Notice />} />
         <Route path='/product' element={<Product />} />
-        <Route path='/product/:category' element={<Product />} />
+        <Route path='/product/detail' element={<ProductDetail />} />
         <Route path='/product/detail/:id' element={<ProductDetail />} />
 
         <Route path='/cart' element={<Cart />} />

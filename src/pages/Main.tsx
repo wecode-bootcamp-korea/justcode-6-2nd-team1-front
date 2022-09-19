@@ -4,8 +4,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BsChevronRight } from "react-icons/bs";
 import { BsChevronLeft } from "react-icons/bs";
-import 슬라이드1 from "../assets/main_slide/슬라이드1.jpg";
-import 슬라이드2 from "../assets/main_slide/슬라이드2.jpeg";
+import slide_1 from "../assets/main_slide/슬라이드1.jpg";
+import slide_2 from "../assets/main_slide/슬라이드2.jpeg";
+import slide_3 from "../assets/main_slide/슬라이드3.jpg";
+import slide_4 from "../assets/main_slide/슬라이드4.jpeg";
+import slide_5 from "../assets/main_slide/슬라이드5.jpeg";
+import Store from "../components/Store";
 
 const Container = styled.div`
   background: white;
@@ -21,7 +25,7 @@ const Div = styled.div`
   right: 16px;
   z-index: 99;
   text-align: right;
-  line-height: 30px;
+  line-height: 50px;
 `;
 const DivPre = styled.div`
   width: 50px;
@@ -30,20 +34,35 @@ const DivPre = styled.div`
   left: 16px;
   z-index: 99;
   text-align: left;
-  line-height: 30px;
+  line-height: 50px;
 `;
-const Dots = styled.div`
-  width: 125px;
-  height: 100px;
-`;
+// const SlideDots = styled.button`
+//   div.box {
+//     width: 30px;
+//     border: 1px solid gray;
+//   }
+//   &::before {
+//   }
+// `;
 
 const Main = () => {
   const settings = {
     dots: true,
+    // customPaging: function (slide: any, i: string) {
+    //   var thumb = slide.$slides[i].data();
+    //   if (i == "0") {
+    //     i = "일";
+    //   } else if (i == "1") {
+    //     i = "이";
+    //   }
+    //   return '<a class="dot">' + i + "</a>";
+    // },
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
     nextArrow: (
       <Div>
         <BsChevronRight />
@@ -65,7 +84,13 @@ const Main = () => {
           justifyContent: "center",
         }}
       >
-        <ul> {dots} </ul>
+        <div className="box">
+          <ul>
+            <div className="on">
+              <div className="column">{dots}</div>
+            </div>
+          </ul>
+        </div>
       </div>
     ),
   };
@@ -75,12 +100,22 @@ const Main = () => {
         <Container>
           <Slider {...settings}>
             <div>
-              <SlideImage src={슬라이드1} />
+              <SlideImage alt="slide_1" src={slide_1} />
             </div>
             <div>
-              <SlideImage src={슬라이드2} />
+              <SlideImage alt="slide_2" src={slide_2} />
+            </div>
+            <div>
+              <SlideImage alt="slide_3" src={slide_3} />
+            </div>
+            <div>
+              <SlideImage alt="slide_4" src={slide_4} />
+            </div>
+            <div>
+              <SlideImage alt="slide_5" src={slide_5} />
             </div>
           </Slider>
+          <Store></Store>
         </Container>
       </div>
     </>

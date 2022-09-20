@@ -1,7 +1,10 @@
 import styled from "styled-components";
-import React, { useState } from "react";
-import { GiSmartphone } from "react-icons/gi";
+import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { GiSmartphone } from "react-icons/gi";
+import { BsCheckCircle } from "react-icons/bs";
+import { BsCheckCircleFill } from "react-icons/bs";
+import SignUp from "../../components/Signup/SignUp";
 
 const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
@@ -92,15 +95,29 @@ const NextBtn = styled.button`
   color: white;
   background-color: #af3030;
   border: none;
+  .opacity {
+    opacity: 0.5;
+  }
 `;
 
 
 const CheckList = styled.form`
   display: flex;
+  width:90vw;
   flex-direction: column;
+  align-items:flex-start;
   margin-top: 25px;
   input[type="checkbox"] {
     margin-right:10px;
+  }
+  span {
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+  }
+  .checkIcon {
+    margin-right:4px;
+    font-size:17px;
   }
 `;
 const PhonePermission = styled.div`
@@ -120,7 +137,7 @@ const PhonePermission = styled.div`
     background-color: inherit;
   }
 `;
-const SignUpForm = styled.div`
+export const SignUpForm = styled.div`
   .head {
     font-size: 17px;
     margin-top: 30px;
@@ -171,17 +188,26 @@ const SignUpForm = styled.div`
 const Signup = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
-  const [btn, setBtn] = useState(false);
-  const [check, setCheck] = useState([0, 0, 0, 0]);
+  const [btn, setBtn] = useState(true);
+  const [check, setCheck] = useState<Number[]>([0, 0, 0, 0]);
 
-  const onClick: React.MouseEventHandler<HTMLInputElement> = (e) => {
-    if (e.target instanceof HTMLInputElement) {
-      let target = e.target.value;
-      console.log(target)
-    }
+  const onClick: React.MouseEventHandler<HTMLSpanElement> = (e:number) => {
+    let newCheck = check;
+    if (check[e] === 0) check[e] = 1;
+    else check[e] = 0;
+    setCheck(newCheck);
+    console.log(check)
   };
   
-  
+  const allCheck: React.MouseEventHandler<HTMLSpanElement> = () => {
+    if (!btn) setCheck([1, 1, 1, 1]);
+    else setCheck([0, 0, 0, 0]);
+  }
+  useEffect(() => {
+    if (check[0] && check[1]) {
+      btn ? setBtn(false) : setBtn(true);
+    }
+  }, [check]);
 
   if (page === 0) {
     return (
@@ -194,31 +220,47 @@ const Signup = () => {
         </div>
 
         <AgreeBtn>
-          <button>전체동의</button>
+          <button onClick={() => allCheck}>전체동의</button>
           <span>선택 동의 사항이 포함되어 있습니다.</span>
           <span>만 14세 이상만 가입 가능합니다.</span>
         </AgreeBtn>
         <CheckList>
-          <label>
-            
-            공차 멤버십 회원 이용약관 동의 (필수)
-          </label>
-
-          <label>
-            
-            개인정보 수집 및 이용 동의 (필수)
-          </label>
-
-          <label>
-          
-            위치기반 서비스 이용약관 동의 (선택)
-          </label>
-
-          <label>
-            마케팅 수신 동의 (선택)
-          </label>
+          <div>
+            <span onClick={() => onClick(0)}>
+              {check[0] ? (
+                <BsCheckCircleFill className="checkIcon" />
+              ) : (
+                <BsCheckCircle className="checkIcon" />
+              )}
+              공차 멤버십 회원 이용약관 동의 (필수)
+            </span>
+          </div>
+          <div>
+            <span onClick={() => onClick(1)}>
+              {check[1] ? (
+                <BsCheckCircleFill className="checkIcon" />
+              ) : (
+                <BsCheckCircle className="checkIcon" />
+              )}
+              개인정보 수집 및 이용 동의 (필수)
+            </span>
+          </div>
+          <div>
+            <span>
+              <BsCheckCircle className="checkIcon" />
+              위치기반 서비스 이용약관 동의 (선택)
+            </span>
+          </div>
+          <div>
+            <span>
+              <BsCheckCircle className="checkIcon" />
+              마케팅 수신 동의 (선택)
+            </span>
+          </div>
         </CheckList>
-        <NextBtn onClick={()=>setPage(1)}>다음</NextBtn>
+        <NextBtn className="opacity" onClick={() => setPage(1)}>
+          다음
+        </NextBtn>
       </StyledSignUp>
     );
   } else if (page === 1) {
@@ -235,67 +277,8 @@ const Signup = () => {
           <button>휴대폰 본인 인증</button>
         </PhonePermission>
 
-        <SignUpForm>
-          <div className="head">
-            <span>아이디 설정</span>
-          </div>
-          <form>
-            <div className="title">
-              <span>이메일</span>
-              <div className="content">
-                <input />
-                <button>중복확인</button>
-              </div>
-            </div>
-            <div className="title">
-              <span>비밀번호</span>
-              <div className="content">
-                <input type="password" />
-                <span>
-                  비밀번호는 영문, 숫자를 혼합하여 8~20자 이내로 입력하세요.
-                </span>
-              </div>
-            </div>
-            <div className="title">
-              <span>비밀번호 확인</span>
-              <div className="content">
-                <input type="password" />
-              </div>
-            </div>
-          </form>
-        </SignUpForm>
-        <SignUpForm>
-          <div className="head">
-            <span>닉네임 설정</span>
-          </div>
-          <form>
-            <div className="title">
-              <span>닉네임</span>
-              <div className="content">
-                <input />
-              </div>
-            </div>
-          </form>
-        </SignUpForm>
-        <SignUpForm>
-          <div className="head">
-            <span>회원 정보</span>
-          </div>
-          <form>
-            <div className="title">
-              <span>이름</span>
-              <div className="content">
-                <input />
-              </div>
-            </div>
-            <div className="title">
-              <span>휴대폰 번호</span>
-              <div className="content">
-                <input />
-              </div>
-            </div>
-          </form>
-        </SignUpForm>
+        <SignUp />
+        
         <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
       </StyledSignUp>
     );

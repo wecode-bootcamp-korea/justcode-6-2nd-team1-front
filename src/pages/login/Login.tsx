@@ -31,10 +31,11 @@ const StyledLogin = styled.div`
   div.logoBox {
     display: flex;
     justify-content: center;
+    width:100vw;
     background: #af3030;
     padding: 70px 0;
     img {
-      width: 200px;
+      width: 100%;
     }
   }
 
@@ -47,7 +48,7 @@ const StyledLogin = styled.div`
     .inputBox {
       display: flex;
       align-items:center;
-      width: 320px;
+      width: 90vw;
       height: 45px;
       margin:5px;
       border: 2px solid #d9d2d2;

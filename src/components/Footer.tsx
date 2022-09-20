@@ -5,6 +5,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 
 const StyledFooter = styled.div`
   div.footer-wrap {
+    bottom: 0;
     display: block;
     height: 190px;
 
@@ -16,7 +17,7 @@ const StyledFooter = styled.div`
       text-align: center;
       box-sizing: border-box;
       float: left;
-      padding: 15px;
+      padding: 18px;
 
       img {
         display: inline-block;
@@ -25,9 +26,9 @@ const StyledFooter = styled.div`
 
       p {
         vertical-align: top;
-        font-size: 12px;
+        font-size: 10px;
         color: #b5b4b4;
-        margin-top: 15px;
+        margin-top: 10px;
         line-height: 1.3;
       }
     }
@@ -41,10 +42,10 @@ const StyledFooter = styled.div`
       box-sizing: border-box;
       float: right;
       vertical-align: middle;
-      padding: 15px;
+      padding: 18px;
 
       p.first-right {
-        font-size: 14px;
+        font-size: 12px;
         line-height: 1.4;
         color: #444444;
       }
@@ -53,7 +54,7 @@ const StyledFooter = styled.div`
         margin-bottom: 10px;
       }
       p.bottom-right {
-        font-size: 12px;
+        font-size: 9.3px;
         line-height: 1.3;
       }
     }

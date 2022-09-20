@@ -28,6 +28,7 @@ const StyledHeader = styled.header`
 
 const StyledDiv = styled.div<{ menu: boolean }>`
   position: fixed;
+  z-index: 5;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, ${({ menu }) => (menu ? 0.7 : 0)});

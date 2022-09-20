@@ -44,6 +44,7 @@ const StyledSignUp = styled.div`
       width: 70vw;
       height: 60px;
       border-radius: 40px;
+      border:none;
       color: white;
     }
   }
@@ -56,7 +57,6 @@ const Line = styled.div`
   margin: 25px 2px 0 0;
   height: 17px;
   border-right: 1px solid gray;
-  background-color:inherit;
 `;
 
 const AgreeBtn = styled.div`
@@ -149,6 +149,7 @@ const SignUpForm = styled.div`
           width: 100%;
           height: 40px;
           border-radius: 10px;
+          border:1px solid grey;
         }
         button {
           margin: 5px 0;
@@ -256,9 +257,9 @@ const Signup = () => {
               </div>
             </div>
             <div className="title">
-              <span type="password">비밀번호 확인</span>
+              <span>비밀번호 확인</span>
               <div className="content">
-                <input />
+                <input type="password" />
               </div>
             </div>
           </form>

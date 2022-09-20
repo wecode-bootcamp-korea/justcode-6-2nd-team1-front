@@ -6,8 +6,8 @@ import { Navigate, useNavigate } from "react-router-dom";
 const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
-  width:100vw;
-  padding-bottom:90px;
+  width: 100vw;
+  padding-bottom: 90px;
   flex-direction: column;
   align-items: center;
   .header {
@@ -15,11 +15,11 @@ const StyledSignUp = styled.div`
     justify-content: center;
     width: 100vw;
     background-color: #eee;
-    font-size:13px;
+    font-size: 13px;
     span {
-      text-align:center;
+      text-align: center;
       color: gray;
-      width:33vw;
+      width: 33vw;
       padding: 25px;
     }
     .inColor {
@@ -29,23 +29,23 @@ const StyledSignUp = styled.div`
     }
     .fullColor {
       background-color: #af3030;
-      color:white;
+      color: white;
     }
   }
   .toLogin {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    margin-top:50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
     button {
-      margin-top:50px;
-      background-color:white;
-      font-size:20px;
-      width:70vw;
+      margin-top: 50px;
+      background-color: #af3030;
+      font-size: 20px;
+      width: 70vw;
       height: 60px;
-      border-radius:40px;
-      color: black;
-
+      border: 1px solid grey;
+      border-radius: 40px;
+      color: white;
     }
   }
   .on {
@@ -71,9 +71,9 @@ const AgreeBtn = styled.div`
     margin: 50px 0 10px 0;
     width: 95%;
     height: 50px;
-    background-color: white;
+    background-color: inherit;
     color: black;
-    border: none;
+    border: 1px solid grey;
     border-radius: 40px;
     font-size:16px;
   }
@@ -85,14 +85,14 @@ const AgreeBtn = styled.div`
 `;
 
 const NextBtn = styled.button`
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    height: 60px;
-    font-size: 20px;
-    color: black;
-    background-color: white;
-    border: none;
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 60px;
+  font-size: 20px;
+  color: white;
+  background-color: #af3030;
+  border: none;
 `;
 
 
@@ -112,6 +112,7 @@ const PhonePermission = styled.div`
   width: 80vw;
   height: 50px;
   background-color: white;
+  border:1px solid grey;
   border-radius: 40px;
   button {
     font-size: 16px;
@@ -126,7 +127,6 @@ const SignUpForm = styled.div`
     margin-top: 30px;
     padding-bottom: 20px;
     width: 80vw;
-    color: grey;
     border-bottom: 2px solid grey;
   }
   form {
@@ -250,14 +250,14 @@ const Signup = () => {
             <div className="title">
               <span>비밀번호</span>
               <div className="content">
-                <input />
+                <input type="password" />
                 <span>
                   비밀번호는 영문, 숫자를 혼합하여 8~20자 이내로 입력하세요.
                 </span>
               </div>
             </div>
             <div className="title">
-              <span>비밀번호 확인</span>
+              <span type="password">비밀번호 확인</span>
               <div className="content">
                 <input />
               </div>
@@ -296,7 +296,7 @@ const Signup = () => {
             </div>
           </form>
         </SignUpForm>
-        <NextBtn onClick={()=>setPage(2)}>다음</NextBtn>
+        <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
       </StyledSignUp>
     );
   } else if (page === 2) {

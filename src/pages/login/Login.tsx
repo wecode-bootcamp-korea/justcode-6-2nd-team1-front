@@ -42,14 +42,16 @@ const StyledLogin = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 50px;
+    padding-top: 20px;
     width: 100%;
     .inputBox {
       display: flex;
       align-items:center;
       width: 320px;
       height: 45px;
+      margin:5px;
       border: 2px solid #d9d2d2;
+      border-radius:5px;
       background-color: white;
     }
     input {

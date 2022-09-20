@@ -43,7 +43,6 @@ const StyledSignUp = styled.div`
       font-size: 20px;
       width: 70vw;
       height: 60px;
-      border: 1px solid grey;
       border-radius: 40px;
       color: white;
     }

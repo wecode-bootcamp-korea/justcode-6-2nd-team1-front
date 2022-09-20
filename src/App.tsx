@@ -2,46 +2,27 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Nav from './components/Nav';
 import GlobalStyle from './GlobalStyle';
+import { User } from './interface';
 import Brand from './pages/brand/Brand';
 import Cart from './pages/cart/Cart';
 import Login from './pages/login/Login';
 import Main from './pages/Main';
-import Notice from './pages/notice/Notice';
+import NoticePage from './pages/notice/Notice';
 import Order from './pages/order/Order';
 import Product from './pages/product/Product';
 import ProductDetail from './pages/product/ProductDetail';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
-interface User {
-  nickname: string;
-  token: string;
-  userPosition: {
-    latitude: number;
-    longitude: number;
-  };
-}
-
 const App = () => {
   const [userInfo, setUserInfo] = useState<User>({
     nickname: '',
     token: '',
-    userPosition: {
-      latitude: 0,
-      longitude: 0,
-    },
   });
+  const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(position => {
-      setUserInfo({
-        ...userInfo,
-        userPosition: {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        },
-      });
-    });
+    navigator.geolocation.getCurrentPosition(setLocationInfo);
   }, []);
 
   return (
@@ -51,11 +32,11 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/brand' element={<Brand />} />
-        <Route path='/store' element={<Store userInfo={userInfo} />} />
+        <Route path='/store' element={<Store />} />
 
         <Route path='/order' element={<Order />} />
-        <Route path='/notice' element={<Notice />} />
-        <Route path='/news' element={<Notice />} />
+        <Route path='/notice' element={<NoticePage />} />
+        <Route path='/news' element={<NoticePage />} />
         <Route path='/product' element={<Product />} />
         <Route path='/product/detail' element={<ProductDetail />} />
         <Route path='/product/detail/:id' element={<ProductDetail />} />

@@ -3,6 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import noticeTop from '../../assets/notice_top.jpg';
 import { BiSearch } from 'react-icons/bi';
+import { BsChevronDown } from 'react-icons/bs';
+import { Notice } from '../../interface';
+import axios from 'axios';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -66,19 +69,33 @@ const StyledDiv = styled.div<{ optionOpen: boolean }>`
     background-color: #f3f4f7;
     height: calc(4vw + 40px);
     padding: 10px;
+    position: relative;
 
     ul.option {
       width: calc(30% - 10px);
-      height: calc((4vw + 20px) * ${({ optionOpen }) => (optionOpen ? '3' : '1')});
+      height: calc((4vw + 20px) * ${({ optionOpen }) => (optionOpen ? '4' : '1')});
       transition: 0.3s;
       background-color: white;
       overflow: hidden;
+      border: 1px solid lightgray;
 
       li {
         font-size: 4vw;
         height: calc(4vw + 20px);
         padding: 10px;
         font-weight: 300;
+
+        &:first-of-type {
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          svg {
+            transition: 0.3s;
+            rotate: ${({ optionOpen }) => (optionOpen ? '180deg' : '0deg')};
+          }
+        }
       }
     }
 
@@ -90,11 +107,13 @@ const StyledDiv = styled.div<{ optionOpen: boolean }>`
       height: 100%;
       background-color: white;
       padding: 0 10px;
+      border: 1px solid lightgray;
 
       input {
         display: block;
         width: 100%;
         border: none;
+        font-size: 4vw;
 
         &:focus {
           outline: none;
@@ -104,21 +123,108 @@ const StyledDiv = styled.div<{ optionOpen: boolean }>`
   }
 `;
 
-const Notice = () => {
+const StyledList = styled.ul`
+  margin-top: 10px;
+  padding: 0px 10px;
+
+  li {
+    border-bottom: 1px solid #666666;
+    padding: 20px 0;
+
+    p {
+      color: #666666;
+      font-weight: 300;
+      font-size: 4vw;
+    }
+
+    h4 {
+      font-size: 5vw;
+      margin-top: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    &:last-of-type {
+      border: none;
+    }
+  }
+`;
+
+const NoticePage = () => {
   const { pathname } = useLocation();
   const [isNotice, setIsNotice] = useState(pathname === '/notice');
   const [optionOpen, setOptionOpen] = useState(false);
+  const [option, setOption] = useState('전체');
+  const [noticeList, setNoticeList] = useState<Notice[]>([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [end, setEnd] = useState(false);
+  const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
+  const [change, setChange] = useState(false);
 
   useEffect(() => {
-    setIsNotice(pathname === '/notice');
-  }, [pathname]);
-
-  useEffect(() => {
-    const optionOpenHandler = ({ target }: MouseEvent) => {};
+    const optionOpenHandler = ({ target }: MouseEvent) => {
+      if (target instanceof Element) {
+        target.closest('ul.option') ? setOptionOpen(o => !o) : setOptionOpen(false);
+      }
+    };
 
     window.addEventListener('click', optionOpenHandler);
     return () => window.removeEventListener('click', optionOpenHandler);
   }, []);
+
+  useEffect(() => {
+    setIsNotice(pathname === '/notice');
+    setNoticeList([]);
+    setPage(0);
+    setEnd(false);
+
+    (async () => {
+      setLoading(true);
+
+      const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
+      const sliced = data.slice(0, 7);
+
+      if (sliced.length < 7) {
+        setEnd(true);
+      }
+
+      setNoticeList(sliced);
+      setLoading(false);
+    })();
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!end) {
+      (async () => {
+        setLoading(true);
+
+        const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
+        const sliced = data.slice(page * 7, (page + 1) * 7);
+
+        if (sliced.length < 7) {
+          setEnd(true);
+        }
+
+        setNoticeList([...noticeList, ...sliced]);
+        setLoading(false);
+      })();
+    }
+  }, [page]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.intersectionRatio > 0 && entry.isIntersecting) {
+          observer.disconnect();
+          setPage(page + 1);
+        }
+      });
+    });
+
+    lastLi && observer.observe(lastLi);
+  }, [lastLi]);
 
   return (
     <>
@@ -133,18 +239,30 @@ const Notice = () => {
       <StyledDiv optionOpen={optionOpen}>
         <div className='container'>
           <ul className='option'>
-            <li>전체</li>
-            <li>내용</li>
-            <li>날짜</li>
+            <li>
+              {option} <BsChevronDown />
+            </li>
+            <li onClick={() => setOption('전체')}>전체</li>
+            <li onClick={() => setOption('내용')}>내용</li>
+            <li onClick={() => setOption('날짜')}>날짜</li>
           </ul>
           <div className='inputContainer'>
-            <input type='text' name='' id='' />
+            <input type='text' name='' id='' placeholder='검색어를 입력해주세요.' />
             <BiSearch />
           </div>
         </div>
       </StyledDiv>
+      <StyledList>
+        {!!noticeList.length &&
+          noticeList.map((not, i) => (
+            <li key={not.id} ref={noticeList.length - 1 === i ? setLastLi : null}>
+              <p>{not.date}</p>
+              <h4>{not.title}</h4>
+            </li>
+          ))}
+      </StyledList>
     </>
   );
 };
 
-export default Notice;
+export default NoticePage;

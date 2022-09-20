@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import noticeTop from '../../assets/notice_top.jpg';
@@ -73,7 +73,7 @@ const StyledDiv = styled.div<{ optionOpen: boolean }>`
 
     ul.option {
       width: calc(30% - 10px);
-      height: calc((4vw + 20px) * ${({ optionOpen }) => (optionOpen ? '4' : '1')});
+      height: calc((4vw + 20px) * ${({ optionOpen }) => (optionOpen ? '3' : '1')});
       transition: 0.3s;
       background-color: white;
       overflow: hidden;
@@ -99,7 +99,7 @@ const StyledDiv = styled.div<{ optionOpen: boolean }>`
       }
     }
 
-    div.inputContainer {
+    form {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -155,13 +155,14 @@ const NoticePage = () => {
   const { pathname } = useLocation();
   const [isNotice, setIsNotice] = useState(pathname === '/notice');
   const [optionOpen, setOptionOpen] = useState(false);
-  const [option, setOption] = useState('전체');
+  const [option, setOption] = useState('내용');
   const [noticeList, setNoticeList] = useState<Notice[]>([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(false);
   const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
-  const [change, setChange] = useState(false);
+  const [value, setValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const optionOpenHandler = ({ target }: MouseEvent) => {
@@ -175,10 +176,40 @@ const NoticePage = () => {
   }, []);
 
   useEffect(() => {
+    setNoticeList([]);
+    setPage(0);
+    setEnd(false);
+
+    (async () => {
+      setLoading(true);
+
+      const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
+      const sliced = data
+        .filter(n => {
+          switch (option) {
+            case '날짜':
+              return n.date.includes(value);
+            case '내용':
+              return n.title.includes(value);
+          }
+        })
+        .slice(0, 7);
+
+      if (sliced.length < 7) {
+        setEnd(true);
+      }
+
+      setNoticeList(sliced);
+      setLoading(false);
+    })();
+  }, [value]);
+
+  useEffect(() => {
     setIsNotice(pathname === '/notice');
     setNoticeList([]);
     setPage(0);
     setEnd(false);
+    setValue('');
 
     (async () => {
       setLoading(true);
@@ -201,7 +232,16 @@ const NoticePage = () => {
         setLoading(true);
 
         const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
-        const sliced = data.slice(page * 7, (page + 1) * 7);
+        const sliced = data
+          .filter(n => {
+            switch (option) {
+              case '날짜':
+                return n.date.includes(value);
+              case '내용':
+                return n.title.includes(value);
+            }
+          })
+          .slice(page * 7, (page + 1) * 7);
 
         if (sliced.length < 7) {
           setEnd(true);
@@ -226,6 +266,15 @@ const NoticePage = () => {
     lastLi && observer.observe(lastLi);
   }, [lastLi]);
 
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault();
+
+    if (inputRef.current) {
+      setValue(inputRef.current.value);
+      inputRef.current.value = '';
+    }
+  };
+
   return (
     <>
       <StyledHeader>
@@ -242,14 +291,13 @@ const NoticePage = () => {
             <li>
               {option} <BsChevronDown />
             </li>
-            <li onClick={() => setOption('전체')}>전체</li>
             <li onClick={() => setOption('내용')}>내용</li>
             <li onClick={() => setOption('날짜')}>날짜</li>
           </ul>
-          <div className='inputContainer'>
-            <input type='text' name='' id='' placeholder='검색어를 입력해주세요.' />
+          <form onSubmit={submitHandler}>
+            <input type='text' ref={inputRef} placeholder='검색어를 입력해주세요.' />
             <BiSearch />
-          </div>
+          </form>
         </div>
       </StyledDiv>
       <StyledList>

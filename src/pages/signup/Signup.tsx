@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useState } from "react";
 import { GiSmartphone } from "react-icons/gi";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
@@ -34,7 +35,18 @@ const StyledSignUp = styled.div`
   .toLogin {
     display:flex;
     flex-direction:column;
+    align-items:center;
+    margin-top:50px;
+    button {
+      margin-top:50px;
+      background-color:white;
+      font-size:20px;
+      width:70vw;
+      height: 60px;
+      border-radius:40px;
+      color: black;
 
+    }
   }
   .on {
     opacity: 0.6;
@@ -157,6 +169,7 @@ const SignUpForm = styled.div`
 `;
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(0);
   const [btn, setBtn] = useState(false);
   const [check, setCheck] = useState([0, 0, 0, 0]);
@@ -296,7 +309,7 @@ const Signup = () => {
         </div>
         <div className="toLogin">
           <span>가입이 완료되었습니다!</span>
-          <button>로그인 화면으로 가기</button>
+          <button onClick={()=>navigate('/login')}>로그인 화면으로 가기</button>
         </div>  
       </StyledSignUp>
     )

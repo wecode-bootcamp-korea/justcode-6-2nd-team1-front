@@ -7,7 +7,8 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: border-box;
-
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
   }
 
   a {
@@ -15,7 +16,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background: ${theme.mainColor};
+    background: white;
     padding-top: 20vw;
     font-family: 'Noto Sans KR', sans-serif;
   }

@@ -28,6 +28,7 @@ const StyledHeader = styled.header`
 
 const StyledDiv = styled.div<{ menu: boolean }>`
   position: fixed;
+  z-index: 5;
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, ${({ menu }) => (menu ? 0.7 : 0)});
@@ -111,12 +112,16 @@ const StyledNav = styled.nav<{ menu: boolean }>`
       }
 
       ul.inner-menu {
-        background-color: #ffffff;
-        padding: 0 10px;
+        background-color: #efeae4;
 
         & > li {
           font-size: 6vw;
-          padding: 15px 0;
+          padding: 15px 10px;
+          border-bottom: 1px solid lightgray;
+
+          &:last-of-type {
+            border-bottom: none;
+          }
         }
       }
     }

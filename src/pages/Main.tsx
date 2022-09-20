@@ -9,12 +9,12 @@ import slide_2 from "../assets/main_slide/슬라이드2.jpeg";
 import slide_3 from "../assets/main_slide/슬라이드3.jpg";
 import slide_4 from "../assets/main_slide/슬라이드4.jpeg";
 import slide_5 from "../assets/main_slide/슬라이드5.jpeg";
-import Store from "../components/Store";
+import Search from "../components/Search";
 import Footer from "../components/Footer";
 
 const Container = styled.div`
   background: white;
-  height: 129px;
+  height: 100%;
 `;
 const SlideImage = styled.img`
   width: 100%;
@@ -116,7 +116,7 @@ const Main = () => {
               <SlideImage alt="slide_5" src={slide_5} />
             </div>
           </Slider>
-          <Store></Store>
+          <Search></Search>
           <Footer></Footer>
         </Container>
       </div>

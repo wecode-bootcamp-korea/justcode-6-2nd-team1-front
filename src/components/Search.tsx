@@ -3,13 +3,14 @@ import combi from "../assets/combination.jpeg";
 import order from "../assets/order.jpeg";
 
 const StyledStore = styled.div`
-  heigth: 100%;
+  display :block;
+  heigth: 30vh;
   background-color : #f5f4f2;
   text-align: center;
-  align-items: center;
   margin-top: 30px;
   padding-top : 20px;
   padding-bottom : 20px;
+
     search_wrap{
       width: 240px;
 
@@ -51,7 +52,7 @@ const StyledCombi = styled.div`
   }
 `;
 
-const Store = () => {
+const Search = () => {
   return (
     <div>
       <StyledStore>
@@ -71,4 +72,4 @@ const Store = () => {
     </div>
   );
 };
-export default Store;
+export default Search;

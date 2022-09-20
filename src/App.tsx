@@ -1,23 +1,23 @@
-import { useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import Nav from './components/Nav';
-import GlobalStyle from './GlobalStyle';
-import { User } from './interface';
-import Brand from './pages/brand/Brand';
-import Cart from './pages/cart/Cart';
-import Login from './pages/login/Login';
-import Main from './pages/Main';
-import NoticePage from './pages/notice/Notice';
-import Order from './pages/order/Order';
-import Product from './pages/product/Product';
-import ProductDetail from './pages/product/ProductDetail';
-import Signup from './pages/signup/Signup';
-import Store from './pages/store/Store';
+import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import Nav from "./components/Nav";
+import GlobalStyle from "./GlobalStyle";
+import { User } from "./interface";
+import Brand from "./pages/brand/Brand";
+import Cart from "./pages/cart/Cart";
+import Login from "./pages/login/Login";
+import Main from "./pages/Main";
+import NoticePage from "./pages/notice/Notice";
+import Order from "./pages/order/Order";
+import Product from "./pages/product/Product";
+import ProductDetail from "./pages/product/ProductDetail";
+import Signup from "./pages/signup/Signup";
+import Store from "./pages/store/Store";
 
 const App = () => {
   const [userInfo, setUserInfo] = useState<User>({
-    nickname: '',
-    token: '',
+    nickname: "",
+    token: "",
   });
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
 
@@ -30,20 +30,20 @@ const App = () => {
       <GlobalStyle />
       <Nav />
       <Routes>
-        <Route path='/' element={<Main />} />
-        <Route path='/brand' element={<Brand />} />
-        <Route path='/store' element={<Store />} />
+        <Route path="/" element={<Main />} />
+        <Route path="/brand" element={<Brand />} />
+        <Route path="/store" element={<Store />} />
 
-        <Route path='/order' element={<Order />} />
-        <Route path='/notice' element={<NoticePage />} />
-        <Route path='/news' element={<NoticePage />} />
-        <Route path='/product' element={<Product />} />
-        <Route path='/product/detail' element={<ProductDetail />} />
-        <Route path='/product/detail/:id' element={<ProductDetail />} />
+        <Route path="/order" element={<Order />} />
+        <Route path="/notice" element={<NoticePage />} />
+        <Route path="/news" element={<NoticePage />} />
+        <Route path="/product" element={<Product />} />
+        <Route path="/product/detail" element={<ProductDetail />} />
+        <Route path="/product/detail/:id" element={<ProductDetail />} />
 
-        <Route path='/cart' element={<Cart />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/login' element={<Login />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );

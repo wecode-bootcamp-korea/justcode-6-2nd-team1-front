@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import styled from 'styled-components';
-import noticeTop from '../../assets/notice_top.jpg';
-import { BiSearch } from 'react-icons/bi';
-import { BsChevronDown } from 'react-icons/bs';
-import { Notice } from '../../interface';
-import axios from 'axios';
+import { useEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import styled from "styled-components";
+import noticeTop from "../../assets/notice_top.jpg";
+import { BiSearch } from "react-icons/bi";
+import { BsChevronDown } from "react-icons/bs";
+import { Notice } from "../../interface";
+import addressData from "../../../public/data/addressData.json";
+import axios from "axios";
 
 const StyledHeader = styled.header`
   display: flex;
@@ -44,13 +45,13 @@ const StyledNav = styled.nav<{ isNotice: boolean }>`
     color: #c9898e;
     font-size: 4vw;
 
-    &:nth-child(${({ isNotice }) => (isNotice ? '1' : '2')}) {
+    &:nth-child(${({ isNotice }) => (isNotice ? "1" : "2")}) {
       color: white;
     }
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: calc(50% - 1px);
     top: calc(50% - 2vw);
@@ -73,7 +74,9 @@ const StyledDiv = styled.div<{ optionOpen: boolean }>`
 
     ul.option {
       width: calc(30% - 10px);
-      height: calc((4vw + 20px) * ${({ optionOpen }) => (optionOpen ? '3' : '1')});
+      height: calc(
+        (4vw + 20px) * ${({ optionOpen }) => (optionOpen ? "3" : "1")}
+      );
       transition: 0.3s;
       background-color: white;
       overflow: hidden;
@@ -93,7 +96,7 @@ const StyledDiv = styled.div<{ optionOpen: boolean }>`
 
           svg {
             transition: 0.3s;
-            rotate: ${({ optionOpen }) => (optionOpen ? '180deg' : '0deg')};
+            rotate: ${({ optionOpen }) => (optionOpen ? "180deg" : "0deg")};
           }
         }
       }
@@ -153,26 +156,28 @@ const StyledList = styled.ul`
 
 const NoticePage = () => {
   const { pathname } = useLocation();
-  const [isNotice, setIsNotice] = useState(pathname === '/notice');
+  const [isNotice, setIsNotice] = useState(pathname === "/notice");
   const [optionOpen, setOptionOpen] = useState(false);
-  const [option, setOption] = useState('내용');
+  const [option, setOption] = useState("내용");
   const [noticeList, setNoticeList] = useState<Notice[]>([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [end, setEnd] = useState(false);
   const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const optionOpenHandler = ({ target }: MouseEvent) => {
       if (target instanceof Element) {
-        target.closest('ul.option') ? setOptionOpen(o => !o) : setOptionOpen(false);
+        target.closest("ul.option")
+          ? setOptionOpen((o) => !o)
+          : setOptionOpen(false);
       }
     };
 
-    window.addEventListener('click', optionOpenHandler);
-    return () => window.removeEventListener('click', optionOpenHandler);
+    window.addEventListener("click", optionOpenHandler);
+    return () => window.removeEventListener("click", optionOpenHandler);
   }, []);
 
   useEffect(() => {
@@ -183,13 +188,15 @@ const NoticePage = () => {
     (async () => {
       setLoading(true);
 
-      const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
+      const { data } = await axios.get<Notice[]>(
+        pathname === "/notice" ? "data/noticeData.json" : "data/newsData.json"
+      );
       const sliced = data
-        .filter(n => {
+        .filter((n) => {
           switch (option) {
-            case '날짜':
+            case "날짜":
               return n.date.includes(value);
-            case '내용':
+            case "내용":
               return n.title.includes(value);
           }
         })
@@ -205,16 +212,18 @@ const NoticePage = () => {
   }, [value]);
 
   useEffect(() => {
-    setIsNotice(pathname === '/notice');
+    setIsNotice(pathname === "/notice");
     setNoticeList([]);
     setPage(0);
     setEnd(false);
-    setValue('');
+    setValue("");
 
     (async () => {
       setLoading(true);
 
-      const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
+      const { data } = await axios.get<Notice[]>(
+        pathname === "/notice" ? "data/noticeData.json" : "data/newsData.json"
+      );
       const sliced = data.slice(0, 7);
 
       if (sliced.length < 7) {
@@ -231,13 +240,15 @@ const NoticePage = () => {
       (async () => {
         setLoading(true);
 
-        const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
+        const { data } = await axios.get<Notice[]>(
+          pathname === "/notice" ? "data/noticeData.json" : "data/newsData.json"
+        );
         const sliced = data
-          .filter(n => {
+          .filter((n) => {
             switch (option) {
-              case '날짜':
+              case "날짜":
                 return n.date.includes(value);
-              case '내용':
+              case "내용":
                 return n.title.includes(value);
             }
           })
@@ -254,8 +265,8 @@ const NoticePage = () => {
   }, [page]);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
         if (entry.intersectionRatio > 0 && entry.isIntersecting) {
           observer.disconnect();
           setPage(page + 1);
@@ -266,12 +277,12 @@ const NoticePage = () => {
     lastLi && observer.observe(lastLi);
   }, [lastLi]);
 
-  const submitHandler: React.FormEventHandler<HTMLFormElement> = e => {
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     if (inputRef.current) {
       setValue(inputRef.current.value);
-      inputRef.current.value = '';
+      inputRef.current.value = "";
     }
   };
 
@@ -282,20 +293,24 @@ const NoticePage = () => {
         <p>공차의 다양한 소식을 확인해 보새요.</p>
       </StyledHeader>
       <StyledNav isNotice={isNotice}>
-        <Link to='/notice'>공지사항</Link>
-        <Link to='/news'>보도자료</Link>
+        <Link to="/notice">공지사항</Link>
+        <Link to="/news">보도자료</Link>
       </StyledNav>
       <StyledDiv optionOpen={optionOpen}>
-        <div className='container'>
-          <ul className='option'>
+        <div className="container">
+          <ul className="option">
             <li>
               {option} <BsChevronDown />
             </li>
-            <li onClick={() => setOption('내용')}>내용</li>
-            <li onClick={() => setOption('날짜')}>날짜</li>
+            <li onClick={() => setOption("내용")}>내용</li>
+            <li onClick={() => setOption("날짜")}>날짜</li>
           </ul>
           <form onSubmit={submitHandler}>
-            <input type='text' ref={inputRef} placeholder='검색어를 입력해주세요.' />
+            <input
+              type="text"
+              ref={inputRef}
+              placeholder="검색어를 입력해주세요."
+            />
             <BiSearch />
           </form>
         </div>
@@ -303,7 +318,10 @@ const NoticePage = () => {
       <StyledList>
         {!!noticeList.length &&
           noticeList.map((not, i) => (
-            <li key={not.id} ref={noticeList.length - 1 === i ? setLastLi : null}>
+            <li
+              key={not.id}
+              ref={noticeList.length - 1 === i ? setLastLi : null}
+            >
               <p>{not.date}</p>
               <h4>{not.title}</h4>
             </li>

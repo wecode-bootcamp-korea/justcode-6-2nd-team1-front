@@ -1,18 +1,196 @@
-interface StoreProps {
-  userInfo: {
-    nickname: string;
-    token: string;
-    userPosition: {
-      latitude: number;
-      longitude: number;
-    };
-  };
-}
+import React, { useState, useEffect, useRef } from "react";
+import styled from "styled-components";
+import noticeTop from "../../assets/notice_top.jpg";
+import axios from "axios";
+import addressData from "././addressData.json";
+import { BiSearchAlt2 } from "react-icons/bi";
 
-const Store = ({ userInfo: { userPosition } }: StoreProps) => {
+const StyledHeader = styled.header`
+  display: flex;
+  height: 150px;
+  flex-direction: column;
+  align-items: center;
+  background-image: url(${noticeTop});
+  background-position: center;
+  background-size: cover;
+  gap: 20px;
+  color: white;
+  padding: 30px 0;
+
+  h1 {
+    font-size: 8vw;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 4vw;
+  }
+`;
+const StyledSearch = styled.div`
+  div.container {
+    background-color: #f3f4f7;
+    padding: 10px;
+
+
+
+    div.region{
+      display: flex;
+      justify-content: center;
+
+
+      div.state {
+        display: flex;
+        margin-right: 5px;
+
+
+
+         select {
+           width: 195px;
+           height:40px;
+           border : none;
+           background-color: #ffffff;
+      }
+    }
+
+      div.city {
+        display: flex;
+        width: 200px;
+        height:40px;
+
+        select {
+           width: 100%;
+           border : none;
+           background-color: #ffffff;
+      }
+    }
+  }
+
+    div.search {
+      font-size : 30px;
+      text-align: center;
+
+      input{
+        width : 350px;
+        height: 40px;
+        font-size : 15px;
+        border: none;
+        background-color: #ffffff;
+        padding: 10px;
+      }
+
+
+      button {
+        width : 50px;
+        height: 40px;
+        background-color: #ffffff;
+        border: none;
+        
+        
+        }
+      }
+    }
+  }
+`;
+
+const StyledList = styled.ul`
+  margin-top: 10px;
+  padding: 0px 10px;
+
+  li {
+    border-bottom: 1px solid #666666;
+    padding: 20px 0;
+
+    p {
+      color: #666666;
+      font-weight: 300;
+      font-size: 4vw;
+    }
+
+    h4 {
+      font-size: 3vw;
+      margin-top: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    &:last-of-type {
+      border: none;
+    }
+  }
+`;
+
+const Store = () => {
+  const [selectedOption, setSelectedOption] = useState();
+  const [addressList, setAddressList] = useState<any[]>([]);
+  const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
+  const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setSelectedOption;
+  };
+
+  const addresses = [
+    "시,도",
+    "서울특별시",
+    "부산광역시",
+    "대구광역시",
+    "인천광역시",
+    "경기도",
+  ];
+
   return (
     <div>
-      {userPosition.latitude} {userPosition.longitude}
+      <StyledHeader>
+        <h1>STORE</h1>
+        <p>간편하게 공차의 매장을 검색해보세요.</p>
+      </StyledHeader>
+      <StyledSearch>
+        <div className="container">
+          <div className="region">
+            <div className="state">
+              <select onChange={selectChange}>
+                <>
+                  {addresses.map((address) => (
+                    <option key={address} value={address}>
+                      {address}
+                    </option>
+                  ))}
+                </>
+              </select>
+            </div>
+            <div className="city">
+              <select>
+                <option>구/군</option>
+                <option>경기도</option>
+                <option>서울</option>
+              </select>
+            </div>
+          </div>
+          <div className="search">
+            <input
+              type="text"
+              className="input"
+              placeholder="매장명 또는 주소를 입력해 주세요"
+            ></input>
+            <button>
+              <BiSearchAlt2 />
+            </button>
+          </div>
+        </div>
+      </StyledSearch>
+      <StyledList>
+        <>
+          {addressData.map((add, i) => (
+            <li
+              key={add.id}
+              ref={addressList.length - 1 === i ? setLastLi : null}
+            >
+              <p>{add.title}</p>
+              <h4>{add.address}</h4>
+            </li>
+          ))}
+        </>
+      </StyledList>
     </div>
   );
 };

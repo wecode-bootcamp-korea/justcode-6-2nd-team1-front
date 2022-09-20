@@ -6,6 +6,7 @@ const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
   width:100vw;
+  padding-bottom:90px;
   flex-direction: column;
   align-items: center;
   .header {
@@ -30,15 +31,10 @@ const StyledSignUp = styled.div`
       color:white;
     }
   }
-  .nextBtn {
-    position: fixed;
-    bottom: 0px;
-    width: 100%;
-    height: 60px;
-    font-size: 20px;
-    color: black;
-    background-color: white;
-    border: none;
+  .toLogin {
+    display:flex;
+    flex-direction:column;
+
   }
   .on {
     opacity: 0.6;
@@ -76,6 +72,17 @@ const AgreeBtn = styled.div`
   }
 `;
 
+const NextBtn = styled.button`
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 60px;
+    font-size: 20px;
+    color: black;
+    background-color: white;
+    border: none;
+`;
+
 
 const CheckList = styled.form`
   display: flex;
@@ -101,9 +108,57 @@ const PhonePermission = styled.div`
     background-color: inherit;
   }
 `;
+const SignUpForm = styled.div`
+  .head {
+    font-size: 17px;
+    margin-top: 30px;
+    padding-bottom: 20px;
+    width: 80vw;
+    color: grey;
+    border-bottom: 2px solid grey;
+  }
+  form {
+    .title {
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding: 0 4px;
+      span {
+        color: grey;
+        margin-top: 10px;
+      }
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        width: 60vw;
+
+        input {
+          width: 100%;
+          height: 40px;
+          border-radius: 10px;
+        }
+        button {
+          margin: 5px 0;
+          width: 40%;
+          height: 40px;
+          background-color: grey;
+          color: white;
+          border: none;
+          border-radius: 10px;
+        }
+        span {
+          font-size: 10px;
+        }
+      }
+    }
+  }
+`;
+
 const Signup = () => {
   const [page, setPage] = useState(0);
-  const [btn, setBtn] = useState(true);
+  const [btn, setBtn] = useState(false);
   const [check, setCheck] = useState([0, 0, 0, 0]);
 
   const onClick: React.MouseEventHandler<HTMLInputElement> = (e) => {
@@ -112,10 +167,6 @@ const Signup = () => {
       console.log(target)
     }
   };
-  function allBtn() {
-    setCheck([1, 1, 1, 1]);
-    btn ? setBtn(false) : setBtn(true);
-  }
   
   
 
@@ -130,7 +181,7 @@ const Signup = () => {
         </div>
 
         <AgreeBtn>
-          <button onClick={allBtn}>전체동의</button>
+          <button>전체동의</button>
           <span>선택 동의 사항이 포함되어 있습니다.</span>
           <span>만 14세 이상만 가입 가능합니다.</span>
         </AgreeBtn>
@@ -154,12 +205,7 @@ const Signup = () => {
             마케팅 수신 동의 (선택)
           </label>
         </CheckList>
-        <button
-          className={`nextBtn ${btn && "on"}`}
-          onClick={() => setPage(1)}
-        >
-          다음
-        </button>
+        <NextBtn onClick={()=>setPage(1)}>다음</NextBtn>
       </StyledSignUp>
     );
   } else if (page === 1) {
@@ -175,8 +221,86 @@ const Signup = () => {
           <GiSmartphone />
           <button>휴대폰 본인 인증</button>
         </PhonePermission>
+
+        <SignUpForm>
+          <div className="head">
+            <span>아이디 설정</span>
+          </div>
+          <form>
+            <div className="title">
+              <span>이메일</span>
+              <div className="content">
+                <input />
+                <button>중복확인</button>
+              </div>
+            </div>
+            <div className="title">
+              <span>비밀번호</span>
+              <div className="content">
+                <input />
+                <span>
+                  비밀번호는 영문, 숫자를 혼합하여 8~20자 이내로 입력하세요.
+                </span>
+              </div>
+            </div>
+            <div className="title">
+              <span>비밀번호 확인</span>
+              <div className="content">
+                <input />
+              </div>
+            </div>
+          </form>
+        </SignUpForm>
+        <SignUpForm>
+          <div className="head">
+            <span>닉네임 설정</span>
+          </div>
+          <form>
+            <div className="title">
+              <span>닉네임</span>
+              <div className="content">
+                <input />
+              </div>
+            </div>
+          </form>
+        </SignUpForm>
+        <SignUpForm>
+          <div className="head">
+            <span>회원 정보</span>
+          </div>
+          <form>
+            <div className="title">
+              <span>이름</span>
+              <div className="content">
+                <input />
+              </div>
+            </div>
+            <div className="title">
+              <span>휴대폰 번호</span>
+              <div className="content">
+                <input />
+              </div>
+            </div>
+          </form>
+        </SignUpForm>
+        <NextBtn onClick={()=>setPage(2)}>다음</NextBtn>
       </StyledSignUp>
     );
+  } else if (page === 2) {
+    return (
+      <StyledSignUp>
+        <div className="header">
+          <span className="fullColor">약관동의</span>
+          <span className="fullColor">회원정보</span>
+          <span className="fullColor">가입완료</span>
+        </div>
+        <div className="toLogin">
+          <span>가입이 완료되었습니다!</span>
+          <button>로그인 화면으로 가기</button>
+        </div>  
+      </StyledSignUp>
+    )
+    
   }
 };
 

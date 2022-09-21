@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import combi from "../assets/combination.jpeg";
 import order from "../assets/order.jpeg";
 
@@ -53,21 +55,40 @@ const StyledCombi = styled.div`
 `;
 
 const Search = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [searchInput, setSearchInput] = useState('')
+  const navigate = useNavigate();
+  const goToProduct = () => {
+    navigate('./product')
+  }
+  const goToOrder = () => {
+    navigate('./order')
+  }
+  const inputHandler: React.FormEventHandler<HTMLFormElement> = e => {
+    e.preventDefault()
+      if(inputRef.current) {
+       console.log(e.target)
+       alert("매장명을 입력해주세요");
+       }
+      };
+
   return (
     <div>
       <StyledStore>
         <div className="search_wrap">
           <h3>매장검색</h3>
           <p className="speed">공차 매장을 쉽고 빠르게 찾아보세요</p>
-          <input placeholder="매장명 또는 주소를 입력하세요"></input>
+          <form onSubmit={inputHandler}>
+          <input type="text" ref={inputRef} placeholder="매장명 또는 주소를 입력하세요"/>
           <div>
-            <button> 매장 검색하기 </button>
+            <button > 매장 검색하기 </button>
           </div>
+          </form>
         </div>
       </StyledStore>
       <StyledCombi>
-        <img src={combi}></img>
-        <img src={order}></img>
+        <img onClick={goToProduct} src={combi}></img>
+        <img onClick={goToOrder} src={order}></img>
       </StyledCombi>
     </div>
   );

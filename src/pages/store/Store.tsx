@@ -3,7 +3,7 @@ import styled from "styled-components";
 import noticeTop from "../../assets/notice_top.jpg";
 import axios from "axios";
 import addressData from "././addressData.json";
-import { BiSearchAlt2 } from "react-icons/bi";
+import { BiSearch } from 'react-icons/bi';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -122,11 +122,24 @@ const StyledList = styled.ul`
 const Store = () => {
   const [selectedOption, setSelectedOption] = useState();
   const [addressList, setAddressList] = useState<any[]>([]);
+  const [value, setValue] = useState('');
   const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setSelectedOption;
   };
+
+  const submitHandler :React.FormEventHandler<HTMLButtonElement> = e => {
+    e. preventDefault();
+
+    if(inputRef.current) {
+      setValue(inputRef.current.value);
+      inputRef.current.value = ''
+      console.log(value)
+    }
+  }
 
   const addresses = [
     "시,도",
@@ -166,20 +179,31 @@ const Store = () => {
             </div>
           </div>
           <div className="search">
-            <input
-              type="text"
-              className="input"
-              placeholder="매장명 또는 주소를 입력해 주세요"
-            ></input>
-            <button>
-              <BiSearchAlt2 />
-            </button>
+            <form>
+              <input
+                type="text"
+                ref = {inputRef}
+                className="input"
+                placeholder="매장명 또는 주소를 입력해 주세요"
+                onChange={(e)=>{setValue(e.target.value)}}
+              ></input>
+              <button onSubmit={submitHandler}>
+                <BiSearch />
+              </button>
+            </form> 
           </div>
         </div>
       </StyledSearch>
       <StyledList>
         <>
-          {addressData.map((add, i) => (
+          {addressData.filter((val) => {
+            if(value == " " ) {
+                return val
+              } else if(val.title.toLowerCase().includes(value.toLowerCase())){
+                return val
+              }
+            }
+          ).map((add, i) => (
             <li
               key={add.id}
               ref={addressList.length - 1 === i ? setLastLi : null}

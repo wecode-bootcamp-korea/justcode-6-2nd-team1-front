@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Slider from "react-slick";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BsChevronRight } from "react-icons/bs";
@@ -47,6 +48,7 @@ const DivPre = styled.div`
 // `;
 
 const Main = () => {
+ 
   const settings = {
     dots: true,
     // customPaging: function (slide: any, i: string) {

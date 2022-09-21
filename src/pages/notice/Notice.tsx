@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import styled from "styled-components";
-import noticeTop from "../../assets/notice_top.jpg";
-import { BiSearch } from "react-icons/bi";
-import { BsChevronDown } from "react-icons/bs";
-import { Notice } from "../../interface";
-import addressData from "../../../public/data/addressData.json";
-import axios from "axios";
+import { useEffect, useRef, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import noticeTop from '../../assets/notice_top.jpg';
+import { BiSearch } from 'react-icons/bi';
+import { BsChevronDown } from 'react-icons/bs';
+import { Notice } from '../../interface';
+import axios from 'axios';
+import ListSkeleton from './ListSkeleton';
 
 const StyledHeader = styled.header`
   display: flex;

@@ -56,7 +56,7 @@ const StyledCombi = styled.div`
 
 const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [searchInput, setSearchInput] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
 
   const goToProduct = () => {
@@ -65,11 +65,29 @@ const Search = () => {
   const goToOrder = () => {
     navigate('./order');
   };
-  const inputHandler: React.FormEventHandler<HTMLFormElement> = e => {
+  // const submitHandler: React.FormEventHandler<HTMLButtonElement> = e => {
+  //   e.preventDefault();
+
+  //   if (inputRef.current) {
+  //     setInputValue(inputRef.current.value);
+  //     inputRef.current.value = '';
+  //     console.log(inputRef.current.value.length);
+  //     // alert('매장명을 입력해주세요');
+  //   }
+  // };
+
+  const inputHandler: React.FormEventHandler<HTMLInputElement> = e => {
+    if (e.target instanceof HTMLInputElement) {
+      let target = e;
+      // console.log(e.target.value.length);
+    }
+  };
+
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
     if (inputRef.current) {
-      console.log(e.target);
-      alert('매장명을 입력해주세요');
+      setInputValue(inputRef.current.value);
+      inputRef.current.value = '';
     }
   };
 
@@ -79,8 +97,8 @@ const Search = () => {
         <div className='search_wrap'>
           <h3>매장검색</h3>
           <p className='speed'>공차 매장을 쉽고 빠르게 찾아보세요</p>
-          <form onSubmit={inputHandler}>
-            <input type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
+          <form onSubmit={submitHandler}>
+            <input onChange={inputHandler} type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
             <div>
               <button> 매장 검색하기 </button>
             </div>

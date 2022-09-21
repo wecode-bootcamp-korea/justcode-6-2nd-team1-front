@@ -33,25 +33,6 @@ const StyledSearch = styled.div`
     margin: 10px;
     padding: 10px;
 
-    div.region{
-      display: flex;
-      justify-content: center;
-
-      div.state {
-        display: flex;
-        margin-right: 5px;
-
-          select {
-            width: 399px;
-            margin-left: 7px;
-            padding: 10px;
-            height:40px;
-            border : none;
-            background-color: #ffffff;
-          }
-      }
-    }
-
     div.search {
       font-size : 30px;
       text-align: center;
@@ -142,31 +123,10 @@ const Store = () => {
       </StyledHeader>
       <StyledSearch>
         <div className='container'>
-          <div className='region'>
-            <div className='state'>
-              {/* <select onChange={selectChange}>
-                <>
-                  {addresses.map(address => (
-                    <option key={address} value={address}>
-                      {address}
-                    </option>
-                  ))}
-                </>
-              </select> */}
-            </div>
-          </div>
           <div className='search'>
             <form>
-              <input
-                type='text'
-                ref={inputRef}
-                className='input'
-                placeholder='매장명 또는 주소를 입력해 주세요'
-                onChange={e => {
-                  setValue(e.target.value);
-                }}
-              ></input>
-              <button onSubmit={submitHandler}>
+              <input type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력해 주세요'></input>
+              <button onClick={submitHandler}>
                 <BiSearch />
               </button>
             </form>

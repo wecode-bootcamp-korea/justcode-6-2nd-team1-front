@@ -1,5 +1,6 @@
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
+import useStore from '../../context/store';
 
 const StyledNav = styled.nav<{ mode: number }>`
   width: 100%;
@@ -8,7 +9,7 @@ const StyledNav = styled.nav<{ mode: number }>`
 
   ul {
     display: flex;
-    width: 266%;
+    width: 300%;
 
     li {
       width: fit-content;
@@ -40,6 +41,7 @@ const StyledNav = styled.nav<{ mode: number }>`
 const category = ['시즌 메뉴', '베스트조합', '오리지널 티', '밀크티', '쥬얼리', '과일 믹스', '스무디', '커피'];
 
 const Product = () => {
+  const { nickname, login } = useStore();
   const [mode, setMode] = useState(0);
 
   const ulRef = useRef<HTMLUListElement>(null);
@@ -95,7 +97,12 @@ const Product = () => {
 
   return (
     <StyledNav mode={mode}>
-      <ul ref={ulRef} onTouchStart={touchStart} onTouchMove={touchMove} onTouchEnd={touchEnd}>
+      <ul //
+        ref={ulRef}
+        onTouchStart={touchStart}
+        onTouchMove={touchMove}
+        onTouchEnd={touchEnd}
+      >
         {category.map((cate, i) => (
           <li key={cate} onClick={() => setMode(i)}>
             {cate}

@@ -2,9 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useStore from '../../context/store';
 import useNav from '../../hooks/useNav';
 import { ProductInfo } from '../../interface';
+import theme from '../../theme';
 import CategotySkeleton from './CategorySkeleton';
 
 const StyledNav = styled.nav<{ mode: number }>`
@@ -25,8 +25,8 @@ const StyledNav = styled.nav<{ mode: number }>`
       white-space: nowrap;
 
       &:nth-child(${({ mode }) => mode + 1}) {
-        color: #d03b47;
-        border-bottom: 2px solid #d03b47;
+        color: ${theme.red};
+        border-bottom: 2px solid ${theme.red};
       }
 
       &::after {
@@ -67,7 +67,7 @@ const StyledList = styled.ul`
 
       h4 {
         font-size: 6vw;
-        color: #b0232f;
+        color: ${theme.red};
       }
     }
   }

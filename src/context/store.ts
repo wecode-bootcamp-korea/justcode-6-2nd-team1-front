@@ -9,7 +9,6 @@ interface UserState extends User {
 
 const useStore = create(
   devtools<UserState>(set => ({
-    nickname: '처음이름',
     token: '',
     isLogin: false,
     login(loginRes: User) {

@@ -7,6 +7,7 @@ import { BsChevronDown } from 'react-icons/bs';
 import { Notice } from '../../interface';
 import axios from 'axios';
 import ListSkeleton from './ListSkeleton';
+import theme from '../../theme';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -32,7 +33,7 @@ const StyledHeader = styled.header`
 const StyledNav = styled.nav<{ isNotice: boolean }>`
   display: flex;
   width: calc(100% - 20px);
-  background-color: #983b43;
+  background-color: ${theme.red};
   margin: 0 auto;
   padding: 10px 0;
   transform: translateY(-50%);

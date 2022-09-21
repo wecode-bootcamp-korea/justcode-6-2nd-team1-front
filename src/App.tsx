@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Nav from './components/Nav';
 import GlobalStyle from './GlobalStyle';
-import { User } from './interface';
 import Brand from './pages/brand/Brand';
 import Cart from './pages/cart/Cart';
 import Login from './pages/login/Login';
@@ -15,12 +14,7 @@ import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
 const App = () => {
-  const [userInfo, setUserInfo] = useState<User>({
-    nickname: '',
-    token: '',
-  });
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
-
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(setLocationInfo);
   }, []);

@@ -16,6 +16,7 @@ const StyledLogin = styled.div`
     margin-top: 20px;
     display: flex;
     justify-content: center;
+    margin-top:20px;
     button {
       font-size: 13px;
       padding: 0 12px;
@@ -33,9 +34,9 @@ const StyledLogin = styled.div`
     justify-content: center;
     width:100vw;
     background: #af3030;
-    padding: 70px 0;
+    padding: 50px 0 40px 0;
     img {
-      width: 100%;
+      width: 70%;
     }
   }
 
@@ -92,11 +93,11 @@ const Login = () => {
       <form>
         <div className="inputBox">
           <BsPerson className="icon" size="24px" />
-          <input type="text" placeholder="이메일"></input>
+          <input type="text" placeholder="이메일" />
         </div>
         <div className="inputBox">
           <FiLock className="icon" size="23px" />
-          <input type="password" placeholder="비밀번호"></input>
+          <input type="password" placeholder="비밀번호" />
         </div>
 
         <button>로그인</button>

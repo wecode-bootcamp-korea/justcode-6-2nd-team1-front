@@ -2,7 +2,7 @@ import styled from "styled-components";
 import logo from '../../assets/ilcha_logo_reverse.png'
 import { BsPerson } from "react-icons/bs";
 import { FiLock } from "react-icons/fi";
-import { useLocation,Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 const StyledLogin = styled.div`
@@ -16,6 +16,7 @@ const StyledLogin = styled.div`
     margin-top: 20px;
     display: flex;
     justify-content: center;
+    margin-top:20px;
     button {
       font-size: 13px;
       padding: 0 12px;
@@ -31,34 +32,39 @@ const StyledLogin = styled.div`
   div.logoBox {
     display: flex;
     justify-content: center;
+    width:100vw;
     background: #af3030;
-    padding: 70px 0;
+    padding: 50px 0 40px 0;
     img {
-      width: 200px;
+      width: 70%;
     }
-  }
-
-  .icon {
-    color: gray;
-    position: absolute;
-    margin-top: 14px;
-    left: 36px;
   }
 
   form {
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 50px;
+    padding-top: 20px;
     width: 100%;
-    input {
-      position: relative;
-      font-size: 15px;
-      margin: 5px 0;
-      padding-left: 35px;
+    .inputBox {
+      display: flex;
+      align-items:center;
+      width: 90vw;
       height: 45px;
-      width: 320px;
+      margin:5px;
       border: 2px solid #d9d2d2;
+      border-radius:5px;
+      background-color: white;
+    }
+    input {
+      font-size: 16px;
+      margin: 5px 0;
+      width: 80%;
+      border: none;
+    }
+    .icon {
+      color: gray;
+      margin:10px;
     }
     button {
       height: 45px;
@@ -85,23 +91,23 @@ const Login = () => {
         <img src={logo} alt="logo"></img>
       </div>
       <form>
-        <div>
-          <input type="text" placeholder="이메일"></input>
+        <div className="inputBox">
           <BsPerson className="icon" size="24px" />
+          <input type="text" placeholder="이메일" />
         </div>
-        <div>
-          <input type="password" placeholder="비밀번호"></input>
-          <FiLock className="icon" size="24px" />
+        <div className="inputBox">
+          <FiLock className="icon" size="23px" />
+          <input type="password" placeholder="비밀번호" />
         </div>
 
         <button>로그인</button>
       </form>
       <div className="signUp">
         <Link to="/signup">회원가입</Link>
-        <Line></Line>
-        <button>아이디 찾기</button>
-        <Line></Line>
-        <button>비밀번호 찾기</button>
+        <Line />
+        <Link to="/findId">아이디 찾기</Link>
+        <Line />
+        <Link to="/findPw">비밀번호 찾기</Link>
       </div>
     </StyledLogin>
   );

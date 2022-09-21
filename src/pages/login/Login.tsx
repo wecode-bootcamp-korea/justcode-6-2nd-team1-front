@@ -16,7 +16,7 @@ const StyledLogin = styled.div`
     margin-top: 20px;
     display: flex;
     justify-content: center;
-    margin:20px;
+    margin-top:20px;
     button {
       font-size: 13px;
       padding: 0 12px;

@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GiSmartphone } from "react-icons/gi";
 
-import SignUp from "../../components/Signup/SignUp";
+import SignForm from "../../components/Signup/SignForm";
 import AgreeList from "../../components/Signup/AgreeList";
 const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
@@ -205,9 +205,7 @@ const Signup = () => {
           <Line />
           <span>가입완료</span>
         </div>
-
         <AgreeList props={ setPage} />
-        
       </StyledSignUp>
     );
   } else if (page === 1) {
@@ -224,7 +222,7 @@ const Signup = () => {
           <button>휴대폰 본인 인증</button>
         </PhonePermission>
 
-        <SignUp />
+        <SignForm />
         
         <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
       </StyledSignUp>

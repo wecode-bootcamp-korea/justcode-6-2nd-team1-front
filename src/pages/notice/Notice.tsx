@@ -6,6 +6,7 @@ import { BiSearch } from 'react-icons/bi';
 import { BsChevronDown } from 'react-icons/bs';
 import { Notice } from '../../interface';
 import axios from 'axios';
+import ListSkeleton from './ListSkeleton';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -185,6 +186,7 @@ const NoticePage = () => {
 
       const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
       const sliced = data
+        .reverse()
         .filter(n => {
           switch (option) {
             case '날짜':
@@ -215,7 +217,7 @@ const NoticePage = () => {
       setLoading(true);
 
       const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
-      const sliced = data.slice(0, 7);
+      const sliced = data.reverse().slice(0, 7);
 
       if (sliced.length < 7) {
         setEnd(true);
@@ -233,6 +235,7 @@ const NoticePage = () => {
 
         const { data } = await axios.get<Notice[]>(pathname === '/notice' ? 'data/noticeData.json' : 'data/newsData.json');
         const sliced = data
+          .reverse()
           .filter(n => {
             switch (option) {
               case '날짜':
@@ -308,6 +311,7 @@ const NoticePage = () => {
               <h4>{not.title}</h4>
             </li>
           ))}
+        {loading && <ListSkeleton />}
       </StyledList>
     </>
   );

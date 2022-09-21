@@ -5,6 +5,7 @@ import { GiSmartphone } from "react-icons/gi";
 
 import SignForm from "../../components/Signup/SignForm";
 import AgreeList from "../../components/Signup/AgreeList";
+import theme from "../../theme";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Signup = () => {
           <Line />
           <span>가입완료</span>
         </div>
-        <AgreeList props={ setPage } />
+        <AgreeList setPage={ setPage } />
       </StyledSignUp>
     );
   } else if (page === 1) {
@@ -27,7 +28,7 @@ const Signup = () => {
       <StyledSignUp>
         <div className="header">
           <span className="fullColor">약관동의</span>
-          <span className="inColor">회원정보</span>
+          <span className={page <= 1?'inColor':''}>회원정보</span>
           <span>가입완료</span>
         </div>
 
@@ -55,7 +56,8 @@ const Signup = () => {
         </div>  
       </StyledSignUp>
     )
-    
+  } else {
+    return <></>
   }
 };
 
@@ -63,7 +65,7 @@ export default Signup;
 
 
 const StyledSignUp = styled.div`
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   display: flex;
   width: 100vw;
   padding-bottom: 90px;
@@ -82,12 +84,12 @@ const StyledSignUp = styled.div`
       padding: 25px;
     }
     .inColor {
-      background-color: #af3030;
+      background-color: ${theme.red};
       color: white;
       border-radius: 0 40px 40px 0;
     }
     .fullColor {
-      background-color: #af3030;
+      background-color: ${theme.red};
       color: white;
     }
   }
@@ -98,12 +100,12 @@ const StyledSignUp = styled.div`
     margin-top: 50px;
     button {
       margin-top: 50px;
-      background-color: #af3030;
+      background-color: ${theme.red};
       font-size: 20px;
       width: 70vw;
       height: 60px;
       border-radius: 40px;
-      border:none;
+      border: none;
       color: white;
     }
   }

@@ -3,14 +3,19 @@ import { CheckList } from "../../pages/signup/Signup";
 import { NextBtn } from "../../pages/signup/Signup";
 import { BsCheckCircle } from "react-icons/bs";
 import { BsCheckCircleFill } from "react-icons/bs";
-import { useState,useEffect } from "react";
-const AgreeList = ({props}) => {
+import { useState, useEffect } from "react";
+
+interface AgreeListProps {
+  setPage:React.Dispatch<React.SetStateAction<number>>
+}
+
+const AgreeList = ({ setPage } : AgreeListProps) => {
   const [btn, setBtn] = useState(true);
   const [first, setFirst] = useState(false);
   const [second, setSecond] = useState(false);
   const [third, setThird] = useState(false);
   const [fourth, setFourth] = useState(false);
-  const [allChecked, setAllChecked] = useState<boolean>(false);
+  const [allChecked, setAllChecked] = useState(false);
   const [backColor, setBackColor] = useState(false);
   const allCheck = () => {
     allChecked ? setAllChecked(false) : setAllChecked(true);
@@ -84,7 +89,7 @@ const AgreeList = ({props}) => {
             </span>
           </div>
       </CheckList>
-      <NextBtn disabled={btn?true:false} onClick={() => props(1)}>
+      <NextBtn disabled={btn?true:false} onClick={() => setPage(1)}>
           다음
       </NextBtn>
     </>

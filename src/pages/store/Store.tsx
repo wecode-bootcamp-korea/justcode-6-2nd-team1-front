@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import noticeTop from '../../assets/notice_top.jpg';
 import axios from 'axios';
 import addressData from '././addressData.json';
 import { BiSearch } from 'react-icons/bi';
+import Modal from './Modal';
 
 const StyledHeader = styled.header`
   display: flex;
@@ -32,46 +33,31 @@ const StyledSearch = styled.div`
     margin: 10px;
     padding: 10px;
 
-
-
     div.region{
       display: flex;
       justify-content: center;
-
 
       div.state {
         display: flex;
         margin-right: 5px;
 
-
-
-         select {
-           width: 195px;
-           height:40px;
-           border : none;
-           background-color: #ffffff;
+          select {
+            width: 399px;
+            margin-left: 7px;
+            padding: 10px;
+            height:40px;
+            border : none;
+            background-color: #ffffff;
+          }
       }
     }
-
-      div.city {
-        display: flex;
-        width: 200px;
-        height:40px;
-
-        select {
-           width: 100%;
-           border : none;
-           background-color: #ffffff;
-      }
-    }
-  }
 
     div.search {
       font-size : 30px;
       text-align: center;
 
       input{
-        width : 350px;
+        width : 70%;
         height: 40px;
         font-size : 15px;
         border: none;
@@ -86,7 +72,6 @@ const StyledSearch = styled.div`
         background-color: #ffffff;
         border: none;
         
-        
         }
       }
     }
@@ -97,6 +82,7 @@ const StyledList = styled.ul`
   margin: 10px;
   padding: 0px 10px;
   background-color: #f1f2f2;
+  // background: 'http://www.gong-cha.co.kr/view/m/images/common/store_list_arr.png';
 
   li {
     border-bottom: 1px solid #666666;
@@ -123,8 +109,13 @@ const Store = () => {
   const [selectedOption, setSelectedOption] = useState();
   const [addressList, setAddressList] = useState<any[]>([]);
   const [value, setValue] = useState('');
+  const [modal, setModal] = useState<boolean>(false);
   const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const onClickModal = useCallback(() => {
+    setModal(!modal);
+  }, [modal]);
 
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
@@ -153,7 +144,7 @@ const Store = () => {
         <div className='container'>
           <div className='region'>
             <div className='state'>
-              <select onChange={selectChange}>
+              {/* <select onChange={selectChange}>
                 <>
                   {addresses.map(address => (
                     <option key={address} value={address}>
@@ -161,14 +152,7 @@ const Store = () => {
                     </option>
                   ))}
                 </>
-              </select>
-            </div>
-            <div className='city'>
-              <select>
-                <option>구/군</option>??
-                <option>경기도</option>
-                <option>서울</option>
-              </select>
+              </select> */}
             </div>
           </div>
           <div className='search'>
@@ -200,11 +184,12 @@ const Store = () => {
               }
             })
             .map((add, i) => (
-              <li key={add.id} ref={addressList.length - 1 === i ? setLastLi : null}>
+              <li onClick={onClickModal} key={add.id} ref={addressList.length - 1 === i ? setLastLi : null}>
                 <h4>{add.title}</h4>
                 <p>{add.address}</p>
               </li>
             ))}
+          {modal && <Modal onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
     </div>

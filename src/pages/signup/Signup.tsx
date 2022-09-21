@@ -5,6 +5,63 @@ import { GiSmartphone } from "react-icons/gi";
 
 import SignForm from "../../components/Signup/SignForm";
 import AgreeList from "../../components/Signup/AgreeList";
+
+const Signup = () => {
+  const navigate = useNavigate();
+  const [page, setPage] = useState(0);
+
+  if (page === 0) {
+    return (
+      <StyledSignUp>
+        <div className="header">
+          <span className="inColor">약관동의</span>
+          <span>회원정보</span>
+          <Line />
+          <span>가입완료</span>
+        </div>
+        <AgreeList props={ setPage } />
+      </StyledSignUp>
+    );
+  } else if (page === 1) {
+    return (
+      <StyledSignUp>
+        <div className="header">
+          <span className="fullColor">약관동의</span>
+          <span className="inColor">회원정보</span>
+          <span>가입완료</span>
+        </div>
+
+        <PhonePermission>
+          <GiSmartphone />
+          <button>휴대폰 본인 인증</button>
+        </PhonePermission>
+
+        <SignForm />
+        
+        <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
+      </StyledSignUp>
+    );
+  } else if (page === 2) {
+    return (
+      <StyledSignUp>
+        <div className="header">
+          <span className="fullColor">약관동의</span>
+          <span className="fullColor">회원정보</span>
+          <span className="fullColor">가입완료</span>
+        </div>
+        <div className="toLogin">
+          <span>가입이 완료되었습니다!</span>
+          <button onClick={()=>navigate('/login')}>로그인 화면으로 가기</button>
+        </div>  
+      </StyledSignUp>
+    )
+    
+  }
+};
+
+export default Signup;
+
+
 const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
@@ -105,7 +162,6 @@ export const NextBtn = styled.button`
   }
 `;
 
-
 export const CheckList = styled.form`
   display: flex;
   width:90vw;
@@ -126,23 +182,7 @@ export const CheckList = styled.form`
     font-size:13px;
   }
 `;
-const PhonePermission = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 50px 0 10px 0;
-  width: 80vw;
-  height: 50px;
-  background-color: white;
-  border:1px solid grey;
-  border-radius: 40px;
-  button {
-    font-size: 16px;
-    color: black;
-    border: none;
-    background-color: inherit;
-  }
-`;
+
 export const SignUpForm = styled.div`
   .head {
     font-size: 17px;
@@ -191,58 +231,20 @@ export const SignUpForm = styled.div`
   }
 `;
 
-const Signup = () => {
-  const navigate = useNavigate();
-  const [page, setPage] = useState(0);
-  
-
-  if (page === 0) {
-    return (
-      <StyledSignUp>
-        <div className="header">
-          <span className="inColor">약관동의</span>
-          <span>회원정보</span>
-          <Line />
-          <span>가입완료</span>
-        </div>
-        <AgreeList props={ setPage} />
-      </StyledSignUp>
-    );
-  } else if (page === 1) {
-    return (
-      <StyledSignUp>
-        <div className="header">
-          <span className="fullColor">약관동의</span>
-          <span className="inColor">회원정보</span>
-          <span>가입완료</span>
-        </div>
-
-        <PhonePermission>
-          <GiSmartphone />
-          <button>휴대폰 본인 인증</button>
-        </PhonePermission>
-
-        <SignForm />
-        
-        <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
-      </StyledSignUp>
-    );
-  } else if (page === 2) {
-    return (
-      <StyledSignUp>
-        <div className="header">
-          <span className="fullColor">약관동의</span>
-          <span className="fullColor">회원정보</span>
-          <span className="fullColor">가입완료</span>
-        </div>
-        <div className="toLogin">
-          <span>가입이 완료되었습니다!</span>
-          <button onClick={()=>navigate('/login')}>로그인 화면으로 가기</button>
-        </div>  
-      </StyledSignUp>
-    )
-    
+const PhonePermission = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50px 0 10px 0;
+  width: 80vw;
+  height: 50px;
+  background-color: white;
+  border:1px solid grey;
+  border-radius: 40px;
+  button {
+    font-size: 16px;
+    color: black;
+    border: none;
+    background-color: inherit;
   }
-};
-
-export default Signup;
+`;

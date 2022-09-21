@@ -93,11 +93,11 @@ const Login = () => {
       <form>
         <div className="inputBox">
           <BsPerson className="icon" size="24px" />
-          <input type="text" placeholder="이메일"></input>
+          <input type="text" placeholder="이메일" />
         </div>
         <div className="inputBox">
           <FiLock className="icon" size="23px" />
-          <input type="password" placeholder="비밀번호"></input>
+          <input type="password" placeholder="비밀번호" />
         </div>
 
         <button>로그인</button>

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { AgreeBtn } from "../../pages/signup/Signup";
 import { CheckList } from "../../pages/signup/Signup";
 import { NextBtn } from "../../pages/signup/Signup";

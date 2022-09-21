@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import useStore from '../../context/store';
 import useNav from '../../hooks/useNav';
 import { ProductInfo } from '../../interface';
+import CategotySkeleton from './CategorySkeleton';
 
 const StyledNav = styled.nav<{ mode: number }>`
   width: 100%;
@@ -76,17 +77,19 @@ const category = ['season', 'combination', 'original', 'milktea', 'jewelry', 'fr
 const categoryName = ['시즌 메뉴', '베스트조합', '오리지널 티', '밀크티', '쥬얼리', '과일 믹스', '스무디', '커피'];
 
 const Product = () => {
-  const { nickname } = useStore();
   const { ulRef, touchEnd, touchMove, touchStart } = useNav();
   const [mode, setMode] = useState(0);
   const [productList, setProductList] = useState<ProductInfo[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const { data } = await axios.get<ProductInfo[]>(`data/${category[mode]}Data.json`);
       setProductList(data);
+
+      setLoading(false);
     })();
   }, [mode]);
 
@@ -107,9 +110,10 @@ const Product = () => {
         </ul>
       </StyledNav>
       <StyledList>
-        {!!productList.length &&
+        {!loading &&
+          !!productList.length &&
           productList.map(productInfo => (
-            <li key={productInfo.id} onClick={() => navigate('/product/detail/1')}>
+            <li key={productInfo.id} onClick={() => navigate(`/product/detail/${productInfo.id}`)}>
               <div className='imgContainer'>
                 <img src={productInfo.imageURL} alt='음료사진' />
               </div>
@@ -119,6 +123,7 @@ const Product = () => {
               </div>
             </li>
           ))}
+        {loading && <CategotySkeleton />}
       </StyledList>
     </>
   );

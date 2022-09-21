@@ -15,3 +15,5 @@ export interface ProductInfo {
   imageURL: string;
   price: number;
 }
+
+export interface ProductDetailInfo {}

@@ -1,12 +1,13 @@
-import styled from "styled-components";
-import { HiMenuAlt3 } from "react-icons/hi";
-import logo from "../assets/ilcha_logo.png";
-import facebook from "../assets/sns/facebook.png";
-import insta from "../assets/sns/insta.png";
-import kakao from "../assets/sns/kakao.png";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { AiOutlinePlus } from "react-icons/ai";
+import styled from 'styled-components';
+import { HiMenuAlt3 } from 'react-icons/hi';
+import logo from '../assets/ilcha_logo.png';
+import facebook from '../assets/sns/facebook.png';
+import insta from '../assets/sns/insta.png';
+import kakao from '../assets/sns/kakao.png';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AiOutlinePlus } from 'react-icons/ai';
+import theme from '../theme';
 
 const StyledHeader = styled.header`
   position: fixed;
@@ -51,7 +52,7 @@ const StyledNav = styled.nav<{ menu: boolean }>`
   transition: 0.3s;
 
   div.nav-top {
-    background-color: #983b43;
+    background-color: ${theme.red};
     height: 20vw;
     display: flex;
     align-items: center;

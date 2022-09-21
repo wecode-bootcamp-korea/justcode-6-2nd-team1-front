@@ -1,9 +1,6 @@
 import { SignUpForm } from "../../pages/signup/Signup";
-import styled from "styled-components";
 
-
-
-const SignUp = () => {
+const SignForm = () => {
   return (
     <>
       <SignUpForm>
@@ -72,4 +69,4 @@ const SignUp = () => {
   );
 }
 
-export default SignUp;
+export default SignForm;

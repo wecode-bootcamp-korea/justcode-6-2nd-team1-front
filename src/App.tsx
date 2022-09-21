@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Nav from "./components/Nav";
@@ -19,8 +20,25 @@ const App = () => {
     nickname: "",
     token: "",
   });
-  const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
+=======
+import { useEffect, useReducer, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Nav from './components/Nav';
+import GlobalStyle from './GlobalStyle';
+import Brand from './pages/brand/Brand';
+import Cart from './pages/cart/Cart';
+import Login from './pages/login/Login';
+import Main from './pages/Main';
+import NoticePage from './pages/notice/Notice';
+import Order from './pages/order/Order';
+import Product from './pages/product/Product';
+import ProductDetail from './pages/product/ProductDetail';
+import Signup from './pages/signup/Signup';
+import Store from './pages/store/Store';
 
+const App = () => {
+>>>>>>> main
+  const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(setLocationInfo);
   }, []);

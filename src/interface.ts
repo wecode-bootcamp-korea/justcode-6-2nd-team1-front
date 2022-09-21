@@ -8,3 +8,10 @@ export interface User {
   nickname: string;
   token: string;
 }
+
+export interface ProductInfo {
+  id: number;
+  beverageName: string;
+  imageURL: string;
+  price: number;
+}

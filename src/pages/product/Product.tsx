@@ -1,6 +1,10 @@
-import { useRef, useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useStore from '../../context/store';
+import useNav from '../../hooks/useNav';
+import { ProductInfo } from '../../interface';
 
 const StyledNav = styled.nav<{ mode: number }>`
   width: 100%;
@@ -9,12 +13,12 @@ const StyledNav = styled.nav<{ mode: number }>`
 
   ul {
     display: flex;
-    width: 300%;
+    width: 240%;
 
     li {
-      width: fit-content;
+      width: calc(100% / 8);
       text-align: center;
-      padding: 14px 30px;
+      padding: 14px 10px;
       font-size: 4vw;
       position: relative;
       white-space: nowrap;
@@ -37,79 +41,86 @@ const StyledNav = styled.nav<{ mode: number }>`
   }
 `;
 
-// const category = ['season', 'combination', 'original', 'milktea', 'jewelry', 'fruit', 'smoothy', 'coffee'];
-const category = ['시즌 메뉴', '베스트조합', '오리지널 티', '밀크티', '쥬얼리', '과일 믹스', '스무디', '커피'];
+const StyledList = styled.ul`
+  padding: 0 10px;
 
-const Product = () => {
-  const { nickname, login } = useStore();
-  const [mode, setMode] = useState(0);
+  li {
+    display: flex;
+    align-items: center;
 
-  const ulRef = useRef<HTMLUListElement>(null);
-  const startX = useRef(0);
-  const transX = useRef(0);
-  const x = useRef(0);
+    div.imgContainer {
+      height: 100px;
+      border-radius: 50px;
+      overflow: hidden;
 
-  const touchStart: React.TouchEventHandler<HTMLUListElement> = ({
-    changedTouches: {
-      0: { clientX },
-    },
-  }) => {
-    startX.current = clientX;
-
-    if (ulRef.current) {
-      ulRef.current.style.transition = '0s';
-    }
-  };
-
-  const touchMove: React.TouchEventHandler<HTMLUListElement> = ({
-    changedTouches: {
-      0: { clientX },
-    },
-  }) => {
-    transX.current = clientX - startX.current + x.current;
-
-    if (ulRef.current) {
-      const width = ulRef.current.getBoundingClientRect().width;
-
-      ulRef.current.style.transform = `translateX(${(transX.current * 100) / width}%)`;
-    }
-  };
-
-  const touchEnd: React.TouchEventHandler<HTMLUListElement> = () => {
-    x.current = transX.current;
-
-    if (ulRef.current) {
-      const width = ulRef.current.getBoundingClientRect().width;
-
-      if (-transX.current > width - innerWidth) {
-        ulRef.current.style.transition = '0.3s';
-        transX.current = innerWidth - width;
-        ulRef.current.style.transform = `translateX(${(transX.current * 100) / width}%)`;
-        x.current = transX.current;
-      } else if (transX.current > 0) {
-        ulRef.current.style.transition = '0.3s';
-        transX.current = 0;
-        ulRef.current.style.transform = `translateX(${(transX.current * 100) / width}%)`;
-        x.current = transX.current;
+      img {
+        height: 100%;
       }
     }
-  };
+
+    div.container {
+      h3 {
+        margin-bottom: 10px;
+        font-size: 5vw;
+      }
+
+      h4 {
+        font-size: 6vw;
+        color: #b0232f;
+      }
+    }
+  }
+`;
+
+const category = ['season', 'combination', 'original', 'milktea', 'jewelry', 'fruit', 'smoothy', 'coffee'];
+const categoryName = ['시즌 메뉴', '베스트조합', '오리지널 티', '밀크티', '쥬얼리', '과일 믹스', '스무디', '커피'];
+
+const Product = () => {
+  const { nickname } = useStore();
+  const { ulRef, touchEnd, touchMove, touchStart } = useNav();
+  const [mode, setMode] = useState(0);
+  const [productList, setProductList] = useState<ProductInfo[]>([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await axios.get<ProductInfo[]>(`data/${category[mode]}Data.json`);
+      setProductList(data);
+    })();
+  }, [mode]);
 
   return (
-    <StyledNav mode={mode}>
-      <ul //
-        ref={ulRef}
-        onTouchStart={touchStart}
-        onTouchMove={touchMove}
-        onTouchEnd={touchEnd}
-      >
-        {category.map((cate, i) => (
-          <li key={cate} onClick={() => setMode(i)}>
-            {cate}
-          </li>
-        ))}
-      </ul>
-    </StyledNav>
+    <>
+      <StyledNav mode={mode}>
+        <ul //
+          ref={ulRef}
+          onTouchStart={touchStart}
+          onTouchMove={touchMove}
+          onTouchEnd={touchEnd}
+        >
+          {categoryName.map((cate, i) => (
+            <li key={cate} onClick={() => setMode(i)}>
+              {cate}
+            </li>
+          ))}
+        </ul>
+      </StyledNav>
+      <StyledList>
+        {!!productList.length &&
+          productList.map(productInfo => (
+            <li key={productInfo.id} onClick={() => navigate('/product/detail/1')}>
+              <div className='imgContainer'>
+                <img src={productInfo.imageURL} alt='음료사진' />
+              </div>
+              <div className='container'>
+                <h3>{productInfo.beverageName}</h3>
+                <h4>{productInfo.price}</h4>
+              </div>
+            </li>
+          ))}
+      </StyledList>
+    </>
   );
 };
 

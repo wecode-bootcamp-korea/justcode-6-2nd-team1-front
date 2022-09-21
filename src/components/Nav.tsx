@@ -33,7 +33,7 @@ const StyledDiv = styled.div<{ menu: boolean }>`
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, ${({ menu }) => (menu ? 0.7 : 0)});
-  visibility: ${({ menu }) => (menu ? 'visible' : 'hidden')};
+  visibility: ${({ menu }) => (menu ? "visible" : "hidden")};
   transition: 0.3s;
   width: 100%;
   height: 100%;
@@ -48,7 +48,7 @@ const StyledNav = styled.nav<{ menu: boolean }>`
   overflow-y: auto;
   width: 70vw;
   background-color: #ffffff;
-  transform: translateX(${({ menu }) => (menu ? '-100%' : '0%')});
+  transform: translateX(${({ menu }) => (menu ? "-100%" : "0%")});
   transition: 0.3s;
 
   div.nav-top {
@@ -133,7 +133,7 @@ const Nav = () => {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
 
-  const closeHandler: React.MouseEventHandler<HTMLDivElement> = e => {
+  const closeHandler: React.MouseEventHandler<HTMLDivElement> = (e) => {
     if (e.target instanceof HTMLElement) {
       setMenu(false);
     }
@@ -144,41 +144,41 @@ const Nav = () => {
     setMenu(false);
   };
 
-  const toggleHandler: React.MouseEventHandler<HTMLElement> = e => {
-    if (e.target instanceof HTMLElement && !e.target.closest('ul.inner-menu')) {
-      e.currentTarget.classList.toggle('on');
+  const toggleHandler: React.MouseEventHandler<HTMLElement> = (e) => {
+    if (e.target instanceof HTMLElement && !e.target.closest("ul.inner-menu")) {
+      e.currentTarget.classList.toggle("on");
     }
   };
 
   return (
     <>
       <StyledHeader>
-        <img src={logo} alt='ilcha logo' onClick={() => pageTransition('/')} />
-        <HiMenuAlt3 size='10vw' onClick={() => setMenu(!menu)} />
+        <img src={logo} alt="ilcha logo" onClick={() => pageTransition("/")} />
+        <HiMenuAlt3 size="10vw" onClick={() => setMenu(!menu)} />
       </StyledHeader>
       <StyledDiv menu={menu} onClick={closeHandler} />
-      <StyledNav menu={menu} className='menu'>
-        <div className='nav-top'>
-          <h2 onClick={() => pageTransition('/login')}>로그인</h2>
+      <StyledNav menu={menu} className="menu">
+        <div className="nav-top">
+          <h2 onClick={() => pageTransition("/login")}>로그인</h2>
           <ul>
             <li>
-              <img src={facebook} alt='fackbook' />
+              <img src={facebook} alt="fackbook" />
             </li>
             <li>
-              <img src={insta} alt='instagram' />
+              <img src={insta} alt="instagram" />
             </li>
             <li>
-              <img src={kakao} alt='kakao talk' />
+              <img src={kakao} alt="kakao talk" />
             </li>
           </ul>
         </div>
-        <ul className='nav-main'>
+        <ul className="nav-main">
           <li onClick={toggleHandler}>
             <h3>
               Brand <AiOutlinePlus />
             </h3>
-            <ul className='inner-menu'>
-              <li onClick={() => pageTransition('/brand')}>브랜드 소개</li>
+            <ul className="inner-menu">
+              <li onClick={() => pageTransition("/brand")}>브랜드 소개</li>
               <li>공차의 약속</li>
             </ul>
           </li>
@@ -186,21 +186,21 @@ const Nav = () => {
             <h3>
               Menu <AiOutlinePlus />
             </h3>
-            <ul className='inner-menu'>
-              <li onClick={() => pageTransition('/order')}>주문방법</li>
-              <li onClick={() => pageTransition('/product')}>음료</li>
+            <ul className="inner-menu">
+              <li onClick={() => pageTransition("/order")}>주문방법</li>
+              <li onClick={() => pageTransition("/product")}>음료</li>
             </ul>
           </li>
           <li onClick={toggleHandler}>
             <h3>
               Store <AiOutlinePlus />
             </h3>
-            <ul className='inner-menu'>
-              <li onClick={() => pageTransition('/store')}>매장 찾기</li>
+            <ul className="inner-menu">
+              <li onClick={() => pageTransition("/store")}>매장 찾기</li>
               <li>가맹점 개설 문의</li>
             </ul>
           </li>
-          <li onClick={() => pageTransition('/notice')}>
+          <li onClick={() => pageTransition("/notice")}>
             <h3>공지사항</h3>
           </li>
         </ul>

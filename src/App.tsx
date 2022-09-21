@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Footer from './components/Footer';
 import Nav from './components/Nav';
 import useStore from './context/store';
 import GlobalStyle from './GlobalStyle';
@@ -42,6 +43,7 @@ const App = () => {
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
       </Routes>
+      <Footer />
     </>
   );
 };

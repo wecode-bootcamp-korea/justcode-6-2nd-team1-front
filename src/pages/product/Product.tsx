@@ -43,19 +43,26 @@ const StyledNav = styled.nav<{ mode: number }>`
 `;
 
 const StyledList = styled.ul`
-  padding: 0 10px;
+  padding: 10px 10px;
+  margin-bottom: 20px;
 
   li {
     display: flex;
     align-items: center;
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0;
 
     div.imgContainer {
-      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 85px;
+      width: 85px;
       border-radius: 50px;
       overflow: hidden;
 
       img {
-        height: 100%;
+        height: 90%;
       }
     }
 

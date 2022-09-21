@@ -99,7 +99,6 @@ const Main = () => {
             </div>
           </Slider>
           <Search></Search>
-          <Footer></Footer>
         </Container>
       </div>
     </>

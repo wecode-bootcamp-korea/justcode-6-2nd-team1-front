@@ -2,10 +2,9 @@ import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { GiSmartphone } from "react-icons/gi";
-import { BsCheckCircle } from "react-icons/bs";
-import { BsCheckCircleFill } from "react-icons/bs";
-import SignUp from "../../components/Signup/SignUp";
 
+import SignUp from "../../components/Signup/SignUp";
+import AgreeList from "../../components/Signup/AgreeList";
 const StyledSignUp = styled.div`
   font-family: "Noto Sans KR", sans-serif;
   display: flex;
@@ -62,13 +61,18 @@ const Line = styled.div`
   border-right: 1px solid gray;
 `;
 
-const AgreeBtn = styled.div`
+export const AgreeBtn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   width:90%;
   padding-bottom: 30px;
   border-bottom: 1px solid grey;
+  .checked {
+    background-color:#af3030;
+    border:none;
+    color:white;
+  }
   button {
     margin: 50px 0 10px 0;
     width: 95%;
@@ -78,6 +82,7 @@ const AgreeBtn = styled.div`
     border: 1px solid grey;
     border-radius: 40px;
     font-size:16px;
+
   }
   span {
     color: grey;
@@ -86,7 +91,7 @@ const AgreeBtn = styled.div`
   }
 `;
 
-const NextBtn = styled.button`
+export const NextBtn = styled.button`
   position: fixed;
   bottom: 0px;
   width: 100%;
@@ -95,13 +100,13 @@ const NextBtn = styled.button`
   color: white;
   background-color: #af3030;
   border: none;
-  .opacity {
-    opacity: 0.5;
+  &:disabled {
+    opacity:0.6;
   }
 `;
 
 
-const CheckList = styled.form`
+export const CheckList = styled.form`
   display: flex;
   width:90vw;
   flex-direction: column;
@@ -111,13 +116,14 @@ const CheckList = styled.form`
     margin-right:10px;
   }
   span {
-    margin-bottom:10px;
+    margin-top:20px;
     display:flex;
     align-items:center;
+    font-size: 14px;
   }
   .checkIcon {
     margin-right:4px;
-    font-size:17px;
+    font-size:13px;
   }
 `;
 const PhonePermission = styled.div`
@@ -188,27 +194,7 @@ export const SignUpForm = styled.div`
 const Signup = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
-  const [btn, setBtn] = useState(true);
-  const [check, setCheck] = useState<Number[]>([0, 0, 0, 0]);
-  const [count,setCount] = useState(0)
-
-  const onClick: React.MouseEventHandler<HTMLSpanElement> = (e:number) => {
-    let newCheck = check;
-    if (check[e] === 0) check[e] = 1;
-    else check[e] = 0;
-    setCheck(newCheck);
-    setCount(count +1);
-  };
   
-  const allCheck: React.MouseEventHandler<HTMLSpanElement> = () => {
-    if (!btn) setCheck([1, 1, 1, 1]);
-    else setCheck([0, 0, 0, 0]);
-  }
-  useEffect(() => {
-    if (check[0] && check[1]) {
-      btn ? setBtn(false) : setBtn(true);
-    }
-  }, [check]);
 
   if (page === 0) {
     return (
@@ -220,57 +206,8 @@ const Signup = () => {
           <span>가입완료</span>
         </div>
 
-        <AgreeBtn>
-          <button onClick={() => allCheck}>전체동의</button>
-          <span>선택 동의 사항이 포함되어 있습니다.</span>
-          <span>만 14세 이상만 가입 가능합니다.</span>
-        </AgreeBtn>
-        <CheckList>
-          <div>
-            <span onClick={() => onClick(0)}>
-              {check[0] ? (
-                <BsCheckCircleFill className="checkIcon" />
-              ) : (
-                <BsCheckCircle className="checkIcon" />
-              )}
-              공차 멤버십 회원 이용약관 동의 (필수)
-            </span>
-            <span>{count}</span>
-          </div>
-          <div>
-            <span onClick={() => onClick(1)}>
-              {check[1] ? (
-                <BsCheckCircleFill className="checkIcon" />
-              ) : (
-                <BsCheckCircle className="checkIcon" />
-              )}
-              개인정보 수집 및 이용 동의 (필수)
-            </span>
-          </div>
-          <div>
-            <span onClick={() => onClick(2)}>
-              {check[2] ? (
-                <BsCheckCircleFill className="checkIcon" />
-              ) : (
-                <BsCheckCircle className="checkIcon" />
-              )}
-              위치기반 서비스 이용약관 동의 (선택)
-            </span>
-          </div>
-          <div>
-            <span onClick={() => onClick(3)}>
-              {check[3] ? (
-                <BsCheckCircleFill className="checkIcon" />
-              ) : (
-                <BsCheckCircle className="checkIcon" />
-              )}
-              마케팅 수신 동의 (선택)
-            </span>
-          </div>
-        </CheckList>
-        <NextBtn className="opacity" onClick={() => setPage(1)}>
-          다음
-        </NextBtn>
+        <AgreeList props={ setPage} />
+        
       </StyledSignUp>
     );
   } else if (page === 1) {

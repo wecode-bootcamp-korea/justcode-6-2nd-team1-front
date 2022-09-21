@@ -16,6 +16,7 @@ const StyledLogin = styled.div`
     margin-top: 20px;
     display: flex;
     justify-content: center;
+    margin:20px;
     button {
       font-size: 13px;
       padding: 0 12px;
@@ -33,9 +34,9 @@ const StyledLogin = styled.div`
     justify-content: center;
     width:100vw;
     background: #af3030;
-    padding: 70px 0;
+    padding: 50px 0 40px 0;
     img {
-      width: 100%;
+      width: 70%;
     }
   }
 

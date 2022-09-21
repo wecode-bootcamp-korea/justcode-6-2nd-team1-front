@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Nav from './components/Nav';
+import useStore from './context/store';
 import GlobalStyle from './GlobalStyle';
 import Brand from './pages/brand/Brand';
 import Cart from './pages/cart/Cart';
@@ -14,6 +15,8 @@ import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
 const App = () => {
+  const {} = useStore();
+
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(setLocationInfo);

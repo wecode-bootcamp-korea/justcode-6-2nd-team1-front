@@ -1,17 +1,16 @@
-import styled from "styled-components";
-import Slider from "react-slick";
-
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { BsChevronRight } from "react-icons/bs";
-import { BsChevronLeft } from "react-icons/bs";
-import slide_1 from "../assets/main_slide/슬라이드1.jpg";
-import slide_2 from "../assets/main_slide/슬라이드2.jpeg";
-import slide_3 from "../assets/main_slide/슬라이드3.jpg";
-import slide_4 from "../assets/main_slide/슬라이드4.jpeg";
-import slide_5 from "../assets/main_slide/슬라이드5.jpeg";
-import Search from "../components/Search";
-import Footer from "../components/Footer";
+import styled from 'styled-components';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { BsChevronRight } from 'react-icons/bs';
+import { BsChevronLeft } from 'react-icons/bs';
+import slide_1 from '../assets/main_slide/슬라이드1.jpg';
+import slide_2 from '../assets/main_slide/슬라이드2.jpeg';
+import slide_3 from '../assets/main_slide/슬라이드3.jpg';
+import slide_4 from '../assets/main_slide/슬라이드4.jpeg';
+import slide_5 from '../assets/main_slide/슬라이드5.jpeg';
+import Search from '../components/Search';
+import Footer from '../components/Footer';
 
 const Container = styled.div`
   background: white;
@@ -38,28 +37,10 @@ const DivPre = styled.div`
   text-align: left;
   line-height: 50px;
 `;
-// const SlideDots = styled.button`
-//   div.box {
-//     width: 30px;
-//     border: 1px solid gray;
-//   }
-//   &::before {
-//   }
-// `;
 
 const Main = () => {
- 
   const settings = {
     dots: true,
-    // customPaging: function (slide: any, i: string) {
-    //   var thumb = slide.$slides[i].data();
-    //   if (i == "0") {
-    //     i = "일";
-    //   } else if (i == "1") {
-    //     i = "이";
-    //   }
-    //   return '<a class="dot">' + i + "</a>";
-    // },
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -79,18 +60,17 @@ const Main = () => {
     appendDots: (dots: any) => (
       <div
         style={{
-          width: "100%",
-          border: "1px solid gray",
-          position: "absolute",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          width: '100%',
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <div className="box">
+        <div className='box'>
           <ul>
-            <div className="on">
-              <div className="column">{dots}</div>
+            <div className='on'>
+              <div className='column'>{dots}</div>
             </div>
           </ul>
         </div>
@@ -103,19 +83,19 @@ const Main = () => {
         <Container>
           <Slider {...settings}>
             <div>
-              <SlideImage alt="slide_1" src={slide_1} />
+              <SlideImage alt='slide_1' src={slide_1} />
             </div>
             <div>
-              <SlideImage alt="slide_2" src={slide_2} />
+              <SlideImage alt='slide_2' src={slide_2} />
             </div>
             <div>
-              <SlideImage alt="slide_3" src={slide_3} />
+              <SlideImage alt='slide_3' src={slide_3} />
             </div>
             <div>
-              <SlideImage alt="slide_4" src={slide_4} />
+              <SlideImage alt='slide_4' src={slide_4} />
             </div>
             <div>
-              <SlideImage alt="slide_5" src={slide_5} />
+              <SlideImage alt='slide_5' src={slide_5} />
             </div>
           </Slider>
           <Search></Search>

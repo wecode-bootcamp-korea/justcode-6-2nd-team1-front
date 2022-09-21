@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import styled from "styled-components";
-import noticeTop from "../../assets/notice_top.jpg";
-import axios from "axios";
-import addressData from "././addressData.json";
+import React, { useState, useEffect, useRef } from 'react';
+import styled from 'styled-components';
+import noticeTop from '../../assets/notice_top.jpg';
+import axios from 'axios';
+import addressData from '././addressData.json';
 import { BiSearch } from 'react-icons/bi';
 
 const StyledHeader = styled.header`
@@ -131,24 +131,17 @@ const Store = () => {
     setSelectedOption;
   };
 
-  const submitHandler :React.FormEventHandler<HTMLButtonElement> = e => {
-    e. preventDefault();
+  const submitHandler: React.FormEventHandler<HTMLButtonElement> = e => {
+    e.preventDefault();
 
-    if(inputRef.current) {
+    if (inputRef.current) {
       setValue(inputRef.current.value);
-      inputRef.current.value = ''
-      console.log(value)
+      inputRef.current.value = '';
+      console.log(value);
     }
-  }
+  };
 
-  const addresses = [
-    "시,도",
-    "서울특별시",
-    "부산광역시",
-    "대구광역시",
-    "인천광역시",
-    "경기도",
-  ];
+  const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   return (
     <div>
@@ -157,12 +150,12 @@ const Store = () => {
         <p>간편하게 공차의 매장을 검색해보세요.</p>
       </StyledHeader>
       <StyledSearch>
-        <div className="container">
-          <div className="region">
-            <div className="state">
+        <div className='container'>
+          <div className='region'>
+            <div className='state'>
               <select onChange={selectChange}>
                 <>
-                  {addresses.map((address) => (
+                  {addresses.map(address => (
                     <option key={address} value={address}>
                       {address}
                     </option>
@@ -170,48 +163,48 @@ const Store = () => {
                 </>
               </select>
             </div>
-            <div className="city">
+            <div className='city'>
               <select>
-                <option>구/군</option>
+                <option>구/군</option>??
                 <option>경기도</option>
                 <option>서울</option>
               </select>
             </div>
           </div>
-          <div className="search">
+          <div className='search'>
             <form>
               <input
-                type="text"
-                ref = {inputRef}
-                className="input"
-                placeholder="매장명 또는 주소를 입력해 주세요"
-                onChange={(e)=>{setValue(e.target.value)}}
+                type='text'
+                ref={inputRef}
+                className='input'
+                placeholder='매장명 또는 주소를 입력해 주세요'
+                onChange={e => {
+                  setValue(e.target.value);
+                }}
               ></input>
               <button onSubmit={submitHandler}>
                 <BiSearch />
               </button>
-            </form> 
+            </form>
           </div>
         </div>
       </StyledSearch>
       <StyledList>
         <>
-          {addressData.filter((val) => {
-            if(value == " " ) {
-                return val
-              } else if(val.title.toLowerCase().includes(value.toLowerCase())){
-                return val
+          {addressData
+            .filter(val => {
+              if (value == ' ') {
+                return val;
+              } else if (val.title.toLowerCase().includes(value.toLowerCase())) {
+                return val;
               }
-            }
-          ).map((add, i) => (
-            <li
-              key={add.id}
-              ref={addressList.length - 1 === i ? setLastLi : null}
-            >
-              <h4>{add.title}</h4>
-              <p>{add.address}</p>
-            </li>
-          ))}
+            })
+            .map((add, i) => (
+              <li key={add.id} ref={addressList.length - 1 === i ? setLastLi : null}>
+                <h4>{add.title}</h4>
+                <p>{add.address}</p>
+              </li>
+            ))}
         </>
       </StyledList>
     </div>

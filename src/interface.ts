@@ -39,3 +39,20 @@ export interface ProductDetailInfo {
     }[];
   };
 }
+
+export interface ProductOption {
+  isIce: boolean;
+  amount: number;
+  isTakeout: boolean;
+  isJumbo: boolean;
+  sugar: 0 | 30 | 50 | 70 | 100;
+  iceSize: 'regular' | 'less' | 'full';
+  additionalOption: {
+    pul: number;
+    whitePul: number;
+    aloe: number;
+    coconut: number;
+    milkform: number;
+    cheeseform: number;
+  };
+}

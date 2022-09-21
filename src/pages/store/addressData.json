@@ -2,11 +2,17 @@
   {
     "id": 1,
     "title": "하남감일점",
-    "address": "경기 하남시 감일백제로 105, 102호 (감이동, 신성메디타워)"
+    "address": "경기 하남시 감일백제로 105, 102호 (감이동, 신성메디타워)",
+    "background": "http://www.gong-cha.co.kr/view/m/images/common/icon_new.png"
   },
   {
     "id": 2,
     "title": "수원태장점",
     "address": "경기도 수원시 영통구 영통로 107, 103호"
+  },
+  {
+    "id": 3,
+    "title": "수원매교점",
+    "address": "경기도 수원시 팔달구 인계로 20, B119호"
   }
 ]

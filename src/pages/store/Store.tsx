@@ -29,6 +29,7 @@ const StyledHeader = styled.header`
 const StyledSearch = styled.div`
   div.container {
     background-color: #f3f4f7;
+    margin: 10px;
     padding: 10px;
 
 
@@ -93,25 +94,23 @@ const StyledSearch = styled.div`
 `;
 
 const StyledList = styled.ul`
-  margin-top: 10px;
+  margin: 10px;
   padding: 0px 10px;
+  background-color: #f1f2f2;
 
   li {
     border-bottom: 1px solid #666666;
     padding: 20px 0;
 
-    p {
-      color: #666666;
-      font-weight: 300;
+    h4 {
+      color: #222222;
       font-size: 4vw;
     }
 
-    h4 {
+    p {
       font-size: 3vw;
       margin-top: 10px;
-      text-overflow: ellipsis;
       white-space: nowrap;
-      overflow: hidden;
     }
 
     &:last-of-type {
@@ -185,8 +184,8 @@ const Store = () => {
               key={add.id}
               ref={addressList.length - 1 === i ? setLastLi : null}
             >
-              <p>{add.title}</p>
-              <h4>{add.address}</h4>
+              <h4>{add.title}</h4>
+              <p>{add.address}</p>
             </li>
           ))}
         </>

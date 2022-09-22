@@ -85,6 +85,7 @@ const StyledDiv = styled.div<{ opt: ProductOption }>`
   div.downSide {
     border-top: 2px solid #dddddd;
     padding-top: 20px;
+    padding-bottom: 90px;
 
     & > div {
       display: flex;
@@ -104,8 +105,13 @@ const StyledDiv = styled.div<{ opt: ProductOption }>`
         p {
           margin-top: 20px;
 
+          &.desName {
+            font-weight: 500;
+          }
+
           &.desc {
             font-size: 5vw;
+            color: gray;
           }
 
           &.pay {
@@ -122,6 +128,37 @@ const StyledDiv = styled.div<{ opt: ProductOption }>`
               height: 1px;
               width: 6px;
               background-color: black;
+            }
+          }
+        }
+
+        div.nutritionContainer {
+          display: grid;
+          grid-template-columns: 1.2fr 0.9fr;
+          grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+          gap: 0px 0px;
+          grid-template-areas:
+            '. .'
+            '. .'
+            '. .'
+            '. .'
+            '. .'
+            '. .';
+          margin-top: 20px;
+          border-right: 1px solid #dddddd;
+          border-bottom: 1px solid #dddddd;
+
+          p {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-left: 1px solid #dddddd;
+            border-top: 1px solid #dddddd;
+
+            &.name {
+              background-color: #aaaaaa;
             }
           }
         }
@@ -340,6 +377,32 @@ const StyledModal = styled.div<{ addPage: boolean; opt: ProductOption }>`
   }
 `;
 
+const StyledBtnContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  div.cartBtnContainer {
+    background-color: #aaaaaa;
+    padding: 2px 4px;
+
+    button {
+      background-color: white;
+      color: black;
+      border-radius: 4px;
+    }
+  }
+
+  button {
+    width: 100%;
+    border: none;
+    background-color: ${theme.red};
+    padding: 10px;
+    color: white;
+  }
+`;
+
 const ProductDetail = () => {
   const [info, setInfo] = useState<ProductDetailInfo>();
   const [loading, setLoading] = useState(false);
@@ -363,6 +426,27 @@ const ProductDetail = () => {
     },
   });
 
+  const orderHandler = async () => {
+    const transOption = {
+      amount: 2,
+      cold: 1,
+      totalPrice: 10600,
+      takeOut: 1,
+      sugar: 30,
+      ice: 'less',
+      toppings: [
+        {
+          id: 1,
+          amount: 1,
+        },
+        {
+          id: 2,
+          amount: 1,
+        },
+      ],
+    };
+  };
+
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -373,7 +457,7 @@ const ProductDetail = () => {
     })();
   }, []);
 
-  const minusHandler: React.MouseEventHandler<SVGElement> = () => {
+  const minusHandler = () => {
     if (option.amount > 1) {
       setOption({ ...option, amount: option.amount - 1 });
     }
@@ -655,14 +739,35 @@ const ProductDetail = () => {
               <AiFillRightCircle size='8vw' color='#aaaaaa' onClick={() => setAddPage(true)} />
             </div>
             <div className='des'>
-              <p>결제 안내</p>
+              <p className='desName'>결제 안내</p>
               <p className='desc pay'>공차 MyTea 오더 구매 시 멤버십 적립만 가능하며, 제휴 혜택은 적용이 불가합니다.</p>
               <p className='desc pay'>제휴혜택을 받길 원하실 경우 매장을 방문해 주세요.</p>
-              <p>상품설명</p>
+              <p className='desName'>상품설명</p>
               <p className='desc'>{info.detailData.description}</p>
+              <p className='desName'>영양정보</p>
+              <div className='nutritionContainer'>
+                <p className='name'>나트륨(mg)</p>
+                <p>{info.detailData.nutrition_data.sodium}</p>
+                <p className='name'>단백질(g)</p>
+                <p>{info.detailData.nutrition_data.protein}</p>
+                <p className='name'>당류(g)</p>
+                <p>{info.detailData.nutrition_data.sugar}</p>
+                <p className='name'>열량(kcal)</p>
+                <p>{info.detailData.nutrition_data.kcal}</p>
+                <p className='name'>카페인(mg)</p>
+                <p>{info.detailData.nutrition_data.caffein}</p>
+                <p className='name'>포화지방(g)</p>
+                <p>{info.detailData.nutrition_data.fat}</p>
+              </div>
             </div>
           </div>
         </StyledDiv>
+        <StyledBtnContainer>
+          <div className='cartBtnContainer'>
+            <button>장바구니</button>
+          </div>
+          <button onClick={orderHandler}>바로 주문</button>
+        </StyledBtnContainer>
       </>
     );
   }

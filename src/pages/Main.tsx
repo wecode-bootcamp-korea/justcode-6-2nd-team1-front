@@ -101,6 +101,7 @@ const Main = () => {
           <Search></Search>
         </Container>
       </div>
+      <Footer />
     </>
   );
 };

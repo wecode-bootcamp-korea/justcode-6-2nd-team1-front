@@ -15,8 +15,6 @@ import ProductDetail from './pages/product/ProductDetail';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
-
-
 const App = () => {
   const {} = useStore();
 
@@ -38,8 +36,8 @@ const App = () => {
         <Route path='/notice' element={<NoticePage />} />
         <Route path='/news' element={<NoticePage />} />
         <Route path='/product' element={<Product />} />
-        <Route path='/product/detail' element={<ProductDetail />} />
-        <Route path='/product/detail/:id' element={<ProductDetail />} />
+        <Route path='/product/detail/*' element={<ProductDetail />} />
+        <Route path='/product/detail/:id/*' element={<ProductDetail />} />
 
         <Route path='/cart' element={<Cart />} />
         <Route path='/signup' element={<Signup />} />

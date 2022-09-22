@@ -2,11 +2,14 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
 import styled from 'styled-components';
-import { ProductDetailInfo, ProductOption } from '../../interface';
+import { OrderReq, OrderRes, ProductDetailInfo, ProductOption } from '../../interface';
 import theme from '../../theme';
 import Amount from './Amount';
 import { GrClose } from 'react-icons/gr';
 import ErrorModal from './ErrorModal';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import Pay from './pay/Pay';
+import useStore from '../../context/store';
 
 const sugarRatio = {
   0: 1,
@@ -400,15 +403,22 @@ const StyledBtnContainer = styled.div`
     background-color: ${theme.red};
     padding: 10px;
     color: white;
+
+    &:disabled {
+      background-color: #aaaaaa;
+    }
   }
 `;
 
 const ProductDetail = () => {
+  const { id } = useParams();
   const [info, setInfo] = useState<ProductDetailInfo>();
   const [loading, setLoading] = useState(false);
   const [addPage, setAddPage] = useState(false);
   const [totalOption, setTotalOption] = useState(0);
   const [errorModal, setErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
   const [option, setOption] = useState<ProductOption>({
     isIce: true,
     amount: 1,
@@ -425,35 +435,116 @@ const ProductDetail = () => {
       whitePearl: 0,
     },
   });
+  const [orderRes, serOrderRes] = useState<OrderRes>();
+  const [disabled, setDisabled] = useState(false);
+  const { isLogin, token } = useStore();
 
-  const orderHandler = async () => {
-    const transOption = {
-      amount: 2,
-      cold: 1,
-      totalPrice: 10600,
-      takeOut: 1,
-      sugar: 30,
-      ice: 'less',
-      toppings: [
-        {
-          id: 1,
-          amount: 1,
-        },
-        {
-          id: 2,
-          amount: 1,
-        },
-      ],
-    };
+  const payHandler = async () => {
+    if (info) {
+      if (isLogin) {
+        setDisabled(true);
+        try {
+          const req: OrderReq = {
+            amount: option.amount,
+            cold: option.isIce ? 1 : 0,
+            ice: option.iceSize,
+            sugar: option.sugar,
+            takeOut: option.isTakeout ? 1 : 0,
+            toppings: [
+              {
+                id: 3,
+                amount: option.additionalOption.aloe,
+              },
+              {
+                id: 6,
+                amount: option.additionalOption.cheeseform,
+              },
+              {
+                id: 4,
+                amount: option.additionalOption.coconut,
+              },
+              {
+                id: 5,
+                amount: option.additionalOption.milkform,
+              },
+              {
+                id: 1,
+                amount: option.additionalOption.pearl,
+              },
+              {
+                id: 2,
+                amount: option.additionalOption.whitePearl,
+              },
+            ],
+            totalPrice: Number(info.detailData.price) + 500 * totalOption,
+          };
+          const { data } = await axios.post<OrderRes>(`http://localhost:8000/beverages/order/${id}`, req, {
+            headers: {
+              Authorization: token,
+            },
+          });
+          serOrderRes(data);
+          navigate('./pay');
+          setDisabled(false);
+        } catch (error) {
+          console.log(error);
+          // 나중에 지워야함
+          serOrderRes({
+            orderData: {
+              orderId: 17,
+              userName: '이름',
+              phone_number: '010-1234-5678',
+              shopName: '수원',
+              address: '3545687',
+              take_out: 1,
+              point: 500,
+              beverage_name: '조선향米 누룽지 밀크티',
+              beverage_image: 'https://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg',
+              price: '5300',
+              amount: 2,
+              cold: 1,
+              sugar: 30,
+              ice: 'less',
+              toppingData: [
+                {
+                  amount: 1,
+                  topping_id: 1,
+                },
+                {
+                  amount: 1,
+                  topping_id: 2,
+                },
+              ],
+              total_price: '10600',
+            },
+          });
+          navigate('./pay');
+          setDisabled(false);
+        }
+      } else {
+        setErrorModal(true);
+        setErrorMessage('로그인을 먼저 해주세요.');
+      }
+    }
   };
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data } = await axios.get<ProductDetailInfo>('/data/detail1.json');
-      setInfo(data);
 
-      setLoading(false);
+      try {
+        // http://localhost:8000/beverages/detail/${id}
+        const { data } = await axios.get<ProductDetailInfo>(`/data/detail${id}.json`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        setInfo(data);
+        setLoading(false);
+      } catch (error) {
+        setErrorMessage('로그인을 먼저 해주세요.');
+        setErrorModal(true);
+      }
     })();
   }, []);
 
@@ -474,6 +565,7 @@ const ProductDetail = () => {
       setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, pearl: prev.additionalOption.pearl + 1 } }));
     } else {
       setErrorModal(true);
+      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
     }
   };
 
@@ -488,6 +580,7 @@ const ProductDetail = () => {
       setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, whitePearl: prev.additionalOption.whitePearl + 1 } }));
     } else {
       setErrorModal(true);
+      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
     }
   };
 
@@ -502,6 +595,7 @@ const ProductDetail = () => {
       setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, aloe: prev.additionalOption.aloe + 1 } }));
     } else {
       setErrorModal(true);
+      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
     }
   };
 
@@ -516,6 +610,7 @@ const ProductDetail = () => {
       setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, coconut: prev.additionalOption.coconut + 1 } }));
     } else {
       setErrorModal(true);
+      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
     }
   };
 
@@ -530,6 +625,7 @@ const ProductDetail = () => {
       setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, milkform: prev.additionalOption.milkform + 1 } }));
     } else {
       setErrorModal(true);
+      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
     }
   };
 
@@ -544,13 +640,14 @@ const ProductDetail = () => {
       setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, cheeseform: prev.additionalOption.cheeseform + 1 } }));
     } else {
       setErrorModal(true);
+      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
     }
   };
 
   useEffect(() => {
     let total = 0;
 
-    for (const [key, number] of Object.entries(option.additionalOption)) {
+    for (const number of Object.values(option.additionalOption)) {
       total += number;
     }
 
@@ -558,217 +655,227 @@ const ProductDetail = () => {
   }, [option]);
 
   if (loading || !info) {
-    return <>로딩중</>;
+    return <>{errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} errorMessage={errorMessage} />}상풍정보로딩중</>;
   } else {
     return (
-      <>
-        {errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} />}
-        <StyledModal addPage={addPage} opt={option}>
-          <div className='container'>
-            <AiOutlineLeft size='10vw' onClick={() => setAddPage(false)} />
-            <div className='imgContainer'>
-              <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
-              <h4>{info.detailData.beverageName}</h4>
-              <p>{info.detailData.price}</p>
-            </div>
-            <div className='optionContainer'>
-              <h3>토핑(Toppings)</h3>
-              <Amount //
-                name='펄'
-                price='500원'
-                amount={option.additionalOption.pearl}
-                minusHandler={pearlMinusHandler}
-                plusHandler={pearlPlusHandler}
-              />
-              <Amount //
-                name='화이트펄'
-                price='500원'
-                amount={option.additionalOption.whitePearl}
-                minusHandler={whitePearlMinusHandler}
-                plusHandler={whitePearlPlusHandler}
-              />
-              <Amount //
-                name='알로에'
-                price='500원'
-                amount={option.additionalOption.aloe}
-                minusHandler={aloeMinusHandler}
-                plusHandler={aloePlusHandler}
-              />
-              <Amount //
-                name='코코넛'
-                price='500원'
-                amount={option.additionalOption.coconut}
-                minusHandler={coconutMinusHandler}
-                plusHandler={coconutPlusHandler}
-              />
-              <Amount //
-                name='밀크폼'
-                price='500원'
-                amount={option.additionalOption.milkform}
-                minusHandler={milkformMinusHandler}
-                plusHandler={milkformPlusHandler}
-              />
-              <Amount //
-                name='치즈폼'
-                price='500원'
-                amount={option.additionalOption.cheeseform}
-                minusHandler={cheeseformMinusHandler}
-                plusHandler={cheeseformPlusHandler}
-              />
-            </div>
-            <div className='caution'>
-              <p>- 토핑은 최대 2종류, 2개까지 선택 가능합니다.</p>
-              <p>- 쥬얼리토핑 추가는 매장에서 가능합니다.</p>
-            </div>
-            <div className='btnContainer'>
-              <button
-                onClick={() =>
-                  setOption({
-                    ...option,
-                    additionalOption: {
-                      aloe: 0,
-                      cheeseform: 0,
-                      coconut: 0,
-                      milkform: 0,
-                      pearl: 0,
-                      whitePearl: 0,
-                    },
-                  })
-                }
-              >
-                옵션 초기화
-              </button>
-              <button onClick={() => setAddPage(false)}>확인</button>
-            </div>
-          </div>
-        </StyledModal>
-        <StyledDiv opt={option}>
-          <div className='upSide'>
-            <div className='imgContainer'>
-              <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
-            </div>
+      <Routes>
+        <Route
+          path=''
+          element={
+            <>
+              {errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} errorMessage={errorMessage} />}
+              <StyledModal addPage={addPage} opt={option}>
+                <div className='container'>
+                  <AiOutlineLeft size='10vw' onClick={() => setAddPage(false)} />
+                  <div className='imgContainer'>
+                    <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
+                    <h4>{info.detailData.beverageName}</h4>
+                    <p>{info.detailData.price}</p>
+                  </div>
+                  <div className='optionContainer'>
+                    <h3>토핑(Toppings)</h3>
+                    <Amount //
+                      name='펄'
+                      price='500원'
+                      amount={option.additionalOption.pearl}
+                      minusHandler={pearlMinusHandler}
+                      plusHandler={pearlPlusHandler}
+                    />
+                    <Amount //
+                      name='화이트펄'
+                      price='500원'
+                      amount={option.additionalOption.whitePearl}
+                      minusHandler={whitePearlMinusHandler}
+                      plusHandler={whitePearlPlusHandler}
+                    />
+                    <Amount //
+                      name='알로에'
+                      price='500원'
+                      amount={option.additionalOption.aloe}
+                      minusHandler={aloeMinusHandler}
+                      plusHandler={aloePlusHandler}
+                    />
+                    <Amount //
+                      name='코코넛'
+                      price='500원'
+                      amount={option.additionalOption.coconut}
+                      minusHandler={coconutMinusHandler}
+                      plusHandler={coconutPlusHandler}
+                    />
+                    <Amount //
+                      name='밀크폼'
+                      price='500원'
+                      amount={option.additionalOption.milkform}
+                      minusHandler={milkformMinusHandler}
+                      plusHandler={milkformPlusHandler}
+                    />
+                    <Amount //
+                      name='치즈폼'
+                      price='500원'
+                      amount={option.additionalOption.cheeseform}
+                      minusHandler={cheeseformMinusHandler}
+                      plusHandler={cheeseformPlusHandler}
+                    />
+                  </div>
+                  <div className='caution'>
+                    <p>- 토핑은 최대 2종류, 2개까지 선택 가능합니다.</p>
+                    <p>- 쥬얼리토핑 추가는 매장에서 가능합니다.</p>
+                  </div>
+                  <div className='btnContainer'>
+                    <button
+                      onClick={() =>
+                        setOption({
+                          ...option,
+                          additionalOption: {
+                            aloe: 0,
+                            cheeseform: 0,
+                            coconut: 0,
+                            milkform: 0,
+                            pearl: 0,
+                            whitePearl: 0,
+                          },
+                        })
+                      }
+                    >
+                      옵션 초기화
+                    </button>
+                    <button onClick={() => setAddPage(false)}>확인</button>
+                  </div>
+                </div>
+              </StyledModal>
+              <StyledDiv opt={option}>
+                <div className='upSide'>
+                  <div className='imgContainer'>
+                    <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
+                  </div>
 
-            <div className='container'>
-              <h3>{info.detailData.beverageName}</h3>
-              <p>{info.detailData.price}</p>
-              <div className='iceContainer'>
-                <button className='ice' onClick={() => setOption({ ...option, isIce: true })}>
-                  ICED
-                </button>
-                <button className='hot' onClick={() => setOption({ ...option, isIce: false })}>
-                  HOT
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className='downSide'>
-            <div className='amount'>
-              <p>수량</p>
-              <div className='amountContainer'>
-                <AiFillMinusCircle
-                  size='8vw'
-                  color='#dddddd' //
-                  onClick={minusHandler}
-                />
-                <p className='amount'>{option.amount}</p>
-                <AiFillPlusCircle
-                  size='8vw'
-                  color='#dddddd' //
-                  onClick={() => setOption({ ...option, amount: option.amount + 1 })}
-                />
-              </div>
-            </div>
-            <div className='takeout'>
-              <p>테이크아웃</p>
-              <div className='takeoutContainer'>
-                <button onClick={() => setOption({ ...option, isTakeout: false })}>매장</button>
-                <button onClick={() => setOption({ ...option, isTakeout: true })}>포장</button>
-              </div>
-            </div>
-            <div className='size'>
-              <p>사이즈</p>
-              <div className='sizeContainer'>
-                <button onClick={() => setOption({ ...option, isJumbo: false })}>Large</button>
-                <button onClick={() => setOption({ ...option, isJumbo: true })}>Jumbo</button>
-              </div>
-            </div>
-            <div className='sugar'>
-              <p>당도</p>
-              <div className='sugarContainer'>
-                <div className='ratioContainer'>
-                  <p>0%</p>
-                  <p>30%</p>
-                  <p>50%</p>
-                  <p>70%</p>
-                  <p>100%</p>
+                  <div className='container'>
+                    <h3>{info.detailData.beverageName}</h3>
+                    <p>{info.detailData.price}</p>
+                    <div className='iceContainer'>
+                      <button className='ice' onClick={() => setOption({ ...option, isIce: true })}>
+                        ICED
+                      </button>
+                      <button className='hot' onClick={() => setOption({ ...option, isIce: false })}>
+                        HOT
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className='bar'>
-                  <button onClick={() => setOption({ ...option, sugar: 0 })} />
-                  <button onClick={() => setOption({ ...option, sugar: 30 })} />
-                  <button onClick={() => setOption({ ...option, sugar: 50 })} />
-                  <button onClick={() => setOption({ ...option, sugar: 70 })} />
-                  <button onClick={() => setOption({ ...option, sugar: 100 })} />
+                <div className='downSide'>
+                  <div className='amount'>
+                    <p>수량</p>
+                    <div className='amountContainer'>
+                      <AiFillMinusCircle
+                        size='8vw'
+                        color='#dddddd' //
+                        onClick={minusHandler}
+                      />
+                      <p className='amount'>{option.amount}</p>
+                      <AiFillPlusCircle
+                        size='8vw'
+                        color='#dddddd' //
+                        onClick={() => setOption({ ...option, amount: option.amount + 1 })}
+                      />
+                    </div>
+                  </div>
+                  <div className='takeout'>
+                    <p>테이크아웃</p>
+                    <div className='takeoutContainer'>
+                      <button onClick={() => setOption({ ...option, isTakeout: false })}>매장</button>
+                      <button onClick={() => setOption({ ...option, isTakeout: true })}>포장</button>
+                    </div>
+                  </div>
+                  <div className='size'>
+                    <p>사이즈</p>
+                    <div className='sizeContainer'>
+                      <button onClick={() => setOption({ ...option, isJumbo: false })}>Large</button>
+                      <button onClick={() => setOption({ ...option, isJumbo: true })}>Jumbo</button>
+                    </div>
+                  </div>
+                  <div className='sugar'>
+                    <p>당도</p>
+                    <div className='sugarContainer'>
+                      <div className='ratioContainer'>
+                        <p>0%</p>
+                        <p>30%</p>
+                        <p>50%</p>
+                        <p>70%</p>
+                        <p>100%</p>
+                      </div>
+                      <div className='bar'>
+                        <button onClick={() => setOption({ ...option, sugar: 0 })} />
+                        <button onClick={() => setOption({ ...option, sugar: 30 })} />
+                        <button onClick={() => setOption({ ...option, sugar: 50 })} />
+                        <button onClick={() => setOption({ ...option, sugar: 70 })} />
+                        <button onClick={() => setOption({ ...option, sugar: 100 })} />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='ice'>
+                    <p>얼음</p>
+                    <div className='iceContainer'>
+                      <button //
+                        className={option.iceSize === 'less' ? 'select' : ''}
+                        onClick={() => setOption({ ...option, iceSize: 'less' })}
+                      >
+                        Less Ice
+                      </button>
+                      <button //
+                        className={option.iceSize === 'regular' ? 'select' : ''}
+                        onClick={() => setOption({ ...option, iceSize: 'regular' })}
+                      >
+                        Regular Ice
+                      </button>
+                      <button //
+                        className={option.iceSize === 'full' ? 'select' : ''}
+                        onClick={() => setOption({ ...option, iceSize: 'full' })}
+                      >
+                        Full Ice
+                      </button>
+                    </div>
+                  </div>
+                  <div className='add'>
+                    <p>추가옵션</p>
+                    <AiFillRightCircle size='8vw' color='#aaaaaa' onClick={() => setAddPage(true)} />
+                  </div>
+                  <div className='des'>
+                    <p className='desName'>결제 안내</p>
+                    <p className='desc pay'>공차 MyTea 오더 구매 시 멤버십 적립만 가능하며, 제휴 혜택은 적용이 불가합니다.</p>
+                    <p className='desc pay'>제휴혜택을 받길 원하실 경우 매장을 방문해 주세요.</p>
+                    <p className='desName'>상품설명</p>
+                    <p className='desc'>{info.detailData.description}</p>
+                    <p className='desName'>영양정보</p>
+                    <div className='nutritionContainer'>
+                      <p className='name'>나트륨(mg)</p>
+                      <p>{info.detailData.nutrition_data.sodium}</p>
+                      <p className='name'>단백질(g)</p>
+                      <p>{info.detailData.nutrition_data.protein}</p>
+                      <p className='name'>당류(g)</p>
+                      <p>{info.detailData.nutrition_data.sugar}</p>
+                      <p className='name'>열량(kcal)</p>
+                      <p>{info.detailData.nutrition_data.kcal}</p>
+                      <p className='name'>카페인(mg)</p>
+                      <p>{info.detailData.nutrition_data.caffein}</p>
+                      <p className='name'>포화지방(g)</p>
+                      <p>{info.detailData.nutrition_data.fat}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className='ice'>
-              <p>얼음</p>
-              <div className='iceContainer'>
-                <button //
-                  className={option.iceSize === 'less' ? 'select' : ''}
-                  onClick={() => setOption({ ...option, iceSize: 'less' })}
-                >
-                  Less Ice
+              </StyledDiv>
+              <StyledBtnContainer>
+                <div className='cartBtnContainer'>
+                  <button>장바구니</button>
+                </div>
+                <button onClick={payHandler} disabled={disabled}>
+                  바로 주문
                 </button>
-                <button //
-                  className={option.iceSize === 'regular' ? 'select' : ''}
-                  onClick={() => setOption({ ...option, iceSize: 'regular' })}
-                >
-                  Regular Ice
-                </button>
-                <button //
-                  className={option.iceSize === 'full' ? 'select' : ''}
-                  onClick={() => setOption({ ...option, iceSize: 'full' })}
-                >
-                  Full Ice
-                </button>
-              </div>
-            </div>
-            <div className='add'>
-              <p>추가옵션</p>
-              <AiFillRightCircle size='8vw' color='#aaaaaa' onClick={() => setAddPage(true)} />
-            </div>
-            <div className='des'>
-              <p className='desName'>결제 안내</p>
-              <p className='desc pay'>공차 MyTea 오더 구매 시 멤버십 적립만 가능하며, 제휴 혜택은 적용이 불가합니다.</p>
-              <p className='desc pay'>제휴혜택을 받길 원하실 경우 매장을 방문해 주세요.</p>
-              <p className='desName'>상품설명</p>
-              <p className='desc'>{info.detailData.description}</p>
-              <p className='desName'>영양정보</p>
-              <div className='nutritionContainer'>
-                <p className='name'>나트륨(mg)</p>
-                <p>{info.detailData.nutrition_data.sodium}</p>
-                <p className='name'>단백질(g)</p>
-                <p>{info.detailData.nutrition_data.protein}</p>
-                <p className='name'>당류(g)</p>
-                <p>{info.detailData.nutrition_data.sugar}</p>
-                <p className='name'>열량(kcal)</p>
-                <p>{info.detailData.nutrition_data.kcal}</p>
-                <p className='name'>카페인(mg)</p>
-                <p>{info.detailData.nutrition_data.caffein}</p>
-                <p className='name'>포화지방(g)</p>
-                <p>{info.detailData.nutrition_data.fat}</p>
-              </div>
-            </div>
-          </div>
-        </StyledDiv>
-        <StyledBtnContainer>
-          <div className='cartBtnContainer'>
-            <button>장바구니</button>
-          </div>
-          <button onClick={orderHandler}>바로 주문</button>
-        </StyledBtnContainer>
-      </>
+              </StyledBtnContainer>
+            </>
+          }
+        />
+        <Route path='/pay' element={<Pay orderRes={orderRes} />} />
+      </Routes>
     );
   }
 };

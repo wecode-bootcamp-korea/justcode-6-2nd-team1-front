@@ -57,6 +57,43 @@ export interface ProductOption {
   };
 }
 
+export interface OrderReq {
+  amount: number;
+  cold: number;
+  totalPrice: number;
+  takeOut: number;
+  sugar: number;
+  ice: 'regular' | 'less' | 'full';
+  toppings: {
+    id: number;
+    amount: number;
+  }[];
+}
+
+export interface OrderRes {
+  orderData: {
+    orderId: number;
+    userName: string;
+    phone_number: string;
+    shopName: string;
+    address: string;
+    take_out: number;
+    point: number;
+    beverage_name: string;
+    beverage_image: string;
+    price: string;
+    amount: number;
+    cold: number;
+    sugar: number;
+    ice: string;
+    toppingData: {
+      amount: number;
+      topping_id: number;
+    }[];
+    total_price: string;
+  };
+}
+
 export interface AgreeListProps {
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }

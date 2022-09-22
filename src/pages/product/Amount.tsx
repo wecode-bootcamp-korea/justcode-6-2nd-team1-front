@@ -1,6 +1,5 @@
 import { AiFillLeftCircle, AiFillRightCircle } from 'react-icons/ai';
 import styled from 'styled-components';
-import { ProductOption } from '../../interface';
 
 const StyledAmount = styled.div`
   display: flex;

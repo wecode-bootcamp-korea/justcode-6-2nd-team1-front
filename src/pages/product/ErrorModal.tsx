@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { GrClose } from 'react-icons/gr';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import useStore from '../../context/store';
 
 const StyledError = styled.div`
   position: fixed;
@@ -49,14 +51,22 @@ const StyledError = styled.div`
 interface ErrorModalProps {
   setErrorModal: React.Dispatch<React.SetStateAction<boolean>>;
   errorModal: boolean;
+  errorMessage: string;
 }
 
-const ErrorModal = ({ errorModal, setErrorModal }: ErrorModalProps) => {
+const ErrorModal = ({ errorModal, setErrorModal, errorMessage }: ErrorModalProps) => {
+  const { isLogin } = useStore();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const closeHandler = ({ target }: MouseEvent) => {
       if (errorModal) {
         if (target instanceof Element && (!target.closest('div.error') || target.closest('svg.closeIcon') || target.closest('button.close')) && target.closest('div.shadow')) {
           setErrorModal(false);
+
+          if (!isLogin) {
+            navigate('/login');
+          }
         }
       }
     };
@@ -72,7 +82,7 @@ const ErrorModal = ({ errorModal, setErrorModal }: ErrorModalProps) => {
         <p>
           알림 <GrClose className='closeIcon' />
         </p>
-        <h4>토핑은 최대 2개까지 선택 가능합니다.</h4>
+        <h4>{errorMessage}</h4>
         <button className='close'>확인</button>
       </div>
     </StyledError>

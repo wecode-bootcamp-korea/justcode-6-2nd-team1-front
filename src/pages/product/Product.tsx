@@ -93,6 +93,7 @@ const Product = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
+      // localhost:8000/beverages/category/:id
       const { data } = await axios.get<ProductInfo[]>(`data/${category[mode]}Data.json`);
       setProductList(data);
 

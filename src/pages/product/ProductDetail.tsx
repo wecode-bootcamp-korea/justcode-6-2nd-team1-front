@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle } from 'react-icons/ai';
+import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
 import styled from 'styled-components';
 import { ProductDetailInfo, ProductOption } from '../../interface';
 import theme from '../../theme';
+import Amount from './Amount';
+import { GrClose } from 'react-icons/gr';
+import ErrorModal from './ErrorModal';
 
 const sugarRatio = {
   0: 1,
@@ -217,22 +220,58 @@ const StyledDiv = styled.div<{ opt: ProductOption }>`
   }
 `;
 
-const StyledModal = styled.div<{ addPage: boolean }>`
+const StyledModal = styled.div<{ addPage: boolean; opt: ProductOption }>`
   position: fixed;
   z-index: 4;
-  top: 0;
+  top: 20vw;
+  padding: 10px 10px 0 10px;
   left: 100%;
   width: 100%;
-  height: 100%;
-  background-color: red;
+  height: calc(100vh - 20vw);
+  overflow-y: scroll;
+  background-color: white;
   transform: translateX(${({ addPage }) => (addPage ? '-100%' : '0')});
   transition: 0.3s;
+  filter: drop-shadow(0px 0px 10px ${({ addPage }) => (addPage ? '#00000030' : '#00000000')});
+
+  div.imgContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-bottom: 2px solid lightgray;
+    padding-bottom: 30px;
+
+    img {
+      height: 120px;
+    }
+
+    h4 {
+      margin-top: 20px;
+      font-size: 5vw;
+    }
+
+    p {
+      margin-top: 10px;
+      color: ${theme.red};
+      font-size: 6vw;
+    }
+  }
+
+  div.optionContainer {
+    padding-top: 30px;
+
+    h3 {
+      margin-bottom: 20px;
+    }
+  }
 `;
 
 const ProductDetail = () => {
   const [info, setInfo] = useState<ProductDetailInfo>();
   const [loading, setLoading] = useState(false);
   const [addPage, setAddPage] = useState(false);
+  const [totalOption, setTotalOption] = useState(0);
+  const [errorModal, setErrorModal] = useState(false);
   const [option, setOption] = useState<ProductOption>({
     isIce: true,
     amount: 1,
@@ -245,8 +284,8 @@ const ProductDetail = () => {
       cheeseform: 0,
       coconut: 0,
       milkform: 0,
-      pul: 0,
-      whitePul: 0,
+      pearl: 0,
+      whitePearl: 0,
     },
   });
 
@@ -266,12 +305,159 @@ const ProductDetail = () => {
     }
   };
 
+  const pearlMinusHandler = () => {
+    if (option.additionalOption.pearl > 0) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, pearl: prev.additionalOption.pearl - 1 } }));
+    }
+  };
+
+  const pearlPlusHandler = () => {
+    if (totalOption < 2) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, pearl: prev.additionalOption.pearl + 1 } }));
+    } else {
+      setErrorModal(true);
+    }
+  };
+
+  const whitePearlMinusHandler = () => {
+    if (option.additionalOption.whitePearl > 0) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, whitePearl: prev.additionalOption.whitePearl - 1 } }));
+    }
+  };
+
+  const whitePearlPlusHandler = () => {
+    if (totalOption < 2) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, whitePearl: prev.additionalOption.whitePearl + 1 } }));
+    } else {
+      setErrorModal(true);
+    }
+  };
+
+  const aloeMinusHandler = () => {
+    if (option.additionalOption.aloe > 0) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, aloe: prev.additionalOption.aloe - 1 } }));
+    }
+  };
+
+  const aloePlusHandler = () => {
+    if (totalOption < 2) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, aloe: prev.additionalOption.aloe + 1 } }));
+    } else {
+      setErrorModal(true);
+    }
+  };
+
+  const coconutMinusHandler = () => {
+    if (option.additionalOption.coconut > 0) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, coconut: prev.additionalOption.coconut - 1 } }));
+    }
+  };
+
+  const coconutPlusHandler = () => {
+    if (totalOption < 2) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, coconut: prev.additionalOption.coconut + 1 } }));
+    } else {
+      setErrorModal(true);
+    }
+  };
+
+  const milkformMinusHandler = () => {
+    if (option.additionalOption.milkform > 0) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, milkform: prev.additionalOption.milkform - 1 } }));
+    }
+  };
+
+  const milkformPlusHandler = () => {
+    if (totalOption < 2) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, milkform: prev.additionalOption.milkform + 1 } }));
+    } else {
+      setErrorModal(true);
+    }
+  };
+
+  const cheeseformMinusHandler = () => {
+    if (option.additionalOption.cheeseform > 0) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, cheeseform: prev.additionalOption.cheeseform - 1 } }));
+    }
+  };
+
+  const cheeseformPlusHandler = () => {
+    if (totalOption < 2) {
+      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, cheeseform: prev.additionalOption.cheeseform + 1 } }));
+    } else {
+      setErrorModal(true);
+    }
+  };
+
+  useEffect(() => {
+    let total = 0;
+
+    for (const [key, number] of Object.entries(option.additionalOption)) {
+      total += number;
+    }
+
+    setTotalOption(total);
+  }, [option]);
+
   if (loading || !info) {
     return <>로딩중</>;
   } else {
     return (
       <>
-        <StyledModal addPage={addPage}></StyledModal>
+        {errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} />}
+        <StyledModal addPage={addPage} opt={option}>
+          <AiOutlineLeft size='10vw' onClick={() => setAddPage(false)} />
+          <div className='imgContainer'>
+            <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
+            <h4>{info.detailData.beverageName}</h4>
+            <p>{info.detailData.price}</p>
+          </div>
+          <div className='optionContainer'>
+            <h3>토핑(Toppings)</h3>
+            <Amount //
+              name='펄'
+              price='500원'
+              amount={option.additionalOption.pearl}
+              minusHandler={pearlMinusHandler}
+              plusHandler={pearlPlusHandler}
+            />
+            <Amount //
+              name='화이트펄'
+              price='500원'
+              amount={option.additionalOption.whitePearl}
+              minusHandler={whitePearlMinusHandler}
+              plusHandler={whitePearlPlusHandler}
+            />
+            <Amount //
+              name='알로에'
+              price='500원'
+              amount={option.additionalOption.aloe}
+              minusHandler={aloeMinusHandler}
+              plusHandler={aloePlusHandler}
+            />
+            <Amount //
+              name='코코넛'
+              price='500원'
+              amount={option.additionalOption.coconut}
+              minusHandler={coconutMinusHandler}
+              plusHandler={coconutPlusHandler}
+            />
+            <Amount //
+              name='밀크폼'
+              price='500원'
+              amount={option.additionalOption.milkform}
+              minusHandler={milkformMinusHandler}
+              plusHandler={milkformPlusHandler}
+            />
+            <Amount //
+              name='치즈폼'
+              price='500원'
+              amount={option.additionalOption.cheeseform}
+              minusHandler={cheeseformMinusHandler}
+              plusHandler={cheeseformPlusHandler}
+            />
+          </div>
+        </StyledModal>
         <StyledDiv opt={option}>
           <div className='upSide'>
             <div className='imgContainer'>

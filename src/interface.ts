@@ -48,8 +48,8 @@ export interface ProductOption {
   sugar: 0 | 30 | 50 | 70 | 100;
   iceSize: 'regular' | 'less' | 'full';
   additionalOption: {
-    pul: number;
-    whitePul: number;
+    pearl: number;
+    whitePearl: number;
     aloe: number;
     coconut: number;
     milkform: number;

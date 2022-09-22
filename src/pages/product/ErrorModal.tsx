@@ -53,12 +53,10 @@ interface ErrorModalProps {
 
 const ErrorModal = ({ errorModal, setErrorModal }: ErrorModalProps) => {
   useEffect(() => {
-    console.log('켜짐');
     const closeHandler = ({ target }: MouseEvent) => {
       if (errorModal) {
         if (target instanceof Element && (!target.closest('div.error') || target.closest('svg.closeIcon') || target.closest('button.close')) && target.closest('div.shadow')) {
           setErrorModal(false);
-          console.log('꺼짐');
         }
       }
     };

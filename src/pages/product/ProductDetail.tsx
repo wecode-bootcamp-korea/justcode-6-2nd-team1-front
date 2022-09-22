@@ -92,6 +92,41 @@ const StyledDiv = styled.div<{ opt: ProductOption }>`
       align-items: center;
       margin-bottom: 40px;
 
+      &.add {
+        padding-bottom: 60px;
+        border-bottom: 1px solid #aaaaaa;
+        margin-bottom: 20px;
+      }
+
+      &.des {
+        display: block;
+
+        p {
+          margin-top: 20px;
+
+          &.desc {
+            font-size: 5vw;
+          }
+
+          &.pay {
+            padding-left: 10px;
+            line-height: 1.3;
+            word-break: keep-all;
+            position: relative;
+
+            &::after {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 2.6vw;
+              height: 1px;
+              width: 6px;
+              background-color: black;
+            }
+          }
+        }
+      }
+
       p {
         font-size: 6vw;
       }
@@ -234,34 +269,73 @@ const StyledModal = styled.div<{ addPage: boolean; opt: ProductOption }>`
   transition: 0.3s;
   filter: drop-shadow(0px 0px 10px ${({ addPage }) => (addPage ? '#00000030' : '#00000000')});
 
-  div.imgContainer {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    border-bottom: 2px solid lightgray;
-    padding-bottom: 30px;
+  div.container {
+    position: relative;
 
-    img {
-      height: 120px;
+    div.imgContainer {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      border-bottom: 2px solid lightgray;
+      padding-bottom: 30px;
+
+      img {
+        height: 120px;
+      }
+
+      h4 {
+        margin-top: 20px;
+        font-size: 5vw;
+      }
+
+      p {
+        margin-top: 10px;
+        color: ${theme.red};
+        font-size: 6vw;
+      }
     }
 
-    h4 {
-      margin-top: 20px;
-      font-size: 5vw;
+    div.optionContainer {
+      padding: 30px 0;
+
+      h3 {
+        margin-bottom: 20px;
+      }
     }
 
-    p {
-      margin-top: 10px;
-      color: ${theme.red};
-      font-size: 6vw;
+    div.caution {
+      border-top: 1px solid #aaaaaa;
+      padding-top: 50px;
+      padding-bottom: 70px;
+      position: relative;
+
+      p {
+        font-size: 4vw;
+        margin-bottom: 10px;
+      }
     }
-  }
 
-  div.optionContainer {
-    padding-top: 30px;
+    div.btnContainer {
+      position: absolute;
+      bottom: 0;
+      left: -10px;
+      width: calc(100% + 20px);
 
-    h3 {
-      margin-bottom: 20px;
+      button {
+        width: 50%;
+        border: none;
+        color: white;
+        font-size: 6vw;
+        padding: 10px;
+
+        &:nth-child(1) {
+          background-color: #aaaaaa;
+        }
+
+        &:nth-child(2) {
+          background-color: ${theme.red};
+        }
+      }
     }
   }
 `;
@@ -406,56 +480,82 @@ const ProductDetail = () => {
       <>
         {errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} />}
         <StyledModal addPage={addPage} opt={option}>
-          <AiOutlineLeft size='10vw' onClick={() => setAddPage(false)} />
-          <div className='imgContainer'>
-            <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
-            <h4>{info.detailData.beverageName}</h4>
-            <p>{info.detailData.price}</p>
-          </div>
-          <div className='optionContainer'>
-            <h3>토핑(Toppings)</h3>
-            <Amount //
-              name='펄'
-              price='500원'
-              amount={option.additionalOption.pearl}
-              minusHandler={pearlMinusHandler}
-              plusHandler={pearlPlusHandler}
-            />
-            <Amount //
-              name='화이트펄'
-              price='500원'
-              amount={option.additionalOption.whitePearl}
-              minusHandler={whitePearlMinusHandler}
-              plusHandler={whitePearlPlusHandler}
-            />
-            <Amount //
-              name='알로에'
-              price='500원'
-              amount={option.additionalOption.aloe}
-              minusHandler={aloeMinusHandler}
-              plusHandler={aloePlusHandler}
-            />
-            <Amount //
-              name='코코넛'
-              price='500원'
-              amount={option.additionalOption.coconut}
-              minusHandler={coconutMinusHandler}
-              plusHandler={coconutPlusHandler}
-            />
-            <Amount //
-              name='밀크폼'
-              price='500원'
-              amount={option.additionalOption.milkform}
-              minusHandler={milkformMinusHandler}
-              plusHandler={milkformPlusHandler}
-            />
-            <Amount //
-              name='치즈폼'
-              price='500원'
-              amount={option.additionalOption.cheeseform}
-              minusHandler={cheeseformMinusHandler}
-              plusHandler={cheeseformPlusHandler}
-            />
+          <div className='container'>
+            <AiOutlineLeft size='10vw' onClick={() => setAddPage(false)} />
+            <div className='imgContainer'>
+              <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
+              <h4>{info.detailData.beverageName}</h4>
+              <p>{info.detailData.price}</p>
+            </div>
+            <div className='optionContainer'>
+              <h3>토핑(Toppings)</h3>
+              <Amount //
+                name='펄'
+                price='500원'
+                amount={option.additionalOption.pearl}
+                minusHandler={pearlMinusHandler}
+                plusHandler={pearlPlusHandler}
+              />
+              <Amount //
+                name='화이트펄'
+                price='500원'
+                amount={option.additionalOption.whitePearl}
+                minusHandler={whitePearlMinusHandler}
+                plusHandler={whitePearlPlusHandler}
+              />
+              <Amount //
+                name='알로에'
+                price='500원'
+                amount={option.additionalOption.aloe}
+                minusHandler={aloeMinusHandler}
+                plusHandler={aloePlusHandler}
+              />
+              <Amount //
+                name='코코넛'
+                price='500원'
+                amount={option.additionalOption.coconut}
+                minusHandler={coconutMinusHandler}
+                plusHandler={coconutPlusHandler}
+              />
+              <Amount //
+                name='밀크폼'
+                price='500원'
+                amount={option.additionalOption.milkform}
+                minusHandler={milkformMinusHandler}
+                plusHandler={milkformPlusHandler}
+              />
+              <Amount //
+                name='치즈폼'
+                price='500원'
+                amount={option.additionalOption.cheeseform}
+                minusHandler={cheeseformMinusHandler}
+                plusHandler={cheeseformPlusHandler}
+              />
+            </div>
+            <div className='caution'>
+              <p>- 토핑은 최대 2종류, 2개까지 선택 가능합니다.</p>
+              <p>- 쥬얼리토핑 추가는 매장에서 가능합니다.</p>
+            </div>
+            <div className='btnContainer'>
+              <button
+                onClick={() =>
+                  setOption({
+                    ...option,
+                    additionalOption: {
+                      aloe: 0,
+                      cheeseform: 0,
+                      coconut: 0,
+                      milkform: 0,
+                      pearl: 0,
+                      whitePearl: 0,
+                    },
+                  })
+                }
+              >
+                옵션 초기화
+              </button>
+              <button onClick={() => setAddPage(false)}>확인</button>
+            </div>
           </div>
         </StyledModal>
         <StyledDiv opt={option}>
@@ -553,6 +653,13 @@ const ProductDetail = () => {
             <div className='add'>
               <p>추가옵션</p>
               <AiFillRightCircle size='8vw' color='#aaaaaa' onClick={() => setAddPage(true)} />
+            </div>
+            <div className='des'>
+              <p>결제 안내</p>
+              <p className='desc pay'>공차 MyTea 오더 구매 시 멤버십 적립만 가능하며, 제휴 혜택은 적용이 불가합니다.</p>
+              <p className='desc pay'>제휴혜택을 받길 원하실 경우 매장을 방문해 주세요.</p>
+              <p>상품설명</p>
+              <p className='desc'>{info.detailData.description}</p>
             </div>
           </div>
         </StyledDiv>

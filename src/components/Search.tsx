@@ -75,11 +75,12 @@ const Search = () => {
   //     // alert('매장명을 입력해주세요');
   //   }
   // };
+  // 매장명 검색 버튼을 누르면 store에 검색이 되면서 검색화면이 나와야함.
 
   const inputHandler: React.FormEventHandler<HTMLInputElement> = e => {
     if (e.target instanceof HTMLInputElement) {
       let target = e;
-      // console.log(e.target.value.length);
+      console.log(e.target.value);
     }
   };
 

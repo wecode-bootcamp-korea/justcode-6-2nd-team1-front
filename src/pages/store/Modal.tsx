@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import theme from '../../theme';
+import addressData from '././addressData.json';
+import Location from './Location';
+import { Storetype } from './Store';
 
 const StyledModal = styled.div`
   width: 100%;
@@ -77,9 +80,13 @@ const StyledModal = styled.div`
 
 interface ModalDefaultType {
   onClickModal: () => void;
+  addressList: Storetype[];
+  title: string;
 }
 
-const Modal = ({ onClickModal }: PropsWithChildren<ModalDefaultType>) => {
+const Modal = ({ onClickModal, addressList, title }: ModalDefaultType) => {
+  // let [addresses, setAddresses] = useState(addressData);
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -93,12 +100,14 @@ const Modal = ({ onClickModal }: PropsWithChildren<ModalDefaultType>) => {
         <div className='modal'>
           <div className='name'>
             <img src='http://www.gong-cha.co.kr/view/m/images/common/icon_new_p.png' />
-            <span className='title'>하남 감일점</span>
+            <span className='title'>{title}</span>
             <button onClick={onClickModal}>
               <span>X</span>
             </button>
           </div>
-          <div className='map'>지도</div>
+          <div className='map'>
+            <Location />
+          </div>
           <div className='adress'>
             <tr>
               <th>주소</th>

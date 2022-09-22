@@ -6,6 +6,11 @@ import addressData from '././addressData.json';
 import { BiSearch } from 'react-icons/bi';
 import Modal from './Modal';
 
+export type Storetype = {
+  id: number;
+  title: string;
+  address: string;
+};
 const StyledHeader = styled.header`
   display: flex;
   height: 150px;
@@ -88,9 +93,10 @@ const StyledList = styled.ul`
 
 const Store = () => {
   const [selectedOption, setSelectedOption] = useState();
-  const [addressList, setAddressList] = useState<any[]>([]);
+  const [addressList, setAddressList] = useState<Storetype[]>(addressData);
   const [value, setValue] = useState('');
   const [modal, setModal] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
   const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -125,7 +131,7 @@ const Store = () => {
         <div className='container'>
           <div className='search'>
             <form>
-              <input type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력해 주세요'></input>
+              <input type='text' ref={inputRef} placeholder='매장명을 검색해 주세요'></input>
               <button onClick={submitHandler}>
                 <BiSearch />
               </button>
@@ -144,12 +150,12 @@ const Store = () => {
               }
             })
             .map((add, i) => (
-              <li onClick={onClickModal} key={add.id} ref={addressList.length - 1 === i ? setLastLi : null}>
+              <li onClick={onClickModal} key={add.id}>
                 <h4>{add.title}</h4>
                 <p>{add.address}</p>
               </li>
             ))}
-          {modal && <Modal onClickModal={onClickModal}></Modal>}
+          {modal && <Modal title={title} addressList={addressList} onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
     </div>

@@ -27,8 +27,8 @@ const Signup = () => {
           <GiSmartphone />
           <button>휴대폰 본인 인증</button>
         </PhonePermission>
-        <SignForm />
-        <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
+        <SignForm setPage={setPage} />
+        
       </StyledSignUp>
     );
   } else if (page === 2) {
@@ -146,7 +146,8 @@ export const NextBtn = styled.button`
   background-color: ${theme.red};
   border: none;
   &:disabled {
-    opacity:0.6;
+    color:grey;
+    background-color:${theme.grey};
   }
 `;
 
@@ -195,13 +196,15 @@ export const SignUpForm = styled.form`
         flex-direction: column;
         justify-content: start;
         width: 60vw;
-
+        .border {
+          border: 3px solid #a71e1eed;
+        }
         input {
           width: 100%;
           height: 40px;
           border-radius: 10px;
-          margin-left:5px;
-          border:1px solid grey;
+          margin-left: 5px;
+          border: 1px solid grey;
         }
         button {
           margin: 5px 0 5px 5px;
@@ -212,6 +215,11 @@ export const SignUpForm = styled.form`
           border: none;
           border-radius: 10px;
         }
+        p {
+          color: #a71e1eed;
+          margin: 5px 0 5px 5px;
+        }
+
         span {
           font-size: 10px;
         }

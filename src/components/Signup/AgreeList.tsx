@@ -4,10 +4,7 @@ import { NextBtn } from "../../pages/signup/Signup";
 import { BsCheckCircle } from "react-icons/bs";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useState, useEffect } from "react";
-
-interface AgreeListProps {
-  setPage:React.Dispatch<React.SetStateAction<number>>
-}
+import { AgreeListProps } from "../../interface"
 
 const AgreeList = ({ setPage } : AgreeListProps) => {
   const [btn, setBtn] = useState(true);

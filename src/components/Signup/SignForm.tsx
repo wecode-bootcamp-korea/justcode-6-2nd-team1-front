@@ -41,7 +41,6 @@ const SignForm = () => {
             <span>닉네임</span>
             <div className="content">
               <input />
-              <button>중복확인</button>
             </div>
           </div>
         </form>

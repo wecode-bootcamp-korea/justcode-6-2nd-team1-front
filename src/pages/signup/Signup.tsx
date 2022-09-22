@@ -67,20 +67,20 @@ export default Signup;
 const StyledSignUp = styled.div`
   font-family: 'Noto Sans KR', sans-serif;
   display: flex;
-  width: 100vw;
+  width: 100%;
   padding-bottom: 90px;
   flex-direction: column;
   align-items: center;
   .header {
     display: flex;
     justify-content: center;
-    width: 100vw;
+    width: 100%;
     background-color: #eee;
     font-size: 13px;
     span {
       text-align: center;
       color: gray;
-      width: 33vw;
+      width: 33%;
       padding: 25px;
     }
     .inColor {
@@ -102,7 +102,7 @@ const StyledSignUp = styled.div`
       margin-top: 50px;
       background-color: ${theme.red};
       font-size: 20px;
-      width: 70vw;
+      width: 70%;
       height: 60px;
       border-radius: 40px;
       border: none;
@@ -128,7 +128,7 @@ export const AgreeBtn = styled.div`
   padding-bottom: 30px;
   border-bottom: 1px solid grey;
   .checked {
-    background-color:#af3030;
+    background-color:${theme.red};
     border:none;
     color:white;
   }
@@ -138,7 +138,7 @@ export const AgreeBtn = styled.div`
     height: 50px;
     background-color: inherit;
     color: black;
-    border: 1px solid grey;
+    border: 1px solid ${theme.grey};
     border-radius: 40px;
     font-size:16px;
 
@@ -157,7 +157,7 @@ export const NextBtn = styled.button`
   height: 60px;
   font-size: 20px;
   color: white;
-  background-color: #af3030;
+  background-color: ${theme.red};
   border: none;
   &:disabled {
     opacity:0.6;
@@ -201,7 +201,7 @@ export const SignUpForm = styled.div`
       margin-top: 10px;
       padding: 0 4px;
       span {
-        color: grey;
+        color: ${theme.grey};
         margin-top: 10px;
       }
       .content {
@@ -214,13 +214,13 @@ export const SignUpForm = styled.div`
           width: 100%;
           height: 40px;
           border-radius: 10px;
-          border:1px solid grey;
+          border:1px solid ${theme.grey};
         }
         button {
           margin: 5px 0;
           width: 40%;
           height: 40px;
-          background-color: grey;
+          background-color: ${theme.grey};
           color: white;
           border: none;
           border-radius: 10px;
@@ -241,7 +241,7 @@ const PhonePermission = styled.div`
   width: 80vw;
   height: 50px;
   background-color: white;
-  border:1px solid grey;
+  border:1px solid ${theme.grey};
   border-radius: 40px;
   button {
     font-size: 16px;

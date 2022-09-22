@@ -7,9 +7,14 @@ interface HeaderProps {
 const Header = ({ page }:HeaderProps) => {
   return (
     <div className='header'>
-      <span className={page < 1 ? 'inColor' : 'fullColor'}>약관동의</span>
-      <span className={page >= 2 ? 'fullColor':'inColor'}>회원정보</span>
-      {page === 0 && <Line />}
+      <span className={page === 0 ? 'inColor' : 'fullColor'}>약관동의</span>
+      {page === 0 && (
+        <>
+          <span>회원정보</span>
+          <Line />
+        </>
+      )}
+      {page >= 1 && <span className={page>=1? 'fullColor' : 'inColor'}>회원정보</span>}
       <span className={page === 2 && 'fullColor'}>가입완료</span>
     </div>
   );

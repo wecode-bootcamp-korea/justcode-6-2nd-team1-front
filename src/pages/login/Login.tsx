@@ -5,7 +5,7 @@ import { FiLock } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import theme from "../../theme";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type User = {
   token: string;
@@ -22,15 +22,17 @@ const Login = () => {
     if (email.includes('@') &&password.length >= 8) {
       setDisabled(true);
       try {
-        const { data: { token } } = await axios.post<User>('data/login/login.json', {
+        const {
+          data: { token },
+        } = await axios.post<User>('http://localhost:8000/users/login', {
           email,
-          password
+          password,
         });
         setUser(token);
         localStorage.setItem("token", token);
         setDisabled(false);
         navigate('/');
-        console.log('login check')
+        console.log('login check');
       } catch (error) {
         setDisabled(false);
         alert('이메일 혹은 비밀번호가 맞지않습니다.');

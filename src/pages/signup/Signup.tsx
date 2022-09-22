@@ -27,9 +27,7 @@ const Signup = () => {
           <GiSmartphone />
           <button>휴대폰 본인 인증</button>
         </PhonePermission>
-
         <SignForm />
-        
         <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
       </StyledSignUp>
     );
@@ -50,6 +48,7 @@ const Signup = () => {
 
 export default Signup;
 
+//styled.Components
 
 const StyledSignUp = styled.div`
   font-family: 'Noto Sans KR', sans-serif;
@@ -172,7 +171,7 @@ export const CheckList = styled.form`
   }
 `;
 
-export const SignUpForm = styled.div`
+export const SignUpForm = styled.form`
   .head {
     font-size: 17px;
     margin-top: 30px;
@@ -180,7 +179,7 @@ export const SignUpForm = styled.div`
     width: 80vw;
     border-bottom: 2px solid grey;
   }
-  form {
+  div {
     .title {
       font-size: 12px;
       display: flex;

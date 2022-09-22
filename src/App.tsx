@@ -16,8 +16,6 @@ import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
 const App = () => {
-  const {} = useStore();
-
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(setLocationInfo);

@@ -10,9 +10,13 @@ export interface User {
 
 export interface ProductInfo {
   id: number;
-  beverageName: string;
-  imageURL: string;
+  beverage_name: string;
+  beverage_image: string;
   price: string;
+}
+
+export interface CategoryRes {
+  beverageData: ProductInfo[];
 }
 
 export interface ProductDetailInfo {

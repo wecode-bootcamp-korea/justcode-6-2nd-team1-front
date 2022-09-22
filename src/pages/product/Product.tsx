@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useNav from '../../hooks/useNav';
-import { ProductInfo } from '../../interface';
+import { CategoryRes, ProductInfo } from '../../interface';
 import theme from '../../theme';
 import CategotySkeleton from './CategorySkeleton';
 
@@ -94,8 +94,8 @@ const Product = () => {
     (async () => {
       setLoading(true);
       // localhost:8000/beverages/category/:id
-      const { data } = await axios.get<ProductInfo[]>(`data/${category[mode]}Data.json`);
-      setProductList(data);
+      const { data } = await axios.get<CategoryRes>(`data/${category[mode]}Data.json`);
+      setProductList(data.beverageData);
 
       setLoading(false);
     })();
@@ -123,10 +123,10 @@ const Product = () => {
           productList.map(productInfo => (
             <li key={productInfo.id} onClick={() => navigate(`/product/detail/${productInfo.id}`)}>
               <div className='imgContainer'>
-                <img src={productInfo.imageURL} alt='음료사진' />
+                <img src={productInfo.beverage_image} alt='음료사진' />
               </div>
               <div className='container'>
-                <h3>{productInfo.beverageName}</h3>
+                <h3>{productInfo.beverage_name}</h3>
                 <h4>{productInfo.price}</h4>
               </div>
             </li>

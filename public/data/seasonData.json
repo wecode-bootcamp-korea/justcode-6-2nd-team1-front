@@ -1,44 +1,46 @@
-[
-  {
-    "id": 1,
-    "beverageName": "조선향米 누룽지 밀크티",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": 5000
-  },
-  {
-    "id": 2,
-    "beverageName": "조선향米 누룽지 밀크티",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": 5000
-  },
-  {
-    "id": 3,
-    "beverageName": "조선향米 누룽지 밀크티",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": 5000
-  },
-  {
-    "id": 4,
-    "beverageName": "조선향米 누룽지 밀크티",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": 5000
-  },
-  {
-    "id": 5,
-    "beverageName": "조선향米 누룽지 밀크티",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": 5000
-  },
-  {
-    "id": 6,
-    "beverageName": "조선향米 누룽지 밀크티",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": 5000
-  },
-  {
-    "id": 7,
-    "beverageName": "조선향米 누룽지 밀크티",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": 5000
-  }
-]
+{
+  "beverageData": [
+    {
+      "id": 1,
+      "beverage_name": "조선향米 누룽지 밀크티",
+      "beverage_image": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+      "price": "5000"
+    },
+    {
+      "id": 2,
+      "beverage_name": "조선향米 누룽지 밀크티",
+      "beverage_image": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+      "price": "5000"
+    },
+    {
+      "id": 3,
+      "beverage_name": "조선향米 누룽지 밀크티",
+      "beverage_image": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+      "price": "5000"
+    },
+    {
+      "id": 4,
+      "beverage_name": "조선향米 누룽지 밀크티",
+      "beverage_image": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+      "price": "5000"
+    },
+    {
+      "id": 5,
+      "beverage_name": "조선향米 누룽지 밀크티",
+      "beverage_image": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+      "price": "5000"
+    },
+    {
+      "id": 6,
+      "beverage_name": "조선향米 누룽지 밀크티",
+      "beverage_image": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+      "price": "5000"
+    },
+    {
+      "id": 7,
+      "beverage_name": "조선향米 누룽지 밀크티",
+      "beverage_image": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+      "price": "5000"
+    }
+  ]
+}

@@ -1,6 +1,12 @@
 import { SignUpForm } from "../../pages/signup/Signup";
-
+import axios from "axios";
+import { useState } from "react";
 const SignForm = () => {
+  const [email, setEmail] = useState('');
+  const [pw, setPw] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [phone, setPhone] = useState('');
+  console.log(email)
   return (
     <>
       <SignUpForm>
@@ -11,7 +17,7 @@ const SignForm = () => {
           <div className="title">
             <span>이메일</span>
             <div className="content">
-              <input />
+              <input type="email" onChange={e=>setEmail(e.target.value)}/>
               <button>중복확인</button>
             </div>
           </div>

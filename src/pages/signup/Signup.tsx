@@ -5,6 +5,7 @@ import { GiSmartphone } from "react-icons/gi";
 
 import SignForm from "../../components/Signup/SignForm";
 import AgreeList from "../../components/Signup/AgreeList";
+import Header from "../../components/Signup/header";
 import theme from "../../theme";
 
 const Signup = () => {
@@ -14,24 +15,14 @@ const Signup = () => {
   if (page === 0) {
     return (
       <StyledSignUp>
-        <div className="header">
-          <span className="inColor">약관동의</span>
-          <span>회원정보</span>
-          <Line />
-          <span>가입완료</span>
-        </div>
+        <Header page={page} />
         <AgreeList setPage={ setPage } />
       </StyledSignUp>
     );
   } else if (page === 1) {
     return (
       <StyledSignUp>
-        <div className="header">
-          <span className="fullColor">약관동의</span>
-          <span className={page <= 1?'inColor':''}>회원정보</span>
-          <span>가입완료</span>
-        </div>
-
+        <Header page={page} />
         <PhonePermission>
           <GiSmartphone />
           <button>휴대폰 본인 인증</button>
@@ -45,17 +36,13 @@ const Signup = () => {
   } else if (page === 2) {
     return (
       <StyledSignUp>
-        <div className="header">
-          <span className="fullColor">약관동의</span>
-          <span className="fullColor">회원정보</span>
-          <span className="fullColor">가입완료</span>
-        </div>
-        <div className="toLogin">
+        <Header page={page} />
+        <div className='toLogin'>
           <span>가입이 완료되었습니다!</span>
-          <button onClick={()=>navigate('/login')}>로그인 화면으로 가기</button>
-        </div>  
+          <button onClick={() => navigate('/login')}>로그인 화면으로 가기</button>
+        </div>
       </StyledSignUp>
-    )
+    );
   } else {
     return <></>
   }
@@ -102,7 +89,7 @@ const StyledSignUp = styled.div`
       margin-top: 50px;
       background-color: ${theme.red};
       font-size: 20px;
-      width: 70%;
+      width: 90%;
       height: 60px;
       border-radius: 40px;
       border: none;
@@ -201,7 +188,7 @@ export const SignUpForm = styled.div`
       margin-top: 10px;
       padding: 0 4px;
       span {
-        color: ${theme.grey};
+        color: grey;
         margin-top: 10px;
       }
       .content {
@@ -214,13 +201,14 @@ export const SignUpForm = styled.div`
           width: 100%;
           height: 40px;
           border-radius: 10px;
-          border:1px solid ${theme.grey};
+          margin-left:5px;
+          border:1px solid grey;
         }
         button {
-          margin: 5px 0;
+          margin: 5px 0 5px 5px;
           width: 40%;
           height: 40px;
-          background-color: ${theme.grey};
+          background-color: grey;
           color: white;
           border: none;
           border-radius: 10px;

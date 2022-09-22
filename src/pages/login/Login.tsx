@@ -19,7 +19,7 @@ const Login = () => {
   const [user, setUser] = useState('');
   const signUpHandler: React.FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
-    if (email.includes('@') && password.length > 8) {
+    if (email.includes('@') &&password.length >= 8) {
       setDisabled(true);
       try {
         const { data: { token } } = await axios.post<User>('data/login/login.json', {
@@ -29,6 +29,7 @@ const Login = () => {
         setUser(token);
         localStorage.setItem("token", token);
         setDisabled(false);
+        navigate('/');
         console.log('login check')
       } catch (error) {
         setDisabled(false);

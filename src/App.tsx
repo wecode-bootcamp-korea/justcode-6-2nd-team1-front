@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Nav from './components/Nav';
+import useStore from './context/store';
 import GlobalStyle from './GlobalStyle';
 import Brand from './pages/brand/Brand';
 import Cart from './pages/cart/Cart';
@@ -12,6 +13,8 @@ import Product from './pages/product/Product';
 import ProductDetail from './pages/product/ProductDetail';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
+
+
 
 const App = () => {
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();

@@ -1,14 +1,23 @@
 import styled  from "styled-components";
 
-const Header = ({ inColor,fullColor }) => {
+
+interface HeaderProps {
+  page:number
+}
+const Header = ({ page }:HeaderProps) => {
   return (
-    <div className="header">
-      <span className={inColor}>약관동의</span>
-      <span className={fullColor}>회원정보</span>
-        <Line />
-      <span>가입완료</span>
+    <div className='header'>
+      <span className={page === 0 ? 'inColor' : 'fullColor'}>약관동의</span>
+      {page === 0 && (
+        <>
+          <span>회원정보</span>
+          <Line />
+        </>
+      )}
+      {page >= 1 && <span className={page>=1? 'fullColor' : 'inColor'}>회원정보</span>}
+      <span className={page === 2 ? 'fullColor': ''}>가입완료</span>
     </div>
-  )
+  );
 }
 export default Header;
 

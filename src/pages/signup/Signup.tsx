@@ -5,6 +5,8 @@ import { GiSmartphone } from "react-icons/gi";
 
 import SignForm from "../../components/Signup/SignForm";
 import AgreeList from "../../components/Signup/AgreeList";
+import Header from "../../components/Signup/header";
+import theme from "../../theme";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,81 +15,67 @@ const Signup = () => {
   if (page === 0) {
     return (
       <StyledSignUp>
-        <div className="header">
-          <span className="inColor">약관동의</span>
-          <span>회원정보</span>
-          <Line />
-          <span>가입완료</span>
-        </div>
-        <AgreeList props={ setPage } />
+        <Header page={page} />
+        <AgreeList setPage={ setPage } />
       </StyledSignUp>
     );
   } else if (page === 1) {
     return (
       <StyledSignUp>
-        <div className="header">
-          <span className="fullColor">약관동의</span>
-          <span className="inColor">회원정보</span>
-          <span>가입완료</span>
-        </div>
-
+        <Header page={page} />
         <PhonePermission>
           <GiSmartphone />
           <button>휴대폰 본인 인증</button>
         </PhonePermission>
-
-        <SignForm />
+        <SignForm setPage={setPage} />
         
-        <NextBtn onClick={() => setPage(2)}>다음</NextBtn>
       </StyledSignUp>
     );
   } else if (page === 2) {
     return (
       <StyledSignUp>
-        <div className="header">
-          <span className="fullColor">약관동의</span>
-          <span className="fullColor">회원정보</span>
-          <span className="fullColor">가입완료</span>
-        </div>
-        <div className="toLogin">
+        <Header page={page} />
+        <div className='toLogin'>
           <span>가입이 완료되었습니다!</span>
-          <button onClick={()=>navigate('/login')}>로그인 화면으로 가기</button>
-        </div>  
+          <button onClick={() => navigate('/login')}>로그인 화면으로 가기</button>
+        </div>
       </StyledSignUp>
-    )
-    
+    );
+  } else {
+    return <></>
   }
 };
 
 export default Signup;
 
+//styled.Components
 
 const StyledSignUp = styled.div`
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   display: flex;
-  width: 100vw;
+  width: 100%;
   padding-bottom: 90px;
   flex-direction: column;
   align-items: center;
   .header {
     display: flex;
     justify-content: center;
-    width: 100vw;
+    width: 100%;
     background-color: #eee;
     font-size: 13px;
     span {
       text-align: center;
       color: gray;
-      width: 33vw;
+      width: 33%;
       padding: 25px;
     }
     .inColor {
-      background-color: #af3030;
+      background-color: ${theme.red};
       color: white;
       border-radius: 0 40px 40px 0;
     }
     .fullColor {
-      background-color: #af3030;
+      background-color: ${theme.red};
       color: white;
     }
   }
@@ -98,12 +86,12 @@ const StyledSignUp = styled.div`
     margin-top: 50px;
     button {
       margin-top: 50px;
-      background-color: #af3030;
+      background-color: ${theme.red};
       font-size: 20px;
-      width: 70vw;
+      width: 90%;
       height: 60px;
       border-radius: 40px;
-      border:none;
+      border: none;
       color: white;
     }
   }
@@ -126,7 +114,7 @@ export const AgreeBtn = styled.div`
   padding-bottom: 30px;
   border-bottom: 1px solid grey;
   .checked {
-    background-color:#af3030;
+    background-color:${theme.red};
     border:none;
     color:white;
   }
@@ -136,7 +124,7 @@ export const AgreeBtn = styled.div`
     height: 50px;
     background-color: inherit;
     color: black;
-    border: 1px solid grey;
+    border: 1px solid ${theme.grey};
     border-radius: 40px;
     font-size:16px;
 
@@ -155,10 +143,11 @@ export const NextBtn = styled.button`
   height: 60px;
   font-size: 20px;
   color: white;
-  background-color: #af3030;
+  background-color: ${theme.red};
   border: none;
   &:disabled {
-    opacity:0.6;
+    color:grey;
+    background-color:${theme.grey};
   }
 `;
 
@@ -183,7 +172,7 @@ export const CheckList = styled.form`
   }
 `;
 
-export const SignUpForm = styled.div`
+export const SignUpForm = styled.form`
   .head {
     font-size: 17px;
     margin-top: 30px;
@@ -191,7 +180,7 @@ export const SignUpForm = styled.div`
     width: 80vw;
     border-bottom: 2px solid grey;
   }
-  form {
+  div {
     .title {
       font-size: 12px;
       display: flex;
@@ -207,15 +196,18 @@ export const SignUpForm = styled.div`
         flex-direction: column;
         justify-content: start;
         width: 60vw;
-
+        .border {
+          border: 3px solid #a71e1eed;
+        }
         input {
           width: 100%;
           height: 40px;
           border-radius: 10px;
-          border:1px solid grey;
+          margin-left: 5px;
+          border: 1px solid grey;
         }
         button {
-          margin: 5px 0;
+          margin: 5px 0 5px 5px;
           width: 40%;
           height: 40px;
           background-color: grey;
@@ -223,6 +215,11 @@ export const SignUpForm = styled.div`
           border: none;
           border-radius: 10px;
         }
+        p {
+          color: #a71e1eed;
+          margin: 5px 0 5px 5px;
+        }
+
         span {
           font-size: 10px;
         }
@@ -239,7 +236,7 @@ const PhonePermission = styled.div`
   width: 80vw;
   height: 50px;
   background-color: white;
-  border:1px solid grey;
+  border:1px solid ${theme.grey};
   border-radius: 40px;
   button {
     font-size: 16px;

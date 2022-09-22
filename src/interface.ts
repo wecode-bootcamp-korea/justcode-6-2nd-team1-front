@@ -56,3 +56,7 @@ export interface ProductOption {
     cheeseform: number;
   };
 }
+
+export interface AgreeListProps {
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+}

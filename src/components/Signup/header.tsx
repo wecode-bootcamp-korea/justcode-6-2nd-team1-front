@@ -15,7 +15,7 @@ const Header = ({ page }:HeaderProps) => {
         </>
       )}
       {page >= 1 && <span className={page>=1? 'fullColor' : 'inColor'}>회원정보</span>}
-      <span className={page === 2 && 'fullColor'}>가입완료</span>
+      <span className={page === 2 ? 'fullColor': ''}>가입완료</span>
     </div>
   );
 }

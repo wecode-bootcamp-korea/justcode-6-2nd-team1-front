@@ -1,10 +1,10 @@
-import { SignUpForm } from "../../pages/signup/Signup";
-import { NextBtn } from "../../pages/signup/Signup";
+import { SignUpForm } from '../../pages/signup/Signup';
+import { NextBtn } from '../../pages/signup/Signup';
 import { AgreeListProps } from '../../interface';
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
-const SignForm = ({setPage}:AgreeListProps) => {
+const SignForm = ({ setPage }: AgreeListProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordTwice, setPasswordTwice] = useState('');
@@ -15,31 +15,29 @@ const SignForm = ({setPage}:AgreeListProps) => {
   const [btn, setBtn] = useState(true);
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = e => {
     // 이메일 중복검사 함수
-
   };
 
   const submitHandler: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
 
     const signUpObj = {
-      "email": email,
-      "password": password,
-      "nickname": nickname,
-      "name": name,
-      "phoneNumber": phoneNumber,
+      email: email,
+      password: password,
+      nickname: nickname,
+      name: name,
+      phoneNumber: phoneNumber,
     };
-    
   };
 
   useEffect(() => {
     if (passwordCheck && nickname.length > 1 && name.length > 1 && phoneNumber.length > 9) {
       setBtn(false);
     } else setBtn(true);
-  },[password,nickname,name,phoneNumber])
+  }, [password, nickname, name, phoneNumber]);
 
   useEffect(() => {
     password === passwordTwice ? setPasswordCheck(true) : setPasswordCheck(false);
-  },[passwordTwice])
+  }, [passwordTwice]);
 
   return (
     <>
@@ -58,15 +56,23 @@ const SignForm = ({setPage}:AgreeListProps) => {
           <div className='title'>
             <span>비밀번호</span>
             <div className='content'>
-              <input type='password' onChange={e => setPassword(e.target.value)} name='password' />
+              <input
+                type='password'
+                onChange={e => setPassword(e.target.value)} //
+                name='password'
+              />
               <span>비밀번호는 영문, 숫자를 혼합하여 8~20자 이내로 입력하세요.</span>
             </div>
           </div>
           <div className='title'>
             <span>비밀번호 확인</span>
             <div className='content'>
-              <input className={!passwordCheck&&'border'} type='password' onChange={e => setPasswordTwice(e.target.value)} />
-              {passwordCheck ? '' : <p>입력한 비밀번호와 다릅니다!</p> }
+              <input
+                className={!passwordCheck ? 'border' : ''}
+                type='password' //
+                onChange={e => setPasswordTwice(e.target.value)}
+              />
+              {passwordCheck ? '' : <p>입력한 비밀번호와 다릅니다!</p>}
             </div>
           </div>
         </div>
@@ -108,6 +114,6 @@ const SignForm = ({setPage}:AgreeListProps) => {
       </NextBtn>
     </>
   );
-}
+};
 
 export default SignForm;

@@ -1,11 +1,12 @@
-import styled from "styled-components";
-import logo from '../../assets/ilcha_logo_reverse.png'
-import { BsPerson } from "react-icons/bs";
-import { FiLock } from "react-icons/fi";
-import { Link, useNavigate } from "react-router-dom";
-import theme from "../../theme";
-import axios from "axios";
-import { useState } from "react";
+import styled from 'styled-components';
+import logo from '../../assets/ilcha_logo_reverse.png';
+import { BsPerson } from 'react-icons/bs';
+import { FiLock } from 'react-icons/fi';
+import { Link, useNavigate } from 'react-router-dom';
+import theme from '../../theme';
+import axios from 'axios';
+import { useState } from 'react';
+import useStore from '../../context/store';
 
 type User = {
   token: string;
@@ -16,29 +17,25 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(false);
-  const [user, setUser] = useState('');
+  const { login } = useStore();
   const signUpHandler: React.FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
-    if (email.includes('@') &&password.length >= 8) {
+    if (email.includes('@') && password.length >= 8) {
       setDisabled(true);
       try {
-        const {
-          data: { token },
-        } = await axios.post<User>('http://localhost:8000/users/login', {
+        const { data } = await axios.post<User>('http://localhost:8000/users/login', {
           email,
           password,
         });
-        setUser(token);
-        localStorage.setItem("token", token);
+        login(data);
         setDisabled(false);
         navigate('/');
-        console.log('login check');
       } catch (error) {
         setDisabled(false);
         alert('이메일 혹은 비밀번호가 맞지않습니다.');
       }
     } else alert('이메일 혹은 비밀번호가 맞지않습니다.');
-  }
+  };
   return (
     <StyledLogin>
       <div className='logoBox'>
@@ -55,7 +52,6 @@ const Login = () => {
         </div>
 
         <button disabled={disabled}>{disabled ? '로그인 중' : '로그인'}</button>
-        
       </form>
       <div className='signUp'>
         <Link to='/signup'>회원가입</Link>
@@ -76,7 +72,7 @@ const StyledLogin = styled.div`
     border: none;
     background-color: inherit;
     &:disabled {
-      opacity:0.6;
+      opacity: 0.6;
     }
   }
 

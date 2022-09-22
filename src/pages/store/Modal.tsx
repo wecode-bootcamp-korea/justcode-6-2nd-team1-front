@@ -79,13 +79,16 @@ const StyledModal = styled.div`
 `;
 
 interface ModalDefaultType {
-  onClickModal: () => void;
+  onClickModal: (a: { id: number; title: string; address: string }) => void;
   addressList: Storetype[];
   title: string;
+  address: string;
+  setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal = ({ onClickModal, addressList, title }: ModalDefaultType) => {
+const Modal = ({ onClickModal, setModal, addressList, title, address }: ModalDefaultType) => {
   // let [addresses, setAddresses] = useState(addressData);
+  console.log(title);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -100,8 +103,9 @@ const Modal = ({ onClickModal, addressList, title }: ModalDefaultType) => {
         <div className='modal'>
           <div className='name'>
             <img src='http://www.gong-cha.co.kr/view/m/images/common/icon_new_p.png' />
+
             <span className='title'>{title}</span>
-            <button onClick={onClickModal}>
+            <button onClick={() => setModal(false)}>
               <span>X</span>
             </button>
           </div>
@@ -111,7 +115,7 @@ const Modal = ({ onClickModal, addressList, title }: ModalDefaultType) => {
           <div className='adress'>
             <tr>
               <th>주소</th>
-              <td>경기 하남시 강일백제로 105, 102호 (감이동, 신성메디타워)</td>
+              <td>{address}</td>
             </tr>
             <tr>
               <th>영업시간</th>

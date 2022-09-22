@@ -11,6 +11,13 @@ export type Storetype = {
   title: string;
   address: string;
 };
+
+// export interface Storetype {
+//   id: number;
+//   title: string;
+//   address: string;
+// }
+
 const StyledHeader = styled.header`
   display: flex;
   height: 150px;
@@ -39,26 +46,23 @@ const StyledSearch = styled.div`
     padding: 10px;
 
     div.search {
-      font-size : 30px;
+      font-size: 30px;
       text-align: center;
 
-      input{
-        width : 70%;
+      input {
+        width: 70%;
         height: 40px;
-        font-size : 15px;
+        font-size: 15px;
         border: none;
         background-color: #ffffff;
         padding: 10px;
       }
 
-
       button {
-        width : 50px;
+        width: 50px;
         height: 40px;
         background-color: #ffffff;
         border: none;
-        
-        }
       }
     }
   }
@@ -94,15 +98,20 @@ const StyledList = styled.ul`
 const Store = () => {
   const [selectedOption, setSelectedOption] = useState();
   const [addressList, setAddressList] = useState<Storetype[]>(addressData);
+  const [address, setAddress] = useState<string>('');
   const [value, setValue] = useState('');
   const [modal, setModal] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
-  const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onClickModal = useCallback(() => {
-    setModal(!modal);
-  }, [modal]);
+  const onClickModal = useCallback(
+    (add: { id: number; title: string; address: string }) => {
+      setModal(!modal);
+      setTitle(add.title);
+      setAddress(add.address);
+    },
+    [modal]
+  );
 
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
@@ -150,12 +159,12 @@ const Store = () => {
               }
             })
             .map((add, i) => (
-              <li onClick={onClickModal} key={add.id}>
+              <li onClick={() => onClickModal(add)} key={add.id}>
                 <h4>{add.title}</h4>
                 <p>{add.address}</p>
               </li>
             ))}
-          {modal && <Modal title={title} addressList={addressList} onClickModal={onClickModal}></Modal>}
+          {modal && <Modal setModal={setModal} title={title} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
     </div>

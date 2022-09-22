@@ -5,47 +5,45 @@ import combi from '../assets/combination.jpeg';
 import order from '../assets/order.jpeg';
 
 const StyledStore = styled.div`
-  display :block;
-  heigth: 30vh;
-  background-color : #f5f4f2;
+  display: block;
+  height: 30vh;
+  background-color: #f5f4f2;
   text-align: center;
   margin-top: 30px;
-  padding-top : 20px;
-  padding-bottom : 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 
-    search_wrap{
-      width: 240px;
-
-    }
-
-    h3 {
-      font-size: 20px;
-      padding-bottom: 20px;
-    }
-
-    p {
-     color: #666666;
-     font-size : 20px;
-     margin-bottom:10px;
-    }
-    
-    input {
-      width: 70%;
-      height: 40px;
-      margin-bottom:10px;
-      padding :10px;
-      outline: none;
-      border : none;
-    }
-    button {
-      font-size: 15px;
-      width: 70%;
-      height: 40px;
-      background : #3b3230;
-      color: white;
-      border : none;
-    }
+  search_wrap {
+    width: 240px;
   }
+
+  h3 {
+    font-size: 20px;
+    padding-bottom: 20px;
+  }
+
+  p {
+    color: #666666;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 70%;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+  }
+
+  button {
+    font-size: 15px;
+    width: 70%;
+    height: 40px;
+    background: #3b3230;
+    color: white;
+    border: none;
   }
 `;
 const StyledCombi = styled.div`

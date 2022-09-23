@@ -21,6 +21,7 @@ const StyledPay = styled.div<{ detail: boolean }>`
 
   h4 {
     margin-top: 40px;
+    font-size: 6vw;
 
     &:first-of-type {
       margin-top: 20px;
@@ -29,6 +30,7 @@ const StyledPay = styled.div<{ detail: boolean }>`
 
   p {
     margin-top: 10px;
+    font-size: 5vw;
   }
 
   div.upSide {

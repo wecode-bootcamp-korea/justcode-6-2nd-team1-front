@@ -16,7 +16,7 @@ const Line = styled.div`
   margin: 20px 0;
 `;
 
-const StyledPay = styled.div<{ detail: boolean }>`
+const StyledPay = styled.div<{ detail: boolean; length: number }>`
   padding-bottom: calc(40px + 6vw);
 
   h4 {
@@ -69,7 +69,7 @@ const StyledPay = styled.div<{ detail: boolean }>`
 
   div.detail {
     background-color: #dddddd;
-    height: ${({ detail }) => (detail ? 'calc(15vw + 80px)' : '0')};
+    height: ${({ detail, length }) => (detail ? (length ? 'calc(15vw + 80px)' : 'calc(10vw + 70px)') : '0')};
     overflow: hidden;
     transition: 0.3s;
 
@@ -253,7 +253,7 @@ const Pay = ({ orderRes }: PayProps) => {
           </div>
         </StyledModal>
       )}
-      <StyledPay detail={detail}>
+      <StyledPay detail={detail} length={orderRes.orderData.toppingData.length}>
         <div className='upSide'>
           <h4>주문 정보</h4>
           <Line />
@@ -299,15 +299,17 @@ const Pay = ({ orderRes }: PayProps) => {
                 </span>
                 {orderRes.orderData.price}원
               </p>
-              <p>
-                <span>
-                  {orderRes.orderData.toppingData
-                    .map(top => top.topping_id)
-                    .map(id => toppingFromId(id))
-                    .join('/')}
-                </span>
-                {orderRes.orderData.toppingData.map(top => top.amount).reduce((prev, cur) => prev + cur * 500, 0)}원
-              </p>
+              {!!orderRes.orderData.toppingData.length && (
+                <p>
+                  <span>
+                    {orderRes.orderData.toppingData
+                      .map(top => top.topping_id)
+                      .map(id => toppingFromId(id))
+                      .join('/')}
+                  </span>
+                  {orderRes.orderData.toppingData.map(top => top.amount).reduce((prev, cur) => prev + cur * 500, 0)}원
+                </p>
+              )}
               <p>
                 <span>개수</span>
                 {orderRes.orderData.amount} 개

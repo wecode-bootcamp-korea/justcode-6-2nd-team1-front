@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
 import styled from 'styled-components';
-import { OrderReq, OrderRes, ProductDetailInfo, ProductOption } from '../../interface';
+import { CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
 import theme from '../../theme';
 import Amount from './Amount';
 import { GrClose } from 'react-icons/gr';
@@ -440,6 +440,51 @@ const ProductDetail = () => {
   const [disabled, setDisabled] = useState(false);
   const { isLogin, token } = useStore();
 
+  const [inputValue, setInputValue] = useState('');
+  const [reviewList, setReviewList] = useState<Review[]>();
+
+  const createReviewHandler = async () => {
+    await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
+      `http://localhost:8000/beverages/review/${id}`,
+      {
+        content: inputValue,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  };
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+
+      try {
+        // http://localhost:8000/beverages/detail/${id}
+        const { data } = await axios.get<ProductDetailInfo>(`/data/detail${id}.json`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        setInfo(data);
+        setLoading(false);
+      } catch (error) {
+        setErrorMessage('로그인을 먼저 해주세요.');
+        setErrorModal(true);
+      }
+
+      try {
+        const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
+        setReviewList(reviewRes.reviewData);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   const payHandler = async () => {
     if (info) {
       if (isLogin) {
@@ -550,26 +595,6 @@ const ProductDetail = () => {
       }
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-
-      try {
-        // http://localhost:8000/beverages/detail/${id}
-        const { data } = await axios.get<ProductDetailInfo>(`/data/detail${id}.json`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        setInfo(data);
-        setLoading(false);
-      } catch (error) {
-        setErrorMessage('로그인을 먼저 해주세요.');
-        setErrorModal(true);
-      }
-    })();
-  }, []);
 
   const minusHandler = () => {
     if (option.amount > 1) {

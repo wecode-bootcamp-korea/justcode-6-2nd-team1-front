@@ -106,3 +106,22 @@ export interface OrderRes {
 export interface AgreeListProps {
   setPage: React.Dispatch<React.SetStateAction<number>>;
 }
+
+export interface Review {
+  id: number;
+  nickname: string;
+  content: string;
+  created_at: string;
+}
+
+export interface ReviewRes {
+  reviewData: Review[];
+}
+
+export interface CreateReviewReq {
+  content: string;
+}
+
+export interface CreateReviewRes {
+  message: string;
+}

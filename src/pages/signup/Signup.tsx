@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { GiSmartphone } from "react-icons/gi";
+import styled from 'styled-components';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GiSmartphone } from 'react-icons/gi';
 
-import SignForm from "../../components/Signup/SignForm";
-import AgreeList from "../../components/Signup/AgreeList";
-import Header from "../../components/Signup/header";
-import theme from "../../theme";
+import SignForm from '../../components/Signup/SignForm';
+import AgreeList from '../../components/Signup/AgreeList';
+import Header from '../../components/Signup/header';
+import theme from '../../theme';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ const Signup = () => {
     return (
       <StyledSignUp>
         <Header page={page} />
-        <AgreeList setPage={ setPage } />
+        <AgreeList setPage={setPage} />
       </StyledSignUp>
     );
   } else if (page === 1) {
@@ -28,7 +28,6 @@ const Signup = () => {
           <button>휴대폰 본인 인증</button>
         </PhonePermission>
         <SignForm setPage={setPage} />
-        
       </StyledSignUp>
     );
   } else if (page === 2) {
@@ -42,7 +41,7 @@ const Signup = () => {
       </StyledSignUp>
     );
   } else {
-    return <></>
+    return <></>;
   }
 };
 
@@ -110,13 +109,13 @@ export const AgreeBtn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width:90%;
+  width: 90%;
   padding-bottom: 30px;
   border-bottom: 1px solid grey;
   .checked {
-    background-color:${theme.red};
-    border:none;
-    color:white;
+    background-color: ${theme.red};
+    border: none;
+    color: white;
   }
   button {
     margin: 50px 0 10px 0;
@@ -126,8 +125,7 @@ export const AgreeBtn = styled.div`
     color: black;
     border: 1px solid ${theme.grey};
     border-radius: 40px;
-    font-size:16px;
-
+    font-size: 16px;
   }
   span {
     color: grey;
@@ -146,47 +144,49 @@ export const NextBtn = styled.button`
   background-color: ${theme.red};
   border: none;
   &:disabled {
-    color:grey;
-    background-color:${theme.grey};
+    color: grey;
+    background-color: ${theme.grey};
   }
 `;
 
 export const CheckList = styled.form`
   display: flex;
-  width:90vw;
+  width: 90vw;
   flex-direction: column;
-  align-items:flex-start;
+  align-items: flex-start;
   margin-top: 25px;
-  input[type="checkbox"] {
-    margin-right:10px;
+  input[type='checkbox'] {
+    margin-right: 10px;
   }
   span {
-    margin-top:20px;
-    display:flex;
-    align-items:center;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
     font-size: 14px;
   }
   .checkIcon {
-    margin-right:4px;
-    font-size:13px;
+    margin-right: 4px;
+    font-size: 13px;
   }
 `;
 
-export const SignUpForm = styled.form`
+export const SignUpForm = styled.div`
   .head {
     font-size: 17px;
     margin-top: 30px;
     padding-bottom: 20px;
-    width: 80vw;
+    width: 95%;
     border-bottom: 2px solid grey;
   }
+
   div {
     .title {
       font-size: 12px;
       display: flex;
       justify-content: space-between;
+      width: 90vw;
       margin-top: 10px;
-      padding: 0 4px;
+      padding: 0 2px;
       span {
         color: grey;
         margin-top: 10px;
@@ -196,11 +196,18 @@ export const SignUpForm = styled.form`
         flex-direction: column;
         justify-content: start;
         width: 60vw;
+        .btnCheck {
+          background-color: ${theme.red};
+          color: white;
+        }
+        .failColor {
+          color: #a71e1eed;
+        }
         .border {
           border: 3px solid #a71e1eed;
         }
         input {
-          width: 100%;
+          width: 90%;
           height: 40px;
           border-radius: 10px;
           margin-left: 5px;
@@ -222,6 +229,8 @@ export const SignUpForm = styled.form`
 
         span {
           font-size: 10px;
+          margin-left: 10px;
+          padding-right: 15px;
         }
       }
     }
@@ -236,7 +245,7 @@ const PhonePermission = styled.div`
   width: 80vw;
   height: 50px;
   background-color: white;
-  border:1px solid ${theme.grey};
+  border: 1px solid ${theme.grey};
   border-radius: 40px;
   button {
     font-size: 16px;

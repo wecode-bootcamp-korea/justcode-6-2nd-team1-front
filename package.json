@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/navermaps": "^3.0.17",
     "axios": "^0.27.2",
     "prettier": "^2.7.1",
     "react": "^18.2.0",

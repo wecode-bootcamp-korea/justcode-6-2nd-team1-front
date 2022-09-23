@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 
 const Location = () => {
   useEffect(() => {
-    const kakao = (window as any).kakao;
-    var container = document.getElementById('map');
-    var options = {
-      center: new kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+    let map = null;
+    const initMap = () => {
+      const map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(37.511337, 127.012084),
+        zoom: 13,
+      });
     };
-    var map = new kakao.maps.Map(container, options);
+    initMap();
   }, []);
 
   return (

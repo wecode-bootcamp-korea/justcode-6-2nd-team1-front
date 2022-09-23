@@ -1,15 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
-import styled from 'styled-components';
-import { CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
+import styled, { keyframes } from 'styled-components';
+import { AddCartReq, AddCartRes, CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
 import theme from '../../theme';
 import Amount from './Amount';
-import { GrClose } from 'react-icons/gr';
+import { ImSpinner2 } from 'react-icons/im';
 import ErrorModal from '../../components/ErrorModal';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import Pay from './pay/Pay';
 import useStore from '../../context/store';
+import Spin from '../../components/Spinner';
 
 const sugarRatio = {
   0: 1,
@@ -340,6 +341,11 @@ const StyledModal = styled.div<{ addPage: boolean; opt: ProductOption }>`
 
       h3 {
         margin-bottom: 20px;
+        font-size: 4vw;
+      }
+
+      p {
+        font-size: 4vw;
       }
     }
 
@@ -394,6 +400,11 @@ const StyledBtnContainer = styled.div`
       background-color: white;
       color: black;
       border-radius: 4px;
+
+      &:disabled {
+        background-color: #aaaaaa;
+        color: gray;
+      }
     }
   }
 
@@ -404,6 +415,10 @@ const StyledBtnContainer = styled.div`
     padding: 15px;
     color: white;
     font-size: 6vw;
+
+    svg {
+      animation: ${Spin} 0.5s infinite;
+    }
 
     &:disabled {
       background-color: #aaaaaa;
@@ -439,6 +454,7 @@ const ProductDetail = () => {
   const [orderRes, setOrderRes] = useState<OrderRes>();
   const [disabled, setDisabled] = useState(false);
   const { isLogin, token } = useStore();
+  const [cartDisabled, setCartDisabled] = useState(false);
 
   const [inputValue, setInputValue] = useState('');
   const [reviewList, setReviewList] = useState<Review[]>();
@@ -471,7 +487,7 @@ const ProductDetail = () => {
 
       try {
         // http://localhost:8000/beverages/detail/${id}
-        const { data } = await axios.get<ProductDetailInfo>(`/data/detail${id}.json`, {
+        const { data } = await axios.get<ProductDetailInfo>(`http://localhost:8000/beverages/detail/${id}`, {
           headers: {
             Authorization: token,
           },
@@ -710,6 +726,63 @@ const ProductDetail = () => {
     setTotalOption(total);
   }, [option]);
 
+  const addCartHandler = async () => {
+    if (info) {
+      setCartDisabled(true);
+      const req: OrderReq = {
+        amount: option.amount,
+        cold: option.isIce ? 1 : 0,
+        ice: option.iceSize,
+        sugar: option.sugar,
+        takeOut: option.isTakeout ? 1 : 0,
+        toppings: [
+          {
+            id: 3,
+            amount: option.additionalOption.aloe,
+          },
+          {
+            id: 6,
+            amount: option.additionalOption.cheeseform,
+          },
+          {
+            id: 4,
+            amount: option.additionalOption.coconut,
+          },
+          {
+            id: 5,
+            amount: option.additionalOption.milkform,
+          },
+          {
+            id: 1,
+            amount: option.additionalOption.pearl,
+          },
+          {
+            id: 2,
+            amount: option.additionalOption.whitePearl,
+          },
+        ],
+        totalPrice: (Number(info.detailData.price) + 500 * totalOption) * option.amount,
+      };
+
+      try {
+        // http://localhost:8000/beverages/cart/${id}
+        await axios.post<AddCartRes, AxiosResponse<AddCartRes>, AddCartReq>(`http://localhost:8000/beverages/cart/${id}`, req, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        setCartDisabled(false);
+        setErrorModal(true);
+        setErrorMessage('장바구니 추가 완료!');
+      } catch (error) {
+        console.log(error);
+        setCartDisabled(false);
+        setErrorModal(true);
+        setErrorMessage('장바구니 추가 실패!');
+      }
+    }
+  };
+
   if (loading || !info) {
     return <>{errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} errorMessage={errorMessage} />}상풍정보로딩중</>;
   } else {
@@ -726,7 +799,7 @@ const ProductDetail = () => {
                   <div className='imgContainer'>
                     <img src={info.detailData.imageURL} alt={info.detailData.beverageName} />
                     <h4>{info.detailData.beverageName}</h4>
-                    <p>{info.detailData.price}</p>
+                    <p>{(Number(info.detailData.price) + totalOption * 500).toLocaleString()}</p>
                   </div>
                   <div className='optionContainer'>
                     <h3>토핑(Toppings)</h3>
@@ -807,7 +880,7 @@ const ProductDetail = () => {
 
                   <div className='container'>
                     <h3>{info.detailData.beverageName}</h3>
-                    <p>{info.detailData.price}</p>
+                    <p>{(Number(info.detailData.price) + totalOption * 500).toLocaleString()}</p>
                     <div className='iceContainer'>
                       <button className='ice' onClick={() => setOption({ ...option, isIce: true })}>
                         ICED
@@ -921,10 +994,12 @@ const ProductDetail = () => {
               </StyledDiv>
               <StyledBtnContainer>
                 <div className='cartBtnContainer'>
-                  <button>장바구니</button>
+                  <button onClick={addCartHandler} disabled={cartDisabled}>
+                    {cartDisabled ? <ImSpinner2 /> : '장바구니'}
+                  </button>
                 </div>
                 <button onClick={payHandler} disabled={disabled}>
-                  바로 주문
+                  {disabled ? <ImSpinner2 /> : '바로주문'}
                 </button>
               </StyledBtnContainer>
             </>

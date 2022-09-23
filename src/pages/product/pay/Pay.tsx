@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { GrClose } from 'react-icons/gr';
+import { ImSpinner2 } from 'react-icons/im';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Spin from '../../../components/Spinner';
 import useStore from '../../../context/store';
 import { OrderRes } from '../../../interface';
 import theme from '../../../theme';
@@ -116,6 +118,10 @@ const FixedBtn = styled.button`
   background-color: ${theme.red};
   color: white;
 
+  svg {
+    animation: ${Spin} 0.5s infinite;
+  }
+
   &:disabled {
     background-color: #aaaaaa;
   }
@@ -215,12 +221,12 @@ const Pay = ({ orderRes }: PayProps) => {
           },
         });
         setModal(true);
-        setMessage('결제 및 주문완료!');
+        setMessage('결제 및 주문완료.');
       } catch (error) {
         console.log(error);
         setDisabled(false);
         setModal(true);
-        setMessage('통신 실패!');
+        setMessage('통신에 실패하였거나 포인트가 부족합니다.');
       }
     }
   };
@@ -281,7 +287,7 @@ const Pay = ({ orderRes }: PayProps) => {
             </div>
             <div className='text'>
               <h4>{orderRes.orderData.beverage_name}</h4>
-              <p>{orderRes.orderData.total_price}</p>
+              <p>{Number(orderRes.orderData.total_price).toLocaleString()}원</p>
             </div>
           </div>
           <StyledBtn detail={detail} onClick={() => setDetail(!detail)}>
@@ -297,17 +303,22 @@ const Pay = ({ orderRes }: PayProps) => {
                     .map((a, i) => (i === 0 ? a.toLocaleUpperCase() : a))
                     .join('') + ' Ice'}
                 </span>
-                {orderRes.orderData.price}원
+                {Number(orderRes.orderData.price).toLocaleString()}원
               </p>
               {!!orderRes.orderData.toppingData.length && (
                 <p>
                   <span>
                     {orderRes.orderData.toppingData
+                      .filter(data => data.amount)
                       .map(top => top.topping_id)
                       .map(id => toppingFromId(id))
                       .join('/')}
                   </span>
-                  {orderRes.orderData.toppingData.map(top => top.amount).reduce((prev, cur) => prev + cur * 500, 0)}원
+                  {orderRes.orderData.toppingData
+                    .map(top => top.amount)
+                    .reduce((prev, cur) => prev + cur * 500, 0)
+                    .toLocaleString()}
+                  원
                 </p>
               )}
               <p>
@@ -330,7 +341,7 @@ const Pay = ({ orderRes }: PayProps) => {
           </p>
         </div>
         <FixedBtn onClick={payHandler} disabled={disabled}>
-          결제 및 주문
+          {disabled ? <ImSpinner2 /> : '결제 및 주문'}
         </FixedBtn>
       </StyledPay>
     </>

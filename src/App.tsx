@@ -14,8 +14,6 @@ import ProductDetail from './pages/product/ProductDetail';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
-
-
 const App = () => {
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
   useEffect(() => {

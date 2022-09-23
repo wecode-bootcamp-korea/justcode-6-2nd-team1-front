@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
 const Location = () => {
   useEffect(() => {
@@ -7,6 +8,14 @@ const Location = () => {
       const map = new naver.maps.Map('map', {
         center: new naver.maps.LatLng(37.511337, 127.012084),
         zoom: 13,
+      });
+
+      const marker = new naver.maps.Marker({
+        position: new naver.maps.LatLng(37, 127.039573), //Marker 추가, 좌표에 마커가 찍힌다.
+        map: map,
+        icon: {
+          content: `<img alt="marker" src={FaMapMarkerAlt} />`,
+        },
       });
     };
     initMap();

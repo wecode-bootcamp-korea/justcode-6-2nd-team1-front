@@ -116,7 +116,7 @@ const Store = () => {
     setSelectedOption(value);
     setStates(states);
     console.log(selectedOption.slice(0, 2));
-    console.log(addressData.states);
+    console.log(addressData);
   };
 
   const submitHandler: React.FormEventHandler<HTMLButtonElement> = e => {

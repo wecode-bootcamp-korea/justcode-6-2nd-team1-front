@@ -14,14 +14,22 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [btn, setBtn] = useState(true);
+
+  type Email = {
+    message: string;
+  };
+
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = () => {
     // 이메일 중복검사
     async () => {
       try {
-        const res = await axios(`localhost:8000/users/signup?email=${email}`);
-        console.log(res);
+        const res = await axios.get<Email>(`localhost:8000/users/signup?email=${email}`);
+        if (res === '1') {
+          setEmailCheck(true);
+        }
       } catch (error) {
         console.log(error);
+        setEmailCheck(false);
       }
     };
   };
@@ -54,7 +62,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
     password === passwordTwice ? setPasswordCheck(true) : setPasswordCheck(false);
   }, [passwordTwice]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {}, [emailCheck]);
 
   return (
     <>

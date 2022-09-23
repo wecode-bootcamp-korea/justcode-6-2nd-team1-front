@@ -5,6 +5,7 @@ import { User } from '../interface';
 interface UserState extends User {
   isLogin: boolean;
   login: (userInfo: User) => void;
+  logout: () => void;
 }
 
 const useStore = create(
@@ -13,6 +14,9 @@ const useStore = create(
     isLogin: true,
     login(loginRes: User) {
       set(() => ({ ...loginRes, isLogin: true }));
+    },
+    logout() {
+      set(() => ({ token: '', isLogin: false }));
     },
   }))
 );

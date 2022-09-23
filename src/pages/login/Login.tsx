@@ -5,7 +5,7 @@ import { FiLock } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import theme from '../../theme';
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useStore from '../../context/store';
 
 type User = {
@@ -17,7 +17,12 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disabled, setDisabled] = useState(false);
-  const { login } = useStore();
+  const { login, isLogin } = useStore();
+
+  useEffect(() => {
+    isLogin && navigate('/');
+  }, [isLogin]);
+
   const signUpHandler: React.FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
     if (email.includes('@') && password.length >= 8) {
@@ -29,13 +34,13 @@ const Login = () => {
         });
         login(data);
         setDisabled(false);
-        navigate('/');
       } catch (error) {
         setDisabled(false);
         alert('이메일 혹은 비밀번호가 맞지않습니다.');
       }
     } else alert('이메일 혹은 비밀번호가 맞지않습니다.');
   };
+
   return (
     <StyledLogin>
       <div className='logoBox'>

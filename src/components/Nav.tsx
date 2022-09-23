@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { AiOutlinePlus } from 'react-icons/ai';
 import theme from '../theme';
 import { BiSearch } from 'react-icons/bi';
+import useStore from '../context/store';
 
 const StyledHeader = styled.header`
   position: fixed;
@@ -139,6 +140,7 @@ const StyledNav = styled.nav<{ menu: boolean }>`
 const Nav = () => {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
+  const { isLogin, logout } = useStore();
 
   const closeHandler: React.MouseEventHandler<HTMLDivElement> = e => {
     if (e.target instanceof HTMLElement) {
@@ -157,6 +159,12 @@ const Nav = () => {
     }
   };
 
+  const logoutHandler = () => {
+    logout();
+    navigate('/login');
+    setMenu(false);
+  };
+
   return (
     <>
       <StyledHeader>
@@ -169,7 +177,8 @@ const Nav = () => {
       <StyledDiv menu={menu} onClick={closeHandler} />
       <StyledNav menu={menu} className='menu'>
         <div className='nav-top'>
-          <h2 onClick={() => pageTransition('/login')}>로그인</h2>
+          {isLogin ? <h2 onClick={logoutHandler}>로그아웃</h2> : <h2 onClick={() => pageTransition('/login')}>로그인</h2>}
+
           <ul>
             <li>
               <img src={facebook} alt='fackbook' />

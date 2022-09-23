@@ -10,13 +10,8 @@ export type Storetype = {
   id: number;
   title: string;
   address: string;
+  states: string;
 };
-
-// export interface Storetype {
-//   id: number;
-//   title: string;
-//   address: string;
-// }
 
 const StyledHeader = styled.header`
   display: flex;
@@ -96,13 +91,16 @@ const StyledList = styled.ul`
 `;
 
 const Store = () => {
-  const [selectedOption, setSelectedOption] = useState();
+  const [selectedOption, setSelectedOption] = useState<string>('');
   const [addressList, setAddressList] = useState<Storetype[]>(addressData);
   const [address, setAddress] = useState<string>('');
-  const [value, setValue] = useState('');
+  const [states, setStates] = useState<string>('');
+  const [value, setValue] = useState<string>('');
   const [modal, setModal] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   const onClickModal = useCallback(
     (add: { id: number; title: string; address: string }) => {
@@ -115,7 +113,10 @@ const Store = () => {
 
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    setSelectedOption;
+    setSelectedOption(value);
+    setStates(states);
+    console.log(selectedOption.slice(0, 2));
+    console.log(addressData.states);
   };
 
   const submitHandler: React.FormEventHandler<HTMLButtonElement> = e => {
@@ -124,11 +125,8 @@ const Store = () => {
     if (inputRef.current) {
       setValue(inputRef.current.value);
       inputRef.current.value = '';
-      console.log(value);
     }
   };
-
-  const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   return (
     <div>
@@ -139,6 +137,13 @@ const Store = () => {
       <StyledSearch>
         <div className='container'>
           <div className='search'>
+            <select onChange={selectChange} value={selectedOption}>
+              {addresses.map(item => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
             <form>
               <input type='text' ref={inputRef} placeholder='매장명을 검색해 주세요'></input>
               <button onClick={submitHandler}>
@@ -154,8 +159,19 @@ const Store = () => {
             .filter(val => {
               if (value == ' ') {
                 return val;
-              } else if (val.title.toLowerCase().includes(value.toLowerCase())) {
+              }
+              if (val.title.toLowerCase().includes(value.toLowerCase())) {
                 return val;
+              }
+            })
+            .filter(i => {
+              const sliced = selectedOption.slice(0, 2);
+              if (selectedOption == '') {
+                return i;
+              }
+              if (sliced == states) {
+                console.log(states);
+                return i;
               }
             })
             .map((add, i) => (

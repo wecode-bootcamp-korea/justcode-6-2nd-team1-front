@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef, PropsWithChildren } from 'react';
 import styled from 'styled-components';
 import theme from '../../theme';
-import addressData from '././addressData.json';
 import Location from './Location';
 import { Storetype } from './Store';
 
@@ -28,12 +27,12 @@ const StyledModal = styled.div`
     div.name {
       margin: 10px;
       img {
-        width: 70px;
+        width: 65px;
       }
 
       span.title {
         color: white;
-        font-size: 23px;
+        font-size: 25px;
         margin-left: 10px;
       }
       button {
@@ -55,7 +54,7 @@ const StyledModal = styled.div`
       background-color: gray;
       margin: 10px;
     }
-    div.adress {
+    table.adress {
       height: 200px;
       background-color: white;
       margin: 10px;
@@ -88,7 +87,6 @@ interface ModalDefaultType {
 
 const Modal = ({ onClickModal, setModal, addressList, title, address }: ModalDefaultType) => {
   // let [addresses, setAddresses] = useState(addressData);
-  console.log(title);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -112,16 +110,20 @@ const Modal = ({ onClickModal, setModal, addressList, title, address }: ModalDef
           <div className='map'>
             <Location />
           </div>
-          <div className='adress'>
-            <tr>
-              <th>주소</th>
-              <td>{address}</td>
-            </tr>
-            <tr>
-              <th>영업시간</th>
-              <td>7:00~23:00 / 마이티오더 운영 시간: 08:00~22:00</td>
-            </tr>
-          </div>
+          <table className='adress'>
+            <thead>
+              <tr>
+                <th>주소</th>
+                <td>{address}</td>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th>영업시간</th>
+                <td>7:00~23:00 / 마이티오더 운영 시간: 08:00~22:00</td>
+              </tr>
+            </thead>
+          </table>
         </div>
       </div>
     </StyledModal>

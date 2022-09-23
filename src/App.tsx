@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
+import Footer from './components/Footer';
 import Nav from './components/Nav';
 import useStore from './context/store';
 import GlobalStyle from './GlobalStyle';
@@ -11,6 +12,7 @@ import NoticePage from './pages/notice/Notice';
 import Order from './pages/order/Order';
 import Product from './pages/product/Product';
 import ProductDetail from './pages/product/ProductDetail';
+import Search from './pages/search/Search';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
@@ -33,12 +35,13 @@ const App = () => {
         <Route path='/notice' element={<NoticePage />} />
         <Route path='/news' element={<NoticePage />} />
         <Route path='/product' element={<Product />} />
-        <Route path='/product/detail' element={<ProductDetail />} />
-        <Route path='/product/detail/:id' element={<ProductDetail />} />
+        <Route path='/product/detail/*' element={<ProductDetail />} />
+        <Route path='/product/detail/:id/*' element={<ProductDetail />} />
 
         <Route path='/cart' element={<Cart />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/search' element={<Search />} />
       </Routes>
     </>
   );

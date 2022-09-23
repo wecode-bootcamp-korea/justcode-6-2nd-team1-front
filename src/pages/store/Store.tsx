@@ -41,23 +41,36 @@ const StyledSearch = styled.div`
     padding: 10px;
 
     div.search {
-      font-size: 30px;
+      display: flex;
       text-align: center;
+      font-size: 30px;
+      border: none;
 
-      input {
-        width: 70%;
+      select {
+        display: flex;
+        width: 25%;
         height: 40px;
-        font-size: 15px;
         border: none;
-        background-color: #ffffff;
-        padding: 10px;
       }
 
-      button {
-        width: 50px;
-        height: 40px;
-        background-color: #ffffff;
-        border: none;
+      form {
+        display: flex;
+        width: 80%;
+        input {
+          display: flex;
+          width: 80%;
+          height: 40px;
+          border: none;
+          background-color: #ffffff;
+          padding: 10px;
+        }
+
+        button {
+          width: 50px;
+          height: 40px;
+          background-color: #ffffff;
+          border: none;
+        }
       }
     }
   }
@@ -76,12 +89,14 @@ const StyledList = styled.ul`
     h4 {
       color: #222222;
       font-size: 4vw;
+      margin-top: 10px;
     }
 
     p {
       font-size: 3vw;
       margin-top: 10px;
       white-space: nowrap;
+      white-space: normal;
     }
 
     &:last-of-type {
@@ -103,10 +118,11 @@ const Store = () => {
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   const onClickModal = useCallback(
-    (add: { id: number; title: string; address: string }) => {
+    (add: { id: number; title: string; address: string; states: string }) => {
       setModal(!modal);
       setTitle(add.title);
       setAddress(add.address);
+      setStates(add.states);
     },
     [modal]
   );
@@ -114,9 +130,8 @@ const Store = () => {
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setSelectedOption(value);
-    setStates(states);
+    setAddressList(addressData);
     console.log(selectedOption.slice(0, 2));
-    console.log(addressData);
   };
 
   const submitHandler: React.FormEventHandler<HTMLButtonElement> = e => {
@@ -157,6 +172,14 @@ const Store = () => {
         <>
           {addressData
             .filter(val => {
+              if (selectedOption == '시,도') {
+                return val;
+              }
+              if (val.states.toLowerCase().includes(selectedOption.toLowerCase())) {
+                return val;
+              }
+            })
+            .filter(val => {
               if (value == ' ') {
                 return val;
               }
@@ -164,23 +187,23 @@ const Store = () => {
                 return val;
               }
             })
-            .filter(i => {
-              const sliced = selectedOption.slice(0, 2);
-              if (selectedOption == '') {
-                return i;
-              }
-              if (sliced == states) {
-                console.log(states);
-                return i;
-              }
-            })
+
+            //   const sliced = selectedOption.slice(0, 2);
+            //   if (selectedOption == '') {
+            //     return i;
+            //   }
+            //   if (sliced === states) {
+            //     return i;
+            //   }
+            // })
             .map((add, i) => (
               <li onClick={() => onClickModal(add)} key={add.id}>
+                <p>{add.states}</p>
                 <h4>{add.title}</h4>
                 <p>{add.address}</p>
               </li>
             ))}
-          {modal && <Modal setModal={setModal} title={title} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
+          {modal && <Modal states={states} setModal={setModal} title={title} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
     </div>

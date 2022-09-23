@@ -55,39 +55,46 @@ const StyledModal = styled.div`
       margin: 10px;
     }
     table.adress {
+      display: flexbox;
       height: 200px;
       background-color: white;
       margin: 10px;
-      padding: 10px;
+      border-collapse: separate;
+      border-spacing: 0 20px;
 
-      th {
-        width: 70px;
-        font-size: 13px;
-        font-weight: bold;
-        margin-right: 10px;
-        line-height: 30px;
-      }
+      tr {
+        height: 30px;
 
-      td {
-        width: 245px;
-        margin-left: 10px;
-        font-size: 12px;
+        th {
+          width: 20%;
+          font-size: 13px;
+          font-weight: bold;
+          margin-right: 10px;
+          line-height: 30px;
+        }
+
+        td {
+          width: 80%;
+
+          margin-right: 10px;
+          padding: 10px;
+          font-size: 12px;
+        }
       }
     }
   }
 `;
 
 interface ModalDefaultType {
-  onClickModal: (a: { id: number; title: string; address: string }) => void;
+  onClickModal: (a: { id: number; title: string; address: string; states: string }) => void;
   addressList: Storetype[];
   title: string;
   address: string;
+  states: string;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal = ({ onClickModal, setModal, addressList, title, address }: ModalDefaultType) => {
-  // let [addresses, setAddresses] = useState(addressData);
-
+const Modal = ({ onClickModal, setModal, addressList, states, title, address }: ModalDefaultType) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -111,6 +118,12 @@ const Modal = ({ onClickModal, setModal, addressList, title, address }: ModalDef
             <Location />
           </div>
           <table className='adress'>
+            <thead>
+              <tr>
+                <th>지역</th>
+                <td>{states}</td>
+              </tr>
+            </thead>
             <thead>
               <tr>
                 <th>주소</th>

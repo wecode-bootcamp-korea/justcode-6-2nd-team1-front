@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react';
-import { FaMapMarkerAlt } from 'react-icons/fa';
 
-const Location = () => {
+interface LocationDefaultType {
+  lat: number;
+  lng: number;
+}
+const Location = ({ lat, lng }: LocationDefaultType) => {
   useEffect(() => {
-    let map = null;
+    let navermap = null;
     const initMap = () => {
-      const map = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(37.511337, 127.012084),
+      const navermap = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(lat, lng),
         zoom: 13,
       });
 
       const marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(37, 127.039573), //Marker 추가, 좌표에 마커가 찍힌다.
-        map: map,
+        position: new naver.maps.LatLng(lat, lng), //Marker 추가, 좌표에 마커가 찍힌다.
+        map: navermap,
         icon: {
-          content: `<img alt="marker" src={FaMapMarkerAlt} />`,
+          url: `<img alt="marker" src={vectorIcon} />`,
         },
       });
     };

@@ -86,15 +86,17 @@ const StyledModal = styled.div`
 `;
 
 interface ModalDefaultType {
-  onClickModal: (a: { id: number; title: string; address: string; states: string }) => void;
+  onClickModal: (a: { id: number; title: string; address: string; states: string; lat: string; lng: string }) => void;
   addressList: Storetype[];
   title: string;
   address: string;
   states: string;
+  lat: string;
+  lng: string;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal = ({ onClickModal, setModal, addressList, states, title, address }: ModalDefaultType) => {
+const Modal = ({ onClickModal, setModal, lat, lng, addressList, states, title, address }: ModalDefaultType) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -115,7 +117,7 @@ const Modal = ({ onClickModal, setModal, addressList, states, title, address }: 
             </button>
           </div>
           <div className='map'>
-            <Location />
+            <Location lat={lat} lng={lng} />
           </div>
           <table className='adress'>
             <thead>

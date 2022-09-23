@@ -11,6 +11,8 @@ export type Storetype = {
   title: string;
   address: string;
   states: string;
+  lat: number;
+  lng: number;
 };
 
 const StyledHeader = styled.header`
@@ -43,6 +45,7 @@ const StyledSearch = styled.div`
     div.search {
       display: flex;
       text-align: center;
+      margin: 5px;
       font-size: 30px;
       border: none;
 
@@ -58,7 +61,7 @@ const StyledSearch = styled.div`
         width: 80%;
         input {
           display: flex;
-          width: 80%;
+          width: 85%;
           height: 40px;
           border: none;
           background-color: #ffffff;
@@ -110,6 +113,8 @@ const Store = () => {
   const [addressList, setAddressList] = useState<Storetype[]>(addressData);
   const [address, setAddress] = useState<string>('');
   const [states, setStates] = useState<string>('');
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setlng] = useState<number>(0);
   const [value, setValue] = useState<string>('');
   const [modal, setModal] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
@@ -118,11 +123,13 @@ const Store = () => {
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   const onClickModal = useCallback(
-    (add: { id: number; title: string; address: string; states: string }) => {
+    (add: { id: number; title: string; address: string; states: string; lat: number; lng: number }) => {
       setModal(!modal);
       setTitle(add.title);
       setAddress(add.address);
       setStates(add.states);
+      setLat(add.lat);
+      setlng(add.lng);
     },
     [modal]
   );
@@ -187,15 +194,6 @@ const Store = () => {
                 return val;
               }
             })
-
-            //   const sliced = selectedOption.slice(0, 2);
-            //   if (selectedOption == '') {
-            //     return i;
-            //   }
-            //   if (sliced === states) {
-            //     return i;
-            //   }
-            // })
             .map((add, i) => (
               <li onClick={() => onClickModal(add)} key={add.id}>
                 <p>{add.states}</p>
@@ -203,7 +201,7 @@ const Store = () => {
                 <p>{add.address}</p>
               </li>
             ))}
-          {modal && <Modal states={states} setModal={setModal} title={title} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
+          {modal && <Modal lat={lat} lng={lng} states={states} setModal={setModal} title={title} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
     </div>

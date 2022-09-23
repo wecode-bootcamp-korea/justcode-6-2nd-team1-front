@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 const SignForm = ({ setPage }: AgreeListProps) => {
   const [email, setEmail] = useState('');
+  const [emailCheck, setEmailCheck] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordTwice, setPasswordTwice] = useState('');
   const [passwordCheck, setPasswordCheck] = useState(true);
@@ -13,19 +14,33 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [btn, setBtn] = useState(true);
-  const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = e => {
-    // 이메일 중복검사 함수
+  const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = () => {
+    // 이메일 중복검사
+    async () => {
+      try {
+        const res = await axios(`localhost:8000/users/signup?email=${email}`);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      }
+    };
   };
 
   const submitHandler: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
 
-    const signUpObj = {
-      email: email,
-      password: password,
-      nickname: nickname,
-      name: name,
-      phoneNumber: phoneNumber,
+    async () => {
+      try {
+        await axios.post('localhost:8000/users/signup', {
+          email,
+          password,
+          nickname,
+          name,
+          phoneNumber,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     };
   };
 
@@ -38,6 +53,8 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   useEffect(() => {
     password === passwordTwice ? setPasswordCheck(true) : setPasswordCheck(false);
   }, [passwordTwice]);
+
+  useEffect(() => {}, []);
 
   return (
     <>

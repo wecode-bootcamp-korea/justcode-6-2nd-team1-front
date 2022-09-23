@@ -32,7 +32,6 @@ const SignForm = ({ setPage }: AgreeListProps) => {
 
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = () => {
     // 이메일 중복검사
-
     async () => {
       try {
         const res = await axios.get<Email, string>(`localhost:8000/users/signup?email=${email}`);
@@ -45,26 +44,6 @@ const SignForm = ({ setPage }: AgreeListProps) => {
       } catch (error) {
         console.log(error);
         setEmailCheck(false);
-      }
-    };
-  };
-
-  const submitHandler: React.FormEventHandler<HTMLFormElement> = e => {
-    e.preventDefault();
-    // 기입한 정보 보내기
-    async () => {
-      try {
-        await axios.post<SignUp>('http://localhost:8000/users/signup', {
-          email,
-          password,
-          nickname,
-          name,
-          phoneNumber,
-        });
-        setPage(2);
-        setEmailState(email);
-      } catch (error) {
-        console.log(error);
       }
     };
   };
@@ -83,6 +62,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   }, [password, nickname, name, phoneNumber, emailCheck]);
 
   useEffect(() => {
+    // 비밀번호 확인 input
     password === passwordTwice ? setPasswordCheck(true) : setPasswordCheck(false);
   }, [passwordTwice]);
 
@@ -95,6 +75,24 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   //     setEmailCheck(true);
   //   }
   // }, [email, emailState]);
+
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+    e.preventDefault();
+    // 기입한 정보 보내기
+    try {
+      await axios.post<SignUp>('http://localhost:8000/users/signup', {
+        email,
+        password,
+        nickname,
+        name,
+        phoneNumber,
+      });
+      setPage(2); // 가입완료 화면으로 넘어가게하는 state
+      setEmailState(email);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <StyedForm onSubmit={submitHandler}>

@@ -1,49 +1,46 @@
-import styled from "styled-components";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { GiSmartphone } from "react-icons/gi";
+import styled from 'styled-components';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { GiSmartphone } from 'react-icons/gi';
 
-import SignForm from "../../components/Signup/SignForm";
-import AgreeList from "../../components/Signup/AgreeList";
-import Header from "../../components/Signup/header";
-import theme from "../../theme";
+import SignForm from '../../components/Signup/SignForm';
+import AgreeList from '../../components/Signup/AgreeList';
+import Header from '../../components/Signup/header';
+import theme from '../../theme';
 
 const Signup = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
 
-  if (page === 0) {
-    return (
-      <StyledSignUp>
-        <Header page={page} />
-        <AgreeList setPage={ setPage } />
-      </StyledSignUp>
-    );
-  } else if (page === 1) {
-    return (
-      <StyledSignUp>
-        <Header page={page} />
-        <PhonePermission>
-          <GiSmartphone />
-          <button>휴대폰 본인 인증</button>
-        </PhonePermission>
-        <SignForm setPage={setPage} />
-        
-      </StyledSignUp>
-    );
-  } else if (page === 2) {
-    return (
-      <StyledSignUp>
-        <Header page={page} />
-        <div className='toLogin'>
-          <span>가입이 완료되었습니다!</span>
-          <button onClick={() => navigate('/login')}>로그인 화면으로 가기</button>
-        </div>
-      </StyledSignUp>
-    );
-  } else {
-    return <></>
-  }
+  return (
+    <StyledSignUp>
+      {page === 0 && (
+        <>
+          <Header page={page} />
+          <AgreeList setPage={setPage} />
+        </>
+      )}
+      {page === 1 && (
+        <>
+          <Header page={page} />
+          <PhonePermission>
+            <GiSmartphone />
+            <button>휴대폰 본인 인증</button>
+          </PhonePermission>
+          <SignForm setPage={setPage} />
+        </>
+      )}
+      {page === 2 && (
+        <>
+          <Header page={page} />
+          <div className='toLogin'>
+            <span>가입이 완료되었습니다!</span>
+            <button onClick={() => navigate('/login')}>로그인 화면으로 가기</button>
+          </div>
+        </>
+      )}
+    </StyledSignUp>
+  );
 };
 
 export default Signup;
@@ -110,13 +107,13 @@ export const AgreeBtn = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width:90%;
+  width: 90%;
   padding-bottom: 30px;
   border-bottom: 1px solid grey;
   .checked {
-    background-color:${theme.red};
-    border:none;
-    color:white;
+    background-color: ${theme.red};
+    border: none;
+    color: white;
   }
   button {
     margin: 50px 0 10px 0;
@@ -126,8 +123,7 @@ export const AgreeBtn = styled.div`
     color: black;
     border: 1px solid ${theme.grey};
     border-radius: 40px;
-    font-size:16px;
-
+    font-size: 16px;
   }
   span {
     color: grey;
@@ -146,29 +142,29 @@ export const NextBtn = styled.button`
   background-color: ${theme.red};
   border: none;
   &:disabled {
-    color:grey;
-    background-color:${theme.grey};
+    color: grey;
+    background-color: ${theme.grey};
   }
 `;
 
 export const CheckList = styled.form`
   display: flex;
-  width:90vw;
+  width: 90vw;
   flex-direction: column;
-  align-items:flex-start;
+  align-items: flex-start;
   margin-top: 25px;
-  input[type="checkbox"] {
-    margin-right:10px;
+  input[type='checkbox'] {
+    margin-right: 10px;
   }
   span {
-    margin-top:20px;
-    display:flex;
-    align-items:center;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
     font-size: 14px;
   }
   .checkIcon {
-    margin-right:4px;
-    font-size:13px;
+    margin-right: 4px;
+    font-size: 13px;
   }
 `;
 
@@ -236,7 +232,7 @@ const PhonePermission = styled.div`
   width: 80vw;
   height: 50px;
   background-color: white;
-  border:1px solid ${theme.grey};
+  border: 1px solid ${theme.grey};
   border-radius: 40px;
   button {
     font-size: 16px;

@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
 import styled from 'styled-components';
-import { OrderReq, OrderRes, ProductDetailInfo, ProductOption } from '../../interface';
+import { CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
 import theme from '../../theme';
 import Amount from './Amount';
 import { GrClose } from 'react-icons/gr';
-import ErrorModal from './ErrorModal';
+import ErrorModal from '../../components/ErrorModal';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import Pay from './pay/Pay';
 import useStore from '../../context/store';
@@ -440,6 +440,59 @@ const ProductDetail = () => {
   const [disabled, setDisabled] = useState(false);
   const { isLogin, token } = useStore();
 
+  const [inputValue, setInputValue] = useState('');
+  const [reviewList, setReviewList] = useState<Review[]>();
+
+  const createReviewHandler = async () => {
+    await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
+      `http://localhost:8000/beverages/review/${id}`,
+      {
+        content: inputValue,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  };
+
+  const removeReviewHandler = async (review_id: number) => {
+    await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  };
+
+  useEffect(() => {
+    (async () => {
+      setLoading(true);
+
+      try {
+        // http://localhost:8000/beverages/detail/${id}
+        const { data } = await axios.get<ProductDetailInfo>(`/data/detail${id}.json`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        setInfo(data);
+        setLoading(false);
+      } catch (error) {
+        setErrorMessage('로그인을 먼저 해주세요.');
+        setErrorModal(true);
+      }
+
+      try {
+        const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
+        setReviewList(reviewRes.reviewData);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   const payHandler = async () => {
     if (info) {
       if (isLogin) {
@@ -477,13 +530,15 @@ const ProductDetail = () => {
                 amount: option.additionalOption.whitePearl,
               },
             ],
-            totalPrice: Number(info.detailData.price) + 500 * totalOption,
+            totalPrice: (Number(info.detailData.price) + 500 * totalOption) * option.amount,
           };
-          const { data } = await axios.post<OrderRes>(`http://localhost:8000/beverages/order/${id}`, req, {
+
+          const { data } = await axios.post<OrderRes, AxiosResponse<OrderRes>, OrderReq>(`http://localhost:8000/beverages/order/${id}`, req, {
             headers: {
               Authorization: token,
             },
           });
+
           setOrderRes(data);
           navigate('./pay');
           setDisabled(false);
@@ -493,33 +548,53 @@ const ProductDetail = () => {
           setOrderRes({
             orderData: {
               orderId: 17,
-              userName: '이름',
+              userName: '이름2',
               phone_number: '010-1234-5678',
               shopName: '수원',
               address: '3545687',
-              take_out: 1,
+              take_out: option.isTakeout ? 1 : 0,
               point: 500,
-              beverage_name: '조선향米 누룽지 밀크티',
+              beverage_name: '제품이름2',
               beverage_image: 'https://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg',
-              price: '5300',
-              amount: 2,
-              cold: 1,
-              sugar: 30,
-              ice: 'less',
+              price: info.detailData.price.toString(),
+              amount: option.amount,
+              cold: option.isIce ? 1 : 0,
+              sugar: option.sugar,
+              ice: option.iceSize,
               toppingData: [
                 {
-                  amount: 1,
-                  topping_id: 1,
+                  topping_id: 3,
+                  amount: option.additionalOption.aloe,
                 },
                 {
-                  amount: 1,
-                  topping_id: 2,
+                  topping_id: 6,
+                  amount: option.additionalOption.cheeseform,
                 },
-              ],
-              total_price: '6300',
+                {
+                  topping_id: 4,
+                  amount: option.additionalOption.coconut,
+                },
+                {
+                  topping_id: 5,
+                  amount: option.additionalOption.milkform,
+                },
+                {
+                  topping_id: 1,
+                  amount: option.additionalOption.pearl,
+                },
+                {
+                  topping_id: 2,
+                  amount: option.additionalOption.whitePearl,
+                },
+              ].filter(data => data.amount),
+              total_price: ((Number(info.detailData.price) + 500 * totalOption) * option.amount).toString(),
             },
           });
           navigate('./pay');
+          // 여기까지 지우고 아래 두줄 주석 해제
+
+          // setErrorModal(true);
+          // setErrorMessage('인증 또는 통신 실패.');
           setDisabled(false);
         }
       } else {
@@ -528,26 +603,6 @@ const ProductDetail = () => {
       }
     }
   };
-
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-
-      try {
-        // http://localhost:8000/beverages/detail/${id}
-        const { data } = await axios.get<ProductDetailInfo>(`/data/detail${id}.json`, {
-          headers: {
-            Authorization: token,
-          },
-        });
-        setInfo(data);
-        setLoading(false);
-      } catch (error) {
-        setErrorMessage('로그인을 먼저 해주세요.');
-        setErrorModal(true);
-      }
-    })();
-  }, []);
 
   const minusHandler = () => {
     if (option.amount > 1) {

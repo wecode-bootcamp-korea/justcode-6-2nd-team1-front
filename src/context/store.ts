@@ -12,7 +12,7 @@ const useStore = create(
     token: '',
     isLogin: false,
     login(loginRes: User) {
-      set(state => ({ ...loginRes, isLogin: true }));
+      set(() => ({ ...loginRes, isLogin: true }));
     },
   }))
 );

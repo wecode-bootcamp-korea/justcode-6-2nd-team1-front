@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useNav from '../../hooks/useNav';
-import { ProductInfo } from '../../interface';
+import { CategoryRes, ProductInfo } from '../../interface';
 import theme from '../../theme';
 import CategotySkeleton from './CategorySkeleton';
 
@@ -43,19 +43,26 @@ const StyledNav = styled.nav<{ mode: number }>`
 `;
 
 const StyledList = styled.ul`
-  padding: 0 10px;
+  padding: 10px 10px;
+  margin-bottom: 20px;
 
   li {
     display: flex;
     align-items: center;
+    border-bottom: 1px solid lightgray;
+    padding: 10px 0;
 
     div.imgContainer {
-      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 85px;
+      width: 85px;
       border-radius: 50px;
       overflow: hidden;
 
       img {
-        height: 100%;
+        height: 90%;
       }
     }
 
@@ -86,9 +93,9 @@ const Product = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const { data } = await axios.get<ProductInfo[]>(`data/${category[mode]}Data.json`);
-      setProductList(data);
-
+      // http://localhost:8000/beverages/category/${mode + 1}
+      const { data } = await axios.get<CategoryRes>(`data/seasonData.json`);
+      setProductList(data.beverageData);
       setLoading(false);
     })();
   }, [mode]);
@@ -115,10 +122,10 @@ const Product = () => {
           productList.map(productInfo => (
             <li key={productInfo.id} onClick={() => navigate(`/product/detail/${productInfo.id}`)}>
               <div className='imgContainer'>
-                <img src={productInfo.imageURL} alt='음료사진' />
+                <img src={productInfo.beverage_image} alt='음료사진' />
               </div>
               <div className='container'>
-                <h3>{productInfo.beverageName}</h3>
+                <h3>{productInfo.beverage_name}</h3>
                 <h4>{productInfo.price}</h4>
               </div>
             </li>

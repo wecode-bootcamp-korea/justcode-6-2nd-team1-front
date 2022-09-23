@@ -457,6 +457,14 @@ const ProductDetail = () => {
     );
   };
 
+  const removeReviewHandler = async (review_id: number) => {
+    await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+  };
+
   useEffect(() => {
     (async () => {
       setLoading(true);

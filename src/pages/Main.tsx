@@ -24,7 +24,7 @@ const Div = styled.div`
   height: 50px;
   position: absolute;
   right: 16px;
-  z-index: 99;
+  z-index: 2;
   text-align: right;
   line-height: 50px;
 `;
@@ -33,7 +33,7 @@ const DivPre = styled.div`
   height: 50px;
   position: absolute;
   left: 16px;
-  z-index: 99;
+  z-index: 2;
   text-align: left;
   line-height: 50px;
 `;
@@ -99,9 +99,9 @@ const Main = () => {
             </div>
           </Slider>
           <Search></Search>
-          <Footer></Footer>
         </Container>
       </div>
+      <Footer />
     </>
   );
 };

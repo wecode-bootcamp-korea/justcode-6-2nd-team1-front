@@ -1,11 +1,10 @@
 {
   "detailData": {
     "id": 1,
-    "beverageName": "조선뭐시기",
+    "beverageName": "제품이름",
     "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
     "price": "5000",
     "description": "맛있는진 모르겠지만 너무 비싸요",
-    "shopName": null,
     "nutrition_data": {
       "fat": 9,
       "kcal": 373,

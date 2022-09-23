@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
 import styled from 'styled-components';
@@ -6,7 +6,7 @@ import { OrderReq, OrderRes, ProductDetailInfo, ProductOption } from '../../inte
 import theme from '../../theme';
 import Amount from './Amount';
 import { GrClose } from 'react-icons/gr';
-import ErrorModal from './ErrorModal';
+import ErrorModal from '../../components/ErrorModal';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import Pay from './pay/Pay';
 import useStore from '../../context/store';
@@ -479,11 +479,13 @@ const ProductDetail = () => {
             ],
             totalPrice: (Number(info.detailData.price) + 500 * totalOption) * option.amount,
           };
-          const { data } = await axios.post<OrderRes>(`http://localhost:8000/beverages/order/${id}`, req, {
+
+          const { data } = await axios.post<OrderRes, AxiosResponse<OrderRes>, OrderReq>(`http://localhost:8000/beverages/order/${id}`, req, {
             headers: {
               Authorization: token,
             },
           });
+
           setOrderRes(data);
           navigate('./pay');
           setDisabled(false);
@@ -536,6 +538,10 @@ const ProductDetail = () => {
             },
           });
           navigate('./pay');
+          // 여기까지 지우고 아래 두줄 주석 해제
+
+          // setErrorModal(true);
+          // setErrorMessage('인증 또는 통신 실패.');
           setDisabled(false);
         }
       } else {

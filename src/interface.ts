@@ -8,6 +8,11 @@ export interface User {
   token: string;
 }
 
+export interface LoginReq {
+  email: string;
+  password: string;
+}
+
 export interface ProductInfo {
   id: number;
   beverage_name: string;

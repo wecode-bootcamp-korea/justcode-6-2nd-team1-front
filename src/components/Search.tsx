@@ -87,27 +87,24 @@ const Search = () => {
       alert('매장명을 입력해주세요');
     }
     if (inputValue.length >= 1) {
-      addressData
-        .filter(val => {
-          if (inputValue == ' ') {
-            return val;
-          } else if (val.title.toLowerCase().includes(inputValue.toLowerCase())) {
-            return val;
-          }
-        })
-        .map((add, i) => (
-          <>
-            <h4>{add.title}</h4>
-            <p>{add.address}</p>
-          </>
-        ));
+      goToStore();
+      //store 페이지에 넘어가서...자동 입력
+      // addressData
+      //   .filter(val => {
+      //     if (inputValue == ' ') {
+      //       return val;
+      //     } else if (val.title.toLowerCase().includes(inputValue.toLowerCase())) {
+      //       return val;
+      //     }
+      //   })
+      //   .map((add, i) => (
+      //     <>
+      //       <h4>{add.title}</h4>
+      //       <p>{add.address}</p>
+      //     </>
+      //   ));
     }
   };
-
-  // if (inputRef.current) {
-  //   setInputValue(inputRef.current.value);
-  //   inputRef.current.value = '';
-  // }
 
   return (
     <div>

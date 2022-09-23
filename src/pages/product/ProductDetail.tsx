@@ -401,8 +401,9 @@ const StyledBtnContainer = styled.div`
     width: 100%;
     border: none;
     background-color: ${theme.red};
-    padding: 10px;
+    padding: 15px;
     color: white;
+    font-size: 6vw;
 
     &:disabled {
       background-color: #aaaaaa;
@@ -435,7 +436,7 @@ const ProductDetail = () => {
       whitePearl: 0,
     },
   });
-  const [orderRes, serOrderRes] = useState<OrderRes>();
+  const [orderRes, setOrderRes] = useState<OrderRes>();
   const [disabled, setDisabled] = useState(false);
   const { isLogin, token } = useStore();
 
@@ -483,13 +484,13 @@ const ProductDetail = () => {
               Authorization: token,
             },
           });
-          serOrderRes(data);
+          setOrderRes(data);
           navigate('./pay');
           setDisabled(false);
         } catch (error) {
           console.log(error);
           // 나중에 지워야함
-          serOrderRes({
+          setOrderRes({
             orderData: {
               orderId: 17,
               userName: '이름',
@@ -515,7 +516,7 @@ const ProductDetail = () => {
                   topping_id: 2,
                 },
               ],
-              total_price: '10600',
+              total_price: '6300',
             },
           });
           navigate('./pay');

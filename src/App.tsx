@@ -12,6 +12,7 @@ import NoticePage from './pages/notice/Notice';
 import Order from './pages/order/Order';
 import Product from './pages/product/Product';
 import ProductDetail from './pages/product/ProductDetail';
+import Search from './pages/search/Search';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 
@@ -40,6 +41,7 @@ const App = () => {
         <Route path='/cart' element={<Cart />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/search' element={<Search />} />
       </Routes>
     </>
   );

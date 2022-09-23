@@ -93,10 +93,9 @@ const Product = () => {
   useEffect(() => {
     (async () => {
       setLoading(true);
-      // localhost:8000/beverages/category/:id
-      const { data } = await axios.get<CategoryRes>(`data/${category[mode]}Data.json`);
+      // http://localhost:8000/beverages/category/${mode + 1}
+      const { data } = await axios.get<CategoryRes>(`data/seasonData.json`);
       setProductList(data.beverageData);
-
       setLoading(false);
     })();
   }, [mode]);

@@ -9,8 +9,8 @@ interface UserState extends User {
 
 const useStore = create(
   devtools<UserState>(set => ({
-    token: 'asd',
-    isLogin: true,
+    token: '',
+    isLogin: false,
     login(loginRes: User) {
       set(() => ({ ...loginRes, isLogin: true }));
     },

@@ -47,6 +47,7 @@ const StyledPay = styled.div<{ detail: boolean }>`
   div.product {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
 
     div.imgContainer {
       img {
@@ -68,7 +69,7 @@ const StyledPay = styled.div<{ detail: boolean }>`
 
   div.detail {
     background-color: #dddddd;
-    height: ${({ detail }) => (detail ? 'calc(10vw + 60px)' : '0')};
+    height: ${({ detail }) => (detail ? 'calc(15vw + 80px)' : '0')};
     overflow: hidden;
     transition: 0.3s;
 
@@ -80,10 +81,10 @@ const StyledPay = styled.div<{ detail: boolean }>`
       display: flex;
       justify-content: space-between;
       font-size: 5vw;
+      margin: 0 0 20px 0;
 
-      &:first-of-type {
-        margin-top: 0;
-        margin-bottom: 20px;
+      &:last-of-type {
+        margin: 0;
       }
     }
   }
@@ -306,6 +307,10 @@ const Pay = ({ orderRes }: PayProps) => {
                     .join('/')}
                 </span>
                 {orderRes.orderData.toppingData.map(top => top.amount).reduce((prev, cur) => prev + cur * 500, 0)}원
+              </p>
+              <p>
+                <span>개수</span>
+                {orderRes.orderData.amount} 개
               </p>
             </div>
           </div>

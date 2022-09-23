@@ -477,7 +477,7 @@ const ProductDetail = () => {
                 amount: option.additionalOption.whitePearl,
               },
             ],
-            totalPrice: Number(info.detailData.price) + 500 * totalOption,
+            totalPrice: (Number(info.detailData.price) + 500 * totalOption) * option.amount,
           };
           const { data } = await axios.post<OrderRes>(`http://localhost:8000/beverages/order/${id}`, req, {
             headers: {
@@ -497,26 +497,42 @@ const ProductDetail = () => {
               phone_number: '010-1234-5678',
               shopName: '수원',
               address: '3545687',
-              take_out: 0,
+              take_out: option.isTakeout ? 1 : 0,
               point: 500,
               beverage_name: '제품이름2',
               beverage_image: 'https://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg',
-              price: '5300',
-              amount: 2,
-              cold: 0,
-              sugar: 50,
-              ice: 'full',
+              price: info.detailData.price.toString(),
+              amount: option.amount,
+              cold: option.isIce ? 1 : 0,
+              sugar: option.sugar,
+              ice: option.iceSize,
               toppingData: [
                 {
-                  amount: 1,
                   topping_id: 3,
+                  amount: option.additionalOption.aloe,
                 },
                 {
-                  amount: 1,
-                  topping_id: 5,
+                  topping_id: 6,
+                  amount: option.additionalOption.cheeseform,
                 },
-              ],
-              total_price: '6300',
+                {
+                  topping_id: 4,
+                  amount: option.additionalOption.coconut,
+                },
+                {
+                  topping_id: 5,
+                  amount: option.additionalOption.milkform,
+                },
+                {
+                  topping_id: 1,
+                  amount: option.additionalOption.pearl,
+                },
+                {
+                  topping_id: 2,
+                  amount: option.additionalOption.whitePearl,
+                },
+              ].filter(data => data.amount),
+              total_price: ((Number(info.detailData.price) + 500 * totalOption) * option.amount).toString(),
             },
           });
           navigate('./pay');

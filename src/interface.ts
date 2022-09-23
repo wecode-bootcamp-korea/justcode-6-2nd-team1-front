@@ -142,3 +142,11 @@ export interface AddCartReq {
 export interface AddCartRes {
   message: string;
 }
+
+export interface AmountOption {
+  name: string;
+  price: string;
+  amount: number;
+  minusHandler: () => void;
+  plusHandler: () => void;
+}

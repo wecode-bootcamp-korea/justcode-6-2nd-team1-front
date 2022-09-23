@@ -1,24 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
-import styled, { keyframes } from 'styled-components';
-import { AddCartReq, AddCartRes, CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
+import styled from 'styled-components';
+import { AddCartReq, AddCartRes, AmountOption, CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
 import theme from '../../theme';
 import Amount from './Amount';
-import { ImSpinner2 } from 'react-icons/im';
 import ErrorModal from '../../components/ErrorModal';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import Pay from './pay/Pay';
 import useStore from '../../context/store';
-import Spin from '../../components/Spinner';
-
-const sugarRatio = {
-  0: 1,
-  30: 2,
-  50: 3,
-  70: 4,
-  100: 5,
-};
+import { sugarToRatio } from '../../utils/sugarToRatio';
+import Spinner from '../../components/Spinner';
 
 const StyledDiv = styled.div<{ opt: ProductOption }>`
   padding: 10px;
@@ -108,6 +100,7 @@ const StyledDiv = styled.div<{ opt: ProductOption }>`
 
         p {
           margin-top: 20px;
+          line-height: 1.3;
 
           &.desName {
             font-weight: 500;
@@ -265,7 +258,7 @@ const StyledDiv = styled.div<{ opt: ProductOption }>`
             position: relative;
             transition: 0.2s;
 
-            &:nth-child(${({ opt }) => sugarRatio[opt.sugar]}) {
+            &:nth-child(${({ opt }) => sugarToRatio(opt.sugar)}) {
               background-color: ${theme.red};
             }
           }
@@ -416,10 +409,6 @@ const StyledBtnContainer = styled.div`
     color: white;
     font-size: 6vw;
 
-    svg {
-      animation: ${Spin} 0.5s infinite;
-    }
-
     &:disabled {
       background-color: #aaaaaa;
     }
@@ -560,57 +549,9 @@ const ProductDetail = () => {
           setDisabled(false);
         } catch (error) {
           console.log(error);
-          // 나중에 지워야함
-          setOrderRes({
-            orderData: {
-              orderId: 17,
-              userName: '이름2',
-              phone_number: '010-1234-5678',
-              shopName: '수원',
-              address: '3545687',
-              take_out: option.isTakeout ? 1 : 0,
-              point: 500,
-              beverage_name: '제품이름2',
-              beverage_image: 'https://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg',
-              price: info.detailData.price.toString(),
-              amount: option.amount,
-              cold: option.isIce ? 1 : 0,
-              sugar: option.sugar,
-              ice: option.iceSize,
-              toppingData: [
-                {
-                  topping_id: 3,
-                  amount: option.additionalOption.aloe,
-                },
-                {
-                  topping_id: 6,
-                  amount: option.additionalOption.cheeseform,
-                },
-                {
-                  topping_id: 4,
-                  amount: option.additionalOption.coconut,
-                },
-                {
-                  topping_id: 5,
-                  amount: option.additionalOption.milkform,
-                },
-                {
-                  topping_id: 1,
-                  amount: option.additionalOption.pearl,
-                },
-                {
-                  topping_id: 2,
-                  amount: option.additionalOption.whitePearl,
-                },
-              ].filter(data => data.amount),
-              total_price: ((Number(info.detailData.price) + 500 * totalOption) * option.amount).toString(),
-            },
-          });
-          navigate('./pay');
-          // 여기까지 지우고 아래 두줄 주석 해제
 
-          // setErrorModal(true);
-          // setErrorMessage('인증 또는 통신 실패.');
+          setErrorModal(true);
+          setErrorMessage('인증 또는 통신에 실패하였습니다.');
           setDisabled(false);
         }
       } else {
@@ -620,99 +561,120 @@ const ProductDetail = () => {
     }
   };
 
+  const additinalOption: AmountOption[] = [
+    {
+      name: '펄',
+      price: '500원',
+      amount: option.additionalOption.pearl,
+      minusHandler() {
+        if (option.additionalOption.pearl > 0) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, pearl: prev.additionalOption.pearl - 1 } }));
+        }
+      },
+      plusHandler() {
+        if (totalOption < 2) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, pearl: prev.additionalOption.pearl + 1 } }));
+        } else {
+          setErrorModal(true);
+          setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
+        }
+      },
+    },
+    {
+      name: '화이트펄',
+      price: '500원',
+      amount: option.additionalOption.whitePearl,
+      minusHandler() {
+        if (option.additionalOption.whitePearl > 0) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, whitePearl: prev.additionalOption.whitePearl - 1 } }));
+        }
+      },
+      plusHandler() {
+        if (totalOption < 2) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, whitePearl: prev.additionalOption.whitePearl + 1 } }));
+        } else {
+          setErrorModal(true);
+          setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
+        }
+      },
+    },
+    {
+      name: '알로에',
+      price: '500원',
+      amount: option.additionalOption.aloe,
+      minusHandler() {
+        if (option.additionalOption.aloe > 0) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, aloe: prev.additionalOption.aloe - 1 } }));
+        }
+      },
+      plusHandler() {
+        if (totalOption < 2) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, aloe: prev.additionalOption.aloe + 1 } }));
+        } else {
+          setErrorModal(true);
+          setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
+        }
+      },
+    },
+    {
+      name: '코코넛',
+      price: '500원',
+      amount: option.additionalOption.coconut,
+      minusHandler() {
+        if (option.additionalOption.coconut > 0) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, coconut: prev.additionalOption.coconut - 1 } }));
+        }
+      },
+      plusHandler() {
+        if (totalOption < 2) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, coconut: prev.additionalOption.coconut + 1 } }));
+        } else {
+          setErrorModal(true);
+          setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
+        }
+      },
+    },
+    {
+      name: '밀크폼',
+      price: '500원',
+      amount: option.additionalOption.milkform,
+      minusHandler() {
+        if (option.additionalOption.milkform > 0) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, milkform: prev.additionalOption.milkform - 1 } }));
+        }
+      },
+      plusHandler() {
+        if (totalOption < 2) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, milkform: prev.additionalOption.milkform + 1 } }));
+        } else {
+          setErrorModal(true);
+          setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
+        }
+      },
+    },
+    {
+      name: '치즈폼',
+      price: '500원',
+      amount: option.additionalOption.cheeseform,
+      minusHandler() {
+        if (option.additionalOption.cheeseform > 0) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, cheeseform: prev.additionalOption.cheeseform - 1 } }));
+        }
+      },
+      plusHandler() {
+        if (totalOption < 2) {
+          setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, cheeseform: prev.additionalOption.cheeseform + 1 } }));
+        } else {
+          setErrorModal(true);
+          setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
+        }
+      },
+    },
+  ];
+
   const minusHandler = () => {
     if (option.amount > 1) {
       setOption({ ...option, amount: option.amount - 1 });
-    }
-  };
-
-  const pearlMinusHandler = () => {
-    if (option.additionalOption.pearl > 0) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, pearl: prev.additionalOption.pearl - 1 } }));
-    }
-  };
-
-  const pearlPlusHandler = () => {
-    if (totalOption < 2) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, pearl: prev.additionalOption.pearl + 1 } }));
-    } else {
-      setErrorModal(true);
-      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
-    }
-  };
-
-  const whitePearlMinusHandler = () => {
-    if (option.additionalOption.whitePearl > 0) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, whitePearl: prev.additionalOption.whitePearl - 1 } }));
-    }
-  };
-
-  const whitePearlPlusHandler = () => {
-    if (totalOption < 2) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, whitePearl: prev.additionalOption.whitePearl + 1 } }));
-    } else {
-      setErrorModal(true);
-      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
-    }
-  };
-
-  const aloeMinusHandler = () => {
-    if (option.additionalOption.aloe > 0) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, aloe: prev.additionalOption.aloe - 1 } }));
-    }
-  };
-
-  const aloePlusHandler = () => {
-    if (totalOption < 2) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, aloe: prev.additionalOption.aloe + 1 } }));
-    } else {
-      setErrorModal(true);
-      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
-    }
-  };
-
-  const coconutMinusHandler = () => {
-    if (option.additionalOption.coconut > 0) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, coconut: prev.additionalOption.coconut - 1 } }));
-    }
-  };
-
-  const coconutPlusHandler = () => {
-    if (totalOption < 2) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, coconut: prev.additionalOption.coconut + 1 } }));
-    } else {
-      setErrorModal(true);
-      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
-    }
-  };
-
-  const milkformMinusHandler = () => {
-    if (option.additionalOption.milkform > 0) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, milkform: prev.additionalOption.milkform - 1 } }));
-    }
-  };
-
-  const milkformPlusHandler = () => {
-    if (totalOption < 2) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, milkform: prev.additionalOption.milkform + 1 } }));
-    } else {
-      setErrorModal(true);
-      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
-    }
-  };
-
-  const cheeseformMinusHandler = () => {
-    if (option.additionalOption.cheeseform > 0) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, cheeseform: prev.additionalOption.cheeseform - 1 } }));
-    }
-  };
-
-  const cheeseformPlusHandler = () => {
-    if (totalOption < 2) {
-      setOption(prev => ({ ...prev, additionalOption: { ...prev.additionalOption, cheeseform: prev.additionalOption.cheeseform + 1 } }));
-    } else {
-      setErrorModal(true);
-      setErrorMessage('토핑은 최대 2개까지 선택 가능합니다.');
     }
   };
 
@@ -784,7 +746,12 @@ const ProductDetail = () => {
   };
 
   if (loading || !info) {
-    return <>{errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} errorMessage={errorMessage} />}상풍정보로딩중</>;
+    return (
+      <>
+        {errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} errorMessage={errorMessage} />}
+        <Spinner fixed={true} />
+      </>
+    );
   } else {
     return (
       <Routes>
@@ -803,48 +770,16 @@ const ProductDetail = () => {
                   </div>
                   <div className='optionContainer'>
                     <h3>토핑(Toppings)</h3>
-                    <Amount //
-                      name='펄'
-                      price='500원'
-                      amount={option.additionalOption.pearl}
-                      minusHandler={pearlMinusHandler}
-                      plusHandler={pearlPlusHandler}
-                    />
-                    <Amount //
-                      name='화이트펄'
-                      price='500원'
-                      amount={option.additionalOption.whitePearl}
-                      minusHandler={whitePearlMinusHandler}
-                      plusHandler={whitePearlPlusHandler}
-                    />
-                    <Amount //
-                      name='알로에'
-                      price='500원'
-                      amount={option.additionalOption.aloe}
-                      minusHandler={aloeMinusHandler}
-                      plusHandler={aloePlusHandler}
-                    />
-                    <Amount //
-                      name='코코넛'
-                      price='500원'
-                      amount={option.additionalOption.coconut}
-                      minusHandler={coconutMinusHandler}
-                      plusHandler={coconutPlusHandler}
-                    />
-                    <Amount //
-                      name='밀크폼'
-                      price='500원'
-                      amount={option.additionalOption.milkform}
-                      minusHandler={milkformMinusHandler}
-                      plusHandler={milkformPlusHandler}
-                    />
-                    <Amount //
-                      name='치즈폼'
-                      price='500원'
-                      amount={option.additionalOption.cheeseform}
-                      minusHandler={cheeseformMinusHandler}
-                      plusHandler={cheeseformPlusHandler}
-                    />
+                    {additinalOption.map(op => (
+                      <Amount //
+                        amount={op.amount}
+                        name={op.name}
+                        price={op.price}
+                        minusHandler={op.minusHandler}
+                        plusHandler={op.plusHandler}
+                        key={op.name}
+                      />
+                    ))}
                   </div>
                   <div className='caution'>
                     <p>- 토핑은 최대 2종류, 2개까지 선택 가능합니다.</p>
@@ -880,7 +815,7 @@ const ProductDetail = () => {
 
                   <div className='container'>
                     <h3>{info.detailData.beverageName}</h3>
-                    <p>{(Number(info.detailData.price) + totalOption * 500).toLocaleString()}</p>
+                    <p>{((Number(info.detailData.price) + totalOption * 500) * option.amount).toLocaleString()}원</p>
                     <div className='iceContainer'>
                       <button className='ice' onClick={() => setOption({ ...option, isIce: true })}>
                         ICED
@@ -995,11 +930,11 @@ const ProductDetail = () => {
               <StyledBtnContainer>
                 <div className='cartBtnContainer'>
                   <button onClick={addCartHandler} disabled={cartDisabled}>
-                    {cartDisabled ? <ImSpinner2 /> : '장바구니'}
+                    {cartDisabled ? <Spinner /> : '장바구니'}
                   </button>
                 </div>
                 <button onClick={payHandler} disabled={disabled}>
-                  {disabled ? <ImSpinner2 /> : '바로주문'}
+                  {disabled ? <Spinner /> : '바로주문'}
                 </button>
               </StyledBtnContainer>
             </>

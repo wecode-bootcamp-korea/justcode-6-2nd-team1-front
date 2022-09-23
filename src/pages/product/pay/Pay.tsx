@@ -2,10 +2,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillCaretDown } from 'react-icons/ai';
 import { GrClose } from 'react-icons/gr';
-import { ImSpinner2 } from 'react-icons/im';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Spin from '../../../components/Spinner';
+import Spinner from '../../../components/Spinner';
 import useStore from '../../../context/store';
 import { OrderRes } from '../../../interface';
 import theme from '../../../theme';
@@ -117,10 +116,6 @@ const FixedBtn = styled.button`
   border: none;
   background-color: ${theme.red};
   color: white;
-
-  svg {
-    animation: ${Spin} 0.5s infinite;
-  }
 
   &:disabled {
     background-color: #aaaaaa;
@@ -259,7 +254,7 @@ const Pay = ({ orderRes }: PayProps) => {
           </div>
         </StyledModal>
       )}
-      <StyledPay detail={detail} length={orderRes.orderData.toppingData.length}>
+      <StyledPay detail={detail} length={orderRes.orderData.toppingData.filter(data => data.amount).length}>
         <div className='upSide'>
           <h4>주문 정보</h4>
           <Line />
@@ -272,6 +267,9 @@ const Pay = ({ orderRes }: PayProps) => {
           <h4>주문옵션</h4>
           <Line />
           <p>{orderRes.orderData.take_out ? '테이크 아웃' : '매장'}</p>
+          <h4>포인트</h4>
+          <Line />
+          <p>{orderRes.orderData.point}</p>
           <h4>가격</h4>
           <Line />
           <p>{orderRes.orderData.total_price}</p>
@@ -305,7 +303,7 @@ const Pay = ({ orderRes }: PayProps) => {
                 </span>
                 {Number(orderRes.orderData.price).toLocaleString()}원
               </p>
-              {!!orderRes.orderData.toppingData.length && (
+              {!!orderRes.orderData.toppingData.filter(data => data.amount).length && (
                 <p>
                   <span>
                     {orderRes.orderData.toppingData
@@ -341,7 +339,7 @@ const Pay = ({ orderRes }: PayProps) => {
           </p>
         </div>
         <FixedBtn onClick={payHandler} disabled={disabled}>
-          {disabled ? <ImSpinner2 /> : '결제 및 주문'}
+          {disabled ? <Spinner /> : '결제 및 주문'}
         </FixedBtn>
       </StyledPay>
     </>

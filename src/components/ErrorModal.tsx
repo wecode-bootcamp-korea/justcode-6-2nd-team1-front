@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { GrClose } from 'react-icons/gr';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useStore from '../../context/store';
+import useStore from '../context/store';
 
 const StyledError = styled.div`
   position: fixed;

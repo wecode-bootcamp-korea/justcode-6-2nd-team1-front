@@ -3,49 +3,48 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import combi from '../assets/combination.jpeg';
 import order from '../assets/order.jpeg';
+import addressData from '../pages/store/addressData.json';
 
 const StyledStore = styled.div`
-  display :block;
-  heigth: 30vh;
-  background-color : #f5f4f2;
+  display: block;
+  height: 200px;
+  background-color: #f5f4f2;
   text-align: center;
   margin-top: 30px;
-  padding-top : 20px;
-  padding-bottom : 20px;
+  padding-top: 20px;
 
-    search_wrap{
-      width: 240px;
-
-    }
-
-    h3 {
-      font-size: 20px;
-      padding-bottom: 20px;
-    }
-
-    p {
-     color: #666666;
-     font-size : 20px;
-     margin-bottom:10px;
-    }
-    
-    input {
-      width: 70%;
-      height: 40px;
-      margin-bottom:10px;
-      padding :10px;
-      outline: none;
-      border : none;
-    }
-    button {
-      font-size: 15px;
-      width: 70%;
-      height: 40px;
-      background : #3b3230;
-      color: white;
-      border : none;
-    }
+  search_wrap {
+    width: 240px;
+    height: 200px;
   }
+
+  h3 {
+    font-size: 20px;
+    padding-bottom: 20px;
+  }
+
+  p {
+    color: #666666;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  input {
+    width: 70%;
+    height: 40px;
+    margin-bottom: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+  }
+
+  button {
+    font-size: 15px;
+    width: 70%;
+    height: 40px;
+    background: #3b3230;
+    color: white;
+    border: none;
   }
 `;
 const StyledCombi = styled.div`
@@ -56,7 +55,7 @@ const StyledCombi = styled.div`
 
 const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [searchInput, setSearchInput] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
 
   const goToProduct = () => {
@@ -65,11 +64,45 @@ const Search = () => {
   const goToOrder = () => {
     navigate('./order');
   };
-  const inputHandler: React.FormEventHandler<HTMLFormElement> = e => {
+
+  const goToStore = () => {
+    navigate('./store');
+  };
+
+  // 매장명 검색 버튼을 누르면 store에 검색이 되면서 검색화면이 나와야함.
+
+  const inputHandler: React.FormEventHandler<HTMLInputElement> = e => {
+    if (e.target instanceof HTMLInputElement) {
+      let target = e;
+      setInputValue(e.target.value);
+      inputValue.slice;
+    }
+  };
+
+  const goToOrderFilter = {};
+
+  const submitHandler: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
-    if (inputRef.current) {
-      console.log(e.target);
+    if (inputValue.length < 1) {
       alert('매장명을 입력해주세요');
+    }
+    if (inputValue.length >= 1) {
+      goToStore();
+      //store 페이지에 넘어가서...자동 입력
+      // addressData
+      //   .filter(val => {
+      //     if (inputValue == ' ') {
+      //       return val;
+      //     } else if (val.title.toLowerCase().includes(inputValue.toLowerCase())) {
+      //       return val;
+      //     }
+      //   })
+      //   .map((add, i) => (
+      //     <>
+      //       <h4>{add.title}</h4>
+      //       <p>{add.address}</p>
+      //     </>
+      //   ));
     }
   };
 
@@ -79,10 +112,12 @@ const Search = () => {
         <div className='search_wrap'>
           <h3>매장검색</h3>
           <p className='speed'>공차 매장을 쉽고 빠르게 찾아보세요</p>
-          <form onSubmit={inputHandler}>
-            <input type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
+          <form>
+            <input onChange={inputHandler} type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
             <div>
-              <button> 매장 검색하기 </button>
+              <button type='submit' onClick={submitHandler}>
+                매장 검색하기
+              </button>
             </div>
           </form>
         </div>

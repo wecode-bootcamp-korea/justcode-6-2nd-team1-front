@@ -1,9 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import noticeTop from '../../assets/notice_top.jpg';
 import axios from 'axios';
 import addressData from '././addressData.json';
 import { BiSearch } from 'react-icons/bi';
+import Modal from './Modal';
+
+export type Storetype = {
+  id: number;
+  title: string;
+  address: string;
+  states: string;
+  lat: number;
+  lng: number;
+};
 
 const StyledHeader = styled.header`
   display: flex;
@@ -32,61 +42,37 @@ const StyledSearch = styled.div`
     margin: 10px;
     padding: 10px;
 
-
-
-    div.region{
-      display: flex;
-      justify-content: center;
-
-
-      div.state {
-        display: flex;
-        margin-right: 5px;
-
-
-
-         select {
-           width: 195px;
-           height:40px;
-           border : none;
-           background-color: #ffffff;
-      }
-    }
-
-      div.city {
-        display: flex;
-        width: 200px;
-        height:40px;
-
-        select {
-           width: 100%;
-           border : none;
-           background-color: #ffffff;
-      }
-    }
-  }
-
     div.search {
-      font-size : 30px;
+      display: flex;
       text-align: center;
+      margin: 5px;
+      font-size: 30px;
+      border: none;
 
-      input{
-        width : 350px;
+      select {
+        display: flex;
+        width: 25%;
         height: 40px;
-        font-size : 15px;
         border: none;
-        background-color: #ffffff;
-        padding: 10px;
       }
 
+      form {
+        display: flex;
+        width: 80%;
+        input {
+          display: flex;
+          width: 85%;
+          height: 40px;
+          border: none;
+          background-color: #ffffff;
+          padding: 10px;
+        }
 
-      button {
-        width : 50px;
-        height: 40px;
-        background-color: #ffffff;
-        border: none;
-        
-        
+        button {
+          width: 50px;
+          height: 40px;
+          background-color: #ffffff;
+          border: none;
         }
       }
     }
@@ -97,6 +83,7 @@ const StyledList = styled.ul`
   margin: 10px;
   padding: 0px 10px;
   background-color: #f1f2f2;
+  // background: 'http://www.gong-cha.co.kr/view/m/images/common/store_list_arr.png';
 
   li {
     border-bottom: 1px solid #666666;
@@ -105,12 +92,14 @@ const StyledList = styled.ul`
     h4 {
       color: #222222;
       font-size: 4vw;
+      margin-top: 10px;
     }
 
     p {
       font-size: 3vw;
       margin-top: 10px;
       white-space: nowrap;
+      white-space: normal;
     }
 
     &:last-of-type {
@@ -120,15 +109,36 @@ const StyledList = styled.ul`
 `;
 
 const Store = () => {
-  const [selectedOption, setSelectedOption] = useState();
-  const [addressList, setAddressList] = useState<any[]>([]);
-  const [value, setValue] = useState('');
-  const [lastLi, setLastLi] = useState<HTMLLIElement | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string>('');
+  const [addressList, setAddressList] = useState<Storetype[]>(addressData);
+  const [address, setAddress] = useState<string>('');
+  const [states, setStates] = useState<string>('');
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setlng] = useState<number>(0);
+  const [value, setValue] = useState<string>('');
+  const [modal, setModal] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
+
+  const onClickModal = useCallback(
+    (add: { id: number; title: string; address: string; states: string; lat: number; lng: number }) => {
+      setModal(!modal);
+      setTitle(add.title);
+      setAddress(add.address);
+      setStates(add.states);
+      setLat(add.lat);
+      setlng(add.lng);
+    },
+    [modal]
+  );
 
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    setSelectedOption;
+    setSelectedOption(value);
+    setAddressList(addressData);
+    console.log(selectedOption.slice(0, 2));
   };
 
   const submitHandler: React.FormEventHandler<HTMLButtonElement> = e => {
@@ -137,11 +147,8 @@ const Store = () => {
     if (inputRef.current) {
       setValue(inputRef.current.value);
       inputRef.current.value = '';
-      console.log(value);
     }
   };
-
-  const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   return (
     <div>
@@ -151,38 +158,17 @@ const Store = () => {
       </StyledHeader>
       <StyledSearch>
         <div className='container'>
-          <div className='region'>
-            <div className='state'>
-              <select onChange={selectChange}>
-                <>
-                  {addresses.map(address => (
-                    <option key={address} value={address}>
-                      {address}
-                    </option>
-                  ))}
-                </>
-              </select>
-            </div>
-            <div className='city'>
-              <select>
-                <option>구/군</option>??
-                <option>경기도</option>
-                <option>서울</option>
-              </select>
-            </div>
-          </div>
           <div className='search'>
+            <select onChange={selectChange} value={selectedOption}>
+              {addresses.map(item => (
+                <option value={item} key={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
             <form>
-              <input
-                type='text'
-                ref={inputRef}
-                className='input'
-                placeholder='매장명 또는 주소를 입력해 주세요'
-                onChange={e => {
-                  setValue(e.target.value);
-                }}
-              ></input>
-              <button onSubmit={submitHandler}>
+              <input type='text' ref={inputRef} placeholder='매장명을 검색해 주세요'></input>
+              <button onClick={submitHandler}>
                 <BiSearch />
               </button>
             </form>
@@ -193,18 +179,29 @@ const Store = () => {
         <>
           {addressData
             .filter(val => {
+              if (selectedOption == '시,도') {
+                return val;
+              }
+              if (val.states.toLowerCase().includes(selectedOption.toLowerCase())) {
+                return val;
+              }
+            })
+            .filter(val => {
               if (value == ' ') {
                 return val;
-              } else if (val.title.toLowerCase().includes(value.toLowerCase())) {
+              }
+              if (val.title.toLowerCase().includes(value.toLowerCase())) {
                 return val;
               }
             })
             .map((add, i) => (
-              <li key={add.id} ref={addressList.length - 1 === i ? setLastLi : null}>
+              <li onClick={() => onClickModal(add)} key={add.id}>
+                <p>{add.states}</p>
                 <h4>{add.title}</h4>
                 <p>{add.address}</p>
               </li>
             ))}
+          {modal && <Modal lat={lat} lng={lng} states={states} setModal={setModal} title={title} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
     </div>

@@ -140,7 +140,7 @@ const StyledBtn = styled.button<{ detail: boolean }>`
   }
 `;
 
-const StyledModal = styled.div`
+export const StyledModal = styled.div`
   position: fixed;
   top: 0;
   width: 100%;

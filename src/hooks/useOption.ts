@@ -46,7 +46,7 @@ const useOption = () => {
 
       try {
         // http://localhost:8000/beverages/detail/${id}
-        const { data } = await axios.get<ProductDetailInfo>(`/data/detail1.json`, {
+        const { data } = await axios.get<ProductDetailInfo>(`http://localhost:8000/beverages/detail/${id}`, {
           headers: {
             Authorization: token,
           },

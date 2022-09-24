@@ -399,6 +399,7 @@ export const StyledBtnContainer = styled.div`
     padding: 15px;
     color: white;
     font-size: 6vw;
+    height: calc(8vw + 30px);
 
     &:disabled {
       background-color: #aaaaaa;

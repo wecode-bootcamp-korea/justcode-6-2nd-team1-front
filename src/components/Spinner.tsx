@@ -15,6 +15,7 @@ const StyledSpinner = styled.div<{ fixed: boolean | undefined }>`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 6vw;
 
   ${({ fixed }) => (fixed ? 'position: fixed; width: 100%; height: 100%; top: 0; left: 0; background: #00000050; z-index: 25' : '')};
 

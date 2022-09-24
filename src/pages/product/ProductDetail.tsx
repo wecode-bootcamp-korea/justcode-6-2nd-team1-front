@@ -304,12 +304,12 @@ const ProductDetail = () => {
               </StyledDiv>
               <StyledBtnContainer>
                 <div className='cartBtnContainer'>
-                  <button onClick={addCartHandler} disabled={cartDisabled}>
+                  <button onClick={addCartHandler} disabled={cartDisabled || disabled}>
                     {cartDisabled ? <Spinner /> : '장바구니'}
                   </button>
                 </div>
-                <button onClick={payHandler} disabled={disabled}>
-                  {disabled ? <Spinner /> : '바로주문'}
+                <button onClick={payHandler} disabled={cartDisabled || disabled}>
+                  {disabled ? <Spinner /> : <p>바로주문</p>}
                 </button>
               </StyledBtnContainer>
             </>

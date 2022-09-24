@@ -139,4 +139,28 @@ export interface SignUpReq {
   nickname: string;
   name: string;
   phoneNumber: string;
+
+export interface AddCartReq {
+  amount: number;
+  cold: number;
+  totalPrice: number;
+  takeOut: number;
+  sugar: number;
+  ice: 'regular' | 'less' | 'full';
+  toppings: {
+    id: number;
+    amount: number;
+  }[];
+}
+
+export interface AddCartRes {
+  message: string;
+}
+
+export interface AmountOption {
+  name: string;
+  price: string;
+  amount: number;
+  minusHandler: () => void;
+  plusHandler: () => void;
 }

@@ -10,7 +10,6 @@ const StyledFooter = styled.div`
     height: 190px;
 
     div.footer-left {
-      display: inline-block;
       width: 20%;
       height: 100%;
       background-color: #575757;
@@ -32,7 +31,6 @@ const StyledFooter = styled.div`
       }
     }
     div.footer-right {
-      display: inline-block;
       width: 80%;
       height: 100%;
       color: #666666;

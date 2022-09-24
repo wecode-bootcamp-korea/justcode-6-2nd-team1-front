@@ -1,14 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
-import styled from 'styled-components';
-import { AddCartReq, AddCartRes, AmountOption, CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
-import theme from '../../theme';
-import Amount from './Amount';
+import { CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
+import Amount from '../../components/Amount';
 import ErrorModal from '../../components/ErrorModal';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Pay from './pay/Pay';
-import { sugarToRatio } from '../../utils/sugarToRatio';
 import Spinner from '../../components/Spinner';
 import useOption from '../../hooks/useOption';
 import { StyledModal, StyledDiv, StyledBtnContainer } from './ProductDetailStyle';
@@ -124,7 +121,7 @@ const ProductDetail = () => {
     return (
       <>
         {errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} errorMessage={errorMessage} />}
-        <Spinner fixed={true} />
+        {loading && <Spinner fixed={true} />}
       </>
     );
   } else {

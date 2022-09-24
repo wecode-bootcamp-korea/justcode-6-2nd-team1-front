@@ -6,7 +6,7 @@ import insta from '../assets/sns/insta.png';
 import kakao from '../assets/sns/kakao.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AiOutlinePlus } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlineShoppingCart } from 'react-icons/ai';
 import theme from '../theme';
 import { BiSearch } from 'react-icons/bi';
 import useStore from '../context/store';
@@ -179,17 +179,7 @@ const Nav = () => {
         <div className='nav-top'>
           {isLogin ? <h2 onClick={logoutHandler}>로그아웃</h2> : <h2 onClick={() => pageTransition('/login')}>로그인</h2>}
 
-          <ul>
-            <li>
-              <img src={facebook} alt='fackbook' />
-            </li>
-            <li>
-              <img src={insta} alt='instagram' />
-            </li>
-            <li>
-              <img src={kakao} alt='kakao talk' />
-            </li>
-          </ul>
+          <AiOutlineShoppingCart color='white' size='10vw' onClick={() => pageTransition('/cart')} />
         </div>
         <ul className='nav-main'>
           <li onClick={toggleHandler}>

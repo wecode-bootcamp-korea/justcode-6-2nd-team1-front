@@ -150,3 +150,27 @@ export interface AmountOption {
   minusHandler: () => void;
   plusHandler: () => void;
 }
+
+export interface CartItem {
+  shopName: string;
+  orderId: number;
+  beverage_image: string;
+  beverage_name: string;
+  price: string;
+  orderAmount: number;
+  cold: number;
+  sugar: 0 | 30 | 50 | 70 | 100;
+  ice: 'regular' | 'less' | 'full';
+  toppingData: {
+    amount: number;
+    topping_id: number;
+  }[];
+}
+
+export interface GetCartRes {
+  cartData: CartItem[];
+}
+
+export type CartOrderReq = {
+  id: number;
+}[];

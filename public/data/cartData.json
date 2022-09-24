@@ -1,0 +1,37 @@
+{
+  "cartData": [
+    {
+      "shopName": "수원",
+      "orderId": 64,
+      "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20211012/ZVK1TYI0DjHv3nao_20211012.png",
+      "beverage_name": "청포도 그린티+알로에",
+      "price": "5000",
+      "orderAmount": 2,
+      "cold": 0,
+      "sugar": 30,
+      "ice": "less",
+      "toppingData": []
+    },
+    {
+      "shopName": "수원",
+      "orderId": 66,
+      "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20211012/ZVK1TYI0DjHv3nao_20211012.png",
+      "beverage_name": "청포도 그린티+알로에",
+      "price": "5000",
+      "orderAmount": 3,
+      "cold": 0,
+      "sugar": 30,
+      "ice": "less",
+      "toppingData": [
+        {
+          "amount": 1,
+          "topping_id": 3
+        },
+        {
+          "amount": 2,
+          "topping_id": 5
+        }
+      ]
+    }
+  ]
+}

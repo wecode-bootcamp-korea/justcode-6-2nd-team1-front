@@ -41,7 +41,6 @@ const SignForm = ({ setPage }: AgreeListProps) => {
     e.preventDefault();
     try {
       const { data } = await axios.get<Email>(`http://localhost:8000/users/userCheck?email=${email}`);
-      console.log(typeof data);
       if (data === '1') {
         alert('사용 가능한 이메일 입니다');
         setEmailCheck(true);
@@ -111,7 +110,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
             <span>이메일</span>
             <div className='content'>
               <input type='email' onChange={e => setEmail(e.target.value)} />
-              <span className={emailCheck ? '' : 'btnCheck'} onClick={duplicateEmail}>
+              <span className={`button ${emailCheck ? '' : 'btnCheck'}`} onClick={duplicateEmail}>
                 중복확인
               </span>
             </div>
@@ -124,7 +123,10 @@ const SignForm = ({ setPage }: AgreeListProps) => {
                 onChange={e => setPassword(e.target.value)} //
                 name='password'
               />
-              <span className={passwordCondition ? '' : 'failColor'}>비밀번호는 영문, 숫자를 혼합하여 8~20자 이내로 입력하세요.</span>
+              <span className={passwordCondition ? '' : 'failColor'}>
+                비밀번호는 영문, 숫자를 혼합하여 8~20자
+                <br /> 이내로 입력하세요.
+              </span>
             </div>
           </div>
           <div className='title'>
@@ -175,7 +177,12 @@ const SignForm = ({ setPage }: AgreeListProps) => {
           </div>
         </div>
       </SignUpForm>
-      <NextBtn disabled={btn ? true : false}>다음</NextBtn>
+      <NextBtn //
+        // disabled={btn ? true : false}
+        onClick={() => setPage(2)}
+      >
+        다음
+      </NextBtn>
     </StyedForm>
   );
 };

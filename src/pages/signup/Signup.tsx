@@ -2,16 +2,26 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GiSmartphone } from 'react-icons/gi';
-
+import { GrClose } from 'react-icons/gr';
 import SignForm from '../../components/Signup/SignForm';
 import AgreeList from '../../components/Signup/AgreeList';
 import Header from '../../components/Signup/header';
 import theme from '../../theme';
+import { StyledModal } from '../product/pay/Pay';
 
 const Signup = () => {
+  const [modal, setModal] = useState(true);
   const navigate = useNavigate();
   const [page, setPage] = useState(0);
-
+  const closeHandler: React.MouseEventHandler<HTMLDivElement> = ({ target }) => {
+    if (target instanceof Element && target.closest('div.modalShadow')) {
+      if (target.closest('button.close') || target.closest('svg.close')) {
+        setModal(false);
+      } else if (!target.closest('div.container')) {
+        setModal(false);
+      }
+    }
+  };
   if (page === 0) {
     return (
       <StyledSignUp>
@@ -35,9 +45,23 @@ const Signup = () => {
       <StyledSignUp>
         <Header page={page} />
         <div className='toLogin'>
-          <span>가입이 완료되었습니다!</span>
+          <span>회원가입이 완료되었습니다!</span>
           <button onClick={() => navigate('/login')}>로그인 화면으로 가기</button>
         </div>
+        {modal && (
+          <StyledModal onClick={closeHandler} className='modalShadow'>
+            <div className='container'>
+              <p>
+                알림 <GrClose className='close' />
+              </p>
+              <h4>
+                회원가입 기념 30,000 포인트가
+                <br /> 지급되었습니다!
+              </h4>
+              <button className='close'>확인</button>
+            </div>
+          </StyledModal>
+        )}
       </StyledSignUp>
     );
   } else {
@@ -87,11 +111,14 @@ const StyledSignUp = styled.div`
       margin-top: 50px;
       background-color: ${theme.red};
       font-size: 20px;
-      width: 90%;
+      width: 110%;
       height: 60px;
       border-radius: 40px;
       border: none;
       color: white;
+    }
+    span {
+      margin: 5px 0;
     }
   }
   .on {
@@ -213,7 +240,7 @@ export const SignUpForm = styled.div`
           margin-left: 5px;
           border: 1px solid grey;
         }
-        button {
+        .button {
           margin: 5px 0 5px 5px;
           width: 40%;
           height: 40px;
@@ -221,6 +248,8 @@ export const SignUpForm = styled.div`
           color: white;
           border: none;
           border-radius: 10px;
+          line-height: 40px;
+          text-align: center;
         }
         p {
           color: #a71e1eed;
@@ -230,7 +259,7 @@ export const SignUpForm = styled.div`
         span {
           font-size: 10px;
           margin-left: 10px;
-          padding-right: 15px;
+          width: 90%;
         }
       }
     }

@@ -125,3 +125,18 @@ export interface CreateReviewReq {
 export interface CreateReviewRes {
   message: string;
 }
+export interface SignUp {
+  email: string;
+  password: string;
+  nickname: string;
+  name: string;
+  phoneNumber: string;
+}
+
+export interface SignUpReq {
+  email: string;
+  password: string;
+  nickname: string;
+  name: string;
+  phoneNumber: string;
+}

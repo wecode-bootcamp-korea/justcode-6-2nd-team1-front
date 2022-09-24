@@ -4,6 +4,7 @@ import { NextBtn } from '../../pages/signup/Signup';
 import { AgreeListProps } from '../../interface';
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
+import { SignUpReq, SignUp } from '../../interface';
 
 const SignForm = ({ setPage }: AgreeListProps) => {
   const [email, setEmail] = useState('');
@@ -19,22 +20,6 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const [btn, setBtn] = useState(true);
 
   type Email = '0' | '1';
-
-  type SignUp = {
-    email: string;
-    password: string;
-    nickname: string;
-    name: string;
-    phoneNumber: string;
-  };
-
-  interface SignUpReq {
-    email: string;
-    password: string;
-    nickname: string;
-    name: string;
-    phoneNumber: string;
-  }
 
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = async e => {
     // 이메일 중복검사
@@ -72,14 +57,14 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   }, [passwordTwice]);
 
   // 통신해보고 점검하기
-  // 이메일 중복체크 후 다시 이메일 수정했을 때 검사하도록 하는 버튼
-  // useEffect(() => {
-  //   if (email !== emailState) {
-  //     setEmailCheck(false);
-  //   } else {
-  //     setEmailCheck(true);
-  //   }
-  // }, [email, emailState]);
+  useEffect(() => {
+    // 이메일 중복체크 후 다시 이메일 수정했을 때 검사하도록 하는 버튼
+    if (email !== emailState) {
+      setEmailCheck(false);
+    } else {
+      setEmailCheck(true);
+    }
+  }, [email, emailState]);
 
   const submitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
@@ -178,7 +163,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
         </div>
       </SignUpForm>
       <NextBtn //
-        // disabled={btn ? true : false}
+        disabled={btn ? true : false}
         onClick={() => setPage(2)}
       >
         다음

@@ -86,13 +86,13 @@ const StyledModal = styled.div`
 `;
 
 interface ModalDefaultType {
-  onClickModal: (a: { id: number; title: string; address: string; states: string; lat: string; lng: string }) => void;
+  onClickModal: (a: { id: number; title: string; address: string; states: string; lat: number; lng: number }) => void;
   addressList: Storetype[];
   title: string;
   address: string;
   states: string;
-  lat: string;
-  lng: string;
+  lat: number;
+  lng: number;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 

@@ -74,12 +74,12 @@ export default Signup;
 //styled.Components
 
 const StyledSignUp = styled.div`
-  font-family: 'Noto Sans KR', sans-serif;
   display: flex;
-  width: 100%;
-  padding-bottom: 90px;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  padding-bottom: 90px;
+  font-family: 'Noto Sans KR', sans-serif;
   .header {
     display: flex;
     justify-content: center;
@@ -87,15 +87,15 @@ const StyledSignUp = styled.div`
     background-color: #eee;
     font-size: 13px;
     span {
-      text-align: center;
-      color: gray;
       width: 33%;
       padding: 25px;
+      text-align: center;
+      color: gray;
     }
     .inColor {
       background-color: ${theme.red};
-      color: white;
       border-radius: 0 40px 40px 0;
+      color: white;
     }
     .fullColor {
       background-color: ${theme.red};
@@ -108,13 +108,13 @@ const StyledSignUp = styled.div`
     align-items: center;
     margin-top: 50px;
     button {
-      margin-top: 50px;
-      background-color: ${theme.red};
-      font-size: 20px;
       width: 110%;
       height: 60px;
+      margin-top: 50px;
+      background-color: ${theme.red};
       border-radius: 40px;
       border: none;
+      font-size: 20px;
       color: white;
     }
     span {
@@ -127,8 +127,8 @@ const StyledSignUp = styled.div`
 `;
 
 const Line = styled.div`
-  margin: 25px 2px 0 0;
   height: 17px;
+  margin: 25px 2px 0 0;
   border-right: 1px solid gray;
 `;
 
@@ -145,18 +145,18 @@ export const AgreeBtn = styled.div`
     color: white;
   }
   button {
-    margin: 50px 0 10px 0;
     width: 95%;
     height: 50px;
+    margin: 50px 0 10px 0;
     background-color: inherit;
-    color: black;
     border: 1px solid ${theme.grey};
     border-radius: 40px;
     font-size: 16px;
+    color: black;
   }
   span {
-    color: grey;
     margin-top: 14px;
+    color: grey;
     font-size: 12px;
   }
 `;
@@ -166,29 +166,29 @@ export const NextBtn = styled.button`
   bottom: 0px;
   width: 100%;
   height: 60px;
-  font-size: 20px;
-  color: white;
   background-color: ${theme.red};
   border: none;
+  font-size: 20px;
+  color: white;
   &:disabled {
-    color: grey;
     background-color: ${theme.grey};
+    color: grey;
   }
 `;
 
 export const CheckList = styled.form`
   display: flex;
-  width: 90vw;
   flex-direction: column;
   align-items: flex-start;
+  width: 90vw;
   margin-top: 25px;
   input[type='checkbox'] {
     margin-right: 10px;
   }
   span {
-    margin-top: 20px;
     display: flex;
     align-items: center;
+    margin-top: 20px;
     font-size: 14px;
   }
   .checkIcon {
@@ -199,24 +199,24 @@ export const CheckList = styled.form`
 
 export const SignUpForm = styled.div`
   .head {
-    font-size: 17px;
+    width: 95%;
     margin-top: 30px;
     padding-bottom: 20px;
-    width: 95%;
     border-bottom: 2px solid grey;
+    font-size: 17px;
   }
 
   div {
     .title {
-      font-size: 12px;
       display: flex;
       justify-content: space-between;
       width: 90vw;
       margin-top: 10px;
       padding: 0 2px;
+      font-size: 12px;
       span {
-        color: grey;
         margin-top: 10px;
+        color: grey;
       }
       .content {
         display: flex;
@@ -236,8 +236,8 @@ export const SignUpForm = styled.div`
         input {
           width: 90%;
           height: 40px;
-          border-radius: 10px;
           margin-left: 5px;
+          border-radius: 10px;
           border: 1px solid grey;
         }
         .button {
@@ -245,21 +245,21 @@ export const SignUpForm = styled.div`
           width: 40%;
           height: 40px;
           background-color: grey;
-          color: white;
           border: none;
           border-radius: 10px;
           line-height: 40px;
           text-align: center;
+          color: white;
         }
         p {
-          color: #a71e1eed;
           margin: 5px 0 5px 5px;
+          color: #a71e1eed;
         }
 
         span {
-          font-size: 10px;
           margin-left: 10px;
           width: 90%;
+          font-size: 10px;
         }
       }
     }
@@ -270,16 +270,16 @@ const PhonePermission = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 50px 0 10px 0;
   width: 80vw;
   height: 50px;
+  margin: 50px 0 10px 0;
   background-color: white;
   border: 1px solid ${theme.grey};
   border-radius: 40px;
   button {
+    background-color: inherit;
+    border: none;
     font-size: 16px;
     color: black;
-    border: none;
-    background-color: inherit;
   }
 `;

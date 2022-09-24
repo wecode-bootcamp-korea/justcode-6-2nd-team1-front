@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { SignUpForm } from '../../pages/signup/Signup';
 import { NextBtn } from '../../pages/signup/Signup';
 import { AgreeListProps } from '../../interface';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 
 const SignForm = ({ setPage }: AgreeListProps) => {
@@ -18,9 +18,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [btn, setBtn] = useState(true);
 
-  type Email = {
-    message: string;
-  };
+  type Email = '0' | '1';
 
   type SignUp = {
     email: string;
@@ -30,22 +28,30 @@ const SignForm = ({ setPage }: AgreeListProps) => {
     phoneNumber: string;
   };
 
-  const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = () => {
+  interface SignUpReq {
+    email: string;
+    password: string;
+    nickname: string;
+    name: string;
+    phoneNumber: string;
+  }
+
+  const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = async e => {
     // 이메일 중복검사
-    async () => {
-      try {
-        const res = await axios.get<Email, string>(`localhost:8000/users/signup?email=${email}`);
-        if (res === '1') {
-          alert('사용 가능한 이메일 입니다');
-          setEmailCheck(true);
-        } else {
-          alert('사용중인 이메일 입니다');
-        }
-      } catch (error) {
-        console.log(error);
-        setEmailCheck(false);
+    e.preventDefault();
+    try {
+      const { data } = await axios.get<Email>(`http://localhost:8000/users/userCheck?email=${email}`);
+      console.log(typeof data);
+      if (data === '1') {
+        alert('사용 가능한 이메일 입니다');
+        setEmailCheck(true);
+      } else {
+        alert('사용중인 이메일 입니다');
       }
-    };
+    } catch (error) {
+      console.log(error);
+      setEmailCheck(false);
+    }
   };
 
   useEffect(() => {
@@ -80,14 +86,14 @@ const SignForm = ({ setPage }: AgreeListProps) => {
     e.preventDefault();
     // 기입한 정보 보내기
     try {
-      await axios.post<SignUp>('http://localhost:8000/users/signup', {
+      await axios.post<SignUp, AxiosResponse<SignUp>, SignUpReq>('http://localhost:8000/users/signup', {
         email,
         password,
         nickname,
         name,
         phoneNumber,
       });
-      setPage(2); // 가입완료 화면으로 넘어가게하는 state
+      // 가입완료 화면으로 넘어가게하는 state
       setEmailState(email);
     } catch (error) {
       console.log(error);
@@ -105,9 +111,9 @@ const SignForm = ({ setPage }: AgreeListProps) => {
             <span>이메일</span>
             <div className='content'>
               <input type='email' onChange={e => setEmail(e.target.value)} />
-              <button className={emailCheck ? '' : 'btnCheck'} onClick={duplicateEmail}>
+              <span className={emailCheck ? '' : 'btnCheck'} onClick={duplicateEmail}>
                 중복확인
-              </button>
+              </span>
             </div>
           </div>
           <div className='title'>

@@ -14,28 +14,7 @@ import useOption from '../../hooks/useOption';
 import { StyledModal, StyledDiv, StyledBtnContainer } from './ProductDetailStyle';
 
 const ProductDetail = () => {
-  const {
-    addCartHandler,
-    additinalOption,
-    cartDisabled,
-    errorMessage,
-    errorModal,
-    id,
-    info,
-    isLogin,
-    loading,
-    minusHandler,
-    option,
-    setCartDisabled,
-    setErrorMessage,
-    setErrorModal,
-    setInfo,
-    setLoading,
-    setOption,
-    setTotalOption,
-    totalOption,
-    token,
-  } = useOption();
+  const { addCartHandler, additinalOption, cartDisabled, errorMessage, errorModal, id, info, isLogin, loading, minusHandler, option, setErrorMessage, setErrorModal, setOption, totalOption, token } = useOption();
   const [addPage, setAddPage] = useState(false);
   const navigate = useNavigate();
 

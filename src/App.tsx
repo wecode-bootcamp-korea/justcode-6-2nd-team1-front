@@ -2,10 +2,9 @@ import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Nav from './components/Nav';
-import useStore from './context/store';
 import GlobalStyle from './GlobalStyle';
 import Brand from './pages/brand/Brand';
-import Cart from './pages/cart/Cart';
+import CartRoutes from './pages/cart/CartRoutes';
 import Login from './pages/login/Login';
 import Main from './pages/Main';
 import NoticePage from './pages/notice/Notice';
@@ -15,6 +14,7 @@ import ProductDetail from './pages/product/ProductDetail';
 import Search from './pages/search/Search';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
+import History from './pages/history/History';
 
 const App = () => {
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
@@ -37,8 +37,9 @@ const App = () => {
         <Route path='/product' element={<Product />} />
         <Route path='/product/detail/*' element={<ProductDetail />} />
         <Route path='/product/detail/:id/*' element={<ProductDetail />} />
+        <Route path='/history' element={<History />} />
 
-        <Route path='/cart' element={<Cart />} />
+        <Route path='/cart/*' element={<CartRoutes />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/search' element={<Search />} />

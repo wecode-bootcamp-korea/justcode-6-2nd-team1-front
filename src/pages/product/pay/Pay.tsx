@@ -239,7 +239,7 @@ const Pay = ({ orderRes }: PayProps) => {
   };
 
   if (!orderRes) {
-    return <></>;
+    return <Spinner fixed={true} />;
   }
   return (
     <>

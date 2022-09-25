@@ -1,18 +1,26 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { AiFillCheckCircle } from 'react-icons/ai';
+import { AiOutlineCheck } from 'react-icons/ai';
 import styled from 'styled-components';
-import ErrorModal from '../../components/ErrorModal';
 import Spinner from '../../components/Spinner';
-import useStore from '../../context/store';
-import { CartItem, GetCartRes } from '../../interface';
+import { CartItem } from '../../interface';
+import theme from '../../theme';
 import CartList from './CartList';
 
-const StyledCart = styled.div`
-  padding: 10px;
+const StyledCart = styled.div<{ allChecked: boolean }>`
+  padding: 10px 10px calc(6vw + 100px) 10px;
 
   h4 {
     font-size: 6vw;
+
+    &.total {
+      padding: 20px 10px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid gray;
+
+      span {
+        color: ${theme.red};
+      }
+    }
   }
 
   div.select {
@@ -31,6 +39,14 @@ const StyledCart = styled.div`
         padding: 2px 8px;
         font-size: 4vw;
       }
+
+      svg {
+        border: 1px solid gray;
+        border-radius: 50%;
+        padding: 1vw;
+        background-color: ${({ allChecked }) => (allChecked ? 'gray' : 'white')};
+        color: white;
+      }
     }
   }
 
@@ -40,60 +56,63 @@ const StyledCart = styled.div`
   }
 `;
 
-const Cart = () => {
-  const { token } = useStore();
-  const [cartList, setCartList] = useState<CartItem[]>();
-  const [loading, setLoading] = useState(true);
-  const [errorModal, setErrorModal] = useState(false);
+const StyledBtn = styled.button`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: calc(8vw + 20px);
+  background-color: ${theme.red};
+  color: white;
+  font-size: 6vw;
+  border: none;
+  padding: 10px;
 
-  // errorModal을 전역으로 관리하면 더 좋을듯
+  &:disabled {
+    background-color: #aaaaaa;
+  }
+`;
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      try {
-        // http://localhost:8000/beverages/cart
-        const {
-          data: { cartData },
-        } = await axios.get<GetCartRes>(`http://localhost:8000/beverages/cart`, {
-          headers: {
-            Authorization: token,
-          },
-        });
+interface CartProps {
+  cartList: CartItem[];
+  selectList: number[];
+  allCheckHandler: () => void;
+  orderHandler: () => void;
+  disabled: boolean;
+  setSelectList: React.Dispatch<React.SetStateAction<number[]>>;
+}
 
-        setCartList(cartData);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-        setErrorModal(true);
-      }
-    })();
-  }, []);
-
+const Cart = ({ cartList, selectList, allCheckHandler, disabled, orderHandler, setSelectList }: CartProps) => {
   return (
     <>
-      {errorModal && <ErrorModal errorMessage='로그인을 먼저 해주세요.' errorModal={errorModal} setErrorModal={setErrorModal} />}
-      {loading && <Spinner fixed={true} />}
-      {!loading && cartList && (
-        <StyledCart>
-          <div className='select'>
-            <h4>음료({cartList.length})</h4>
-            <div className='btnContainer'>
-              <AiFillCheckCircle size='5vw' />
-              <h2>전체선택</h2>
-              <button>선택삭제</button>
-            </div>
+      <StyledCart allChecked={cartList.every(cartItem => selectList.includes(cartItem.orderId))}>
+        <div className='select'>
+          <h4>음료({cartList.length})</h4>
+          <div className='btnContainer' onClick={allCheckHandler}>
+            <AiOutlineCheck size='5vw' />
+            <h2>전체선택</h2>
           </div>
-          <ul>
-            {cartList.map(cartItem => (
-              <CartList key={cartItem.orderId} cartItem={cartItem} />
-            ))}
-          </ul>
-        </StyledCart>
-      )}
+        </div>
+        <ul>
+          {cartList.map(cartItem => (
+            <CartList key={cartItem.orderId} cartItem={cartItem} setSelectList={setSelectList} selectList={selectList} />
+          ))}
+        </ul>
+        <h4 className='total'>
+          최종 결제 금액
+          <span>
+            {cartList //
+              .filter(cartItem => selectList.includes(cartItem.orderId))
+              .reduce((prev, cur) => prev + (Number(cur.price) + cur.toppingData.reduce((a, top) => a + top.amount, 0) * 500) * cur.orderAmount, 0)
+              .toLocaleString()}
+            원
+          </span>
+        </h4>
+      </StyledCart>
+      <StyledBtn disabled={disabled} onClick={orderHandler}>
+        {disabled ? <Spinner /> : '주문하기'}
+      </StyledBtn>
     </>
   );
 };
-
 export default Cart;

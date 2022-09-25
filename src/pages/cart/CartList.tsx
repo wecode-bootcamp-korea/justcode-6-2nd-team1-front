@@ -6,23 +6,35 @@ import { toppingFromId } from '../../utils/toppingFromId';
 import Amount from '../../components/Amount';
 import axios from 'axios';
 import ErrorModal from '../../components/ErrorModal';
+import { AiOutlineCheck } from 'react-icons/ai';
 
-const StyledList = styled.li`
+const StyledList = styled.li<{ checked: boolean }>`
   margin-bottom: 20px;
 
   div.upSide {
     display: flex;
     align-items: center;
+    padding-bottom: 10px;
 
     div.imgContainer {
       display: flex;
       justify-content: center;
       padding: 10px;
-      aspect-ratio: 1 / 1;
-      height: 100px;
+      position: relative;
 
       img {
-        height: 80px;
+        height: 30vw;
+      }
+
+      svg {
+        position: absolute;
+        left: 4vw;
+        bottom: 3vw;
+        padding: 1vw;
+        border: 1px solid gray;
+        border-radius: 50%;
+        background-color: ${({ checked }) => (checked ? 'gray' : 'white')};
+        color: white;
       }
     }
 
@@ -59,9 +71,11 @@ const StyledList = styled.li`
 
 interface CartItemProps {
   cartItem: CartItem;
+  setSelectList: React.Dispatch<React.SetStateAction<number[]>>;
+  selectList: number[];
 }
 
-const CartList = ({ cartItem }: CartItemProps) => {
+const CartList = ({ cartItem, setSelectList, selectList }: CartItemProps) => {
   const [amount, setAmount] = useState(cartItem.orderAmount);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -96,17 +110,28 @@ const CartList = ({ cartItem }: CartItemProps) => {
     }
   };
 
+  const selectHandler = () => {
+    setSelectList(prev => {
+      if (prev.includes(cartItem.orderId)) {
+        return prev.filter(e => e !== cartItem.orderId);
+      } else {
+        return [...prev, cartItem.orderId];
+      }
+    });
+  };
+
   return (
     <>
       {error && <ErrorModal errorMessage='통신에 실패하였습니다.' errorModal={error} setErrorModal={setError} />}
-      <StyledList>
+      <StyledList checked={selectList.includes(cartItem.orderId)}>
         <div className='upSide'>
-          <div className='imgContainer'>
+          <div className='imgContainer' onClick={selectHandler}>
             <img src={cartItem.beverage_image} alt='' />
+            <AiOutlineCheck size='6vw' />
           </div>
           <div className='textContainer'>
             <h4>{cartItem.beverage_name}</h4>
-            <p>{((Number(cartItem.price) + 500 * cartItem.toppingData.length) * cartItem.orderAmount).toLocaleString()}원</p>
+            <p>{((Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * cartItem.orderAmount).toLocaleString()}원</p>
           </div>
         </div>
         <div className='downSide'>
@@ -122,8 +147,18 @@ const CartList = ({ cartItem }: CartItemProps) => {
           </div>
           {!!cartItem.toppingData.length && (
             <div className='option topping'>
-              <p>{cartItem.toppingData.map(topping => toppingFromId(topping.topping_id)).join('/')}</p>
-              <p>{(cartItem.toppingData.length * 500).toLocaleString()}원</p>
+              <p>
+                {cartItem.toppingData
+                  .map(topping => {
+                    if (topping.amount > 1) {
+                      return `${toppingFromId(topping.topping_id)} ${topping.amount}개`;
+                    } else {
+                      return toppingFromId(topping.topping_id);
+                    }
+                  })
+                  .join('/')}
+              </p>
+              <p>{(cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0) * 500).toLocaleString()}원</p>
             </div>
           )}
         </div>

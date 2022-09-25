@@ -171,6 +171,36 @@ export interface GetCartRes {
   cartData: CartItem[];
 }
 
-export type CartOrderReq = {
+export interface OrderData {
+  userName: string;
+  phone_number: string;
+  shopName: string;
+  address: string;
+  take_out: number;
+  point: number;
+  totalPrice: number;
+  beverageData: Beverage[];
+}
+
+export interface Beverage {
+  id: number;
+  beverage_name: string;
+  beverage_image: string;
+  price: string;
+  amount: number;
+  cold: number;
+  sugar: number;
+  ice: 'regular' | 'less' | 'full';
+  toppingData: {
+    amount: 1;
+    topping_id: 4;
+  }[];
+}
+
+export interface CartOrderRes {
+  orderData: OrderData;
+}
+
+export type CartPayReq = {
   id: number;
 }[];

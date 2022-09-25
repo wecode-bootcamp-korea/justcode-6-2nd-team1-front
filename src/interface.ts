@@ -139,7 +139,7 @@ export interface SignUpReq {
   nickname: string;
   name: string;
   phoneNumber: string;
-
+}
 export interface AddCartReq {
   amount: number;
   cold: number;

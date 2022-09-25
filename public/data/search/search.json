@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "beverageName": "가제품이름",
+    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+    "price": "5000",
+    "description": "맛있는진 모르겠지만 너무 비싸요"
+  },
+  {
+    "id": 2,
+    "beverageName": "나제품이름",
+    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+    "price": "5000",
+    "description": "맛있는진 모르겠지만 너무 비싸요"
+  },
+  {
+    "id": 3,
+    "beverageName": "다제품이름",
+    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+    "price": "5000",
+    "description": "맛있는진 모르겠지만 너무 비싸요"
+  },
+  {
+    "id": 4,
+    "beverageName": "라제품이름",
+    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
+    "price": "5000",
+    "description": "맛있는진 모르겠지만 너무 비싸요"
+  }
+]

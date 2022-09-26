@@ -164,3 +164,19 @@ export interface AmountOption {
   minusHandler: () => void;
   plusHandler: () => void;
 }
+
+export interface SearchInfo {
+  id: number;
+  category_name: string;
+  beverage_name: string;
+  beverage_image: string;
+  price: string;
+  description: string;
+}
+export interface ProductInfo {
+  id: number;
+  beverage_name: string;
+  beverage_image: string;
+  price: string;
+  description: string;
+}

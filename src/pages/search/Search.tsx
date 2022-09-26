@@ -1,35 +1,15 @@
 import axios from 'axios';
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { StyledHeader, StyledDiv } from '../notice/Notice';
 import { StyledList } from '../product/Product';
-import { BsChevronDown } from 'react-icons/bs';
 import { BiSearch } from 'react-icons/bi';
-interface ProductInfo {
-  id: number;
-  beverage_name: string;
-  beverage_image: string;
-  price: string;
-  description: string;
-}
+import { SearchInfo, ProductInfo } from '../../interface';
 
 const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState('');
   const [product, setProduct] = useState<ProductInfo[]>([]);
-  const [option, setOption] = useState('이름');
-  const [optionOpen, setOptionOpen] = useState(false);
-
-  useEffect(() => {
-    const optionOpenHandler = ({ target }: MouseEvent) => {
-      if (target instanceof Element) {
-        target.closest('ul.option') ? setOptionOpen(o => !o) : setOptionOpen(false);
-      }
-    };
-
-    window.addEventListener('click', optionOpenHandler);
-    return () => window.removeEventListener('click', optionOpenHandler);
-  }, []);
 
   const searchHandler: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
@@ -41,9 +21,15 @@ const Search = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get('data/search/search.json');
-      setProduct(data);
-      console.log(product);
+      const { data } = await axios.get<SearchInfo[]>('data/search/search.json');
+      if (value) {
+        const list = data.filter(search => {
+          return search.description.includes(value);
+        });
+        setProduct(list);
+      } else {
+        setProduct(data);
+      }
     })();
   }, [value]);
 
@@ -53,7 +39,7 @@ const Search = () => {
         <h1>메뉴검색</h1>
         <p>일차의 다양한 메뉴를 검색해보세요.</p>
       </StyledHeader>
-      <StyledDiv center='center'>
+      <StyledDiv center='true'>
         <div className='container'>
           <form onSubmit={searchHandler}>
             <input type='text' ref={inputRef} placeholder='검색어를 입력해주세요.' />

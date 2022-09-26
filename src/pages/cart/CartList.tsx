@@ -78,15 +78,14 @@ interface CartItemProps {
 }
 
 const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: CartItemProps) => {
-  const [amount, setAmount] = useState(cartItem.orderAmount);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
   const minusHandler = async () => {
-    if (!loading && amount > 1) {
+    if (!loading && cartItem.orderAmount > 1) {
       setLoading(true);
       try {
-        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount - 1}/${(Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * (amount - 1)}`, '', {
+        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount - 1}/${(Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * (cartItem.orderAmount - 1)}`, '', {
           headers: {
             Authorization: token,
           },
@@ -101,7 +100,6 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
         });
 
         setCartList(cartData);
-        // setAmount(cartItem.orderAmount - 1);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -115,7 +113,7 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
     if (!loading) {
       setLoading(true);
       try {
-        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount + 1}/${(Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * (amount + 1)}`, '', {
+        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount + 1}/${(Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * (cartItem.orderAmount + 1)}`, '', {
           headers: {
             Authorization: token,
           },
@@ -130,7 +128,6 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
         });
 
         setCartList(cartData);
-        // setAmount(cartItem.orderAmount + 1);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -161,7 +158,7 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
           </div>
           <div className='textContainer'>
             <h4>{cartItem.beverage_name}</h4>
-            <p>{((Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * amount).toLocaleString()}원</p>
+            <p>{((Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * cartItem.orderAmount).toLocaleString()}원</p>
           </div>
         </div>
         <div className='downSide'>
@@ -194,7 +191,7 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
           )}
         </div>
         <Amount //
-          amount={amount}
+          amount={cartItem.orderAmount}
           name='수량'
           minusHandler={minusHandler}
           plusHandler={plusHandler}

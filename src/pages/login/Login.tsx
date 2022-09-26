@@ -7,7 +7,7 @@ import theme from '../../theme';
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import useStore from '../../context/store';
-import { LoginReq, User } from '../../interface';
+import { LoginReq, LoginRes, User } from '../../interface';
 import ErrorModal from '../../components/ErrorModal';
 
 const Login = () => {
@@ -27,7 +27,7 @@ const Login = () => {
     if (email.includes('@') && password.length >= 8) {
       setDisabled(true);
       try {
-        const { data } = await axios.post<User, AxiosResponse<User>, LoginReq>('http://localhost:8000/users/login', {
+        const { data } = await axios.post<LoginRes, AxiosResponse<LoginRes>, LoginReq>('http://localhost:8000/users/login', {
           email,
           password,
         });

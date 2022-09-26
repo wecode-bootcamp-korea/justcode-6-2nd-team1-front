@@ -13,6 +13,11 @@ export interface LoginReq {
   password: string;
 }
 
+export interface LoginRes {
+  token: string;
+  message: string;
+}
+
 export interface ProductInfo {
   id: number;
   beverage_name: string;

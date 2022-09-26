@@ -1,10 +1,10 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { User } from '../interface';
+import { LoginRes, User } from '../interface';
 
 interface UserState extends User {
   isLogin: boolean;
-  login: (userInfo: User) => void;
+  login: (userInfo: LoginRes) => void;
   logout: () => void;
 }
 
@@ -12,7 +12,7 @@ const useStore = create(
   devtools<UserState>(set => ({
     token: '',
     isLogin: false,
-    login(loginRes: User) {
+    login(loginRes: LoginRes) {
       set(() => ({ token: loginRes.token, isLogin: true }));
     },
     logout() {

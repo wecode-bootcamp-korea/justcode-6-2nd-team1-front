@@ -139,6 +139,7 @@ export interface SignUpReq {
   nickname: string;
   name: string;
   phoneNumber: string;
+}
 
 export interface AddCartReq {
   amount: number;
@@ -197,7 +198,7 @@ export interface OrderData {
 }
 
 export interface Beverage {
-  id: number;
+  orderId: number;
   beverage_name: string;
   beverage_image: string;
   price: string;

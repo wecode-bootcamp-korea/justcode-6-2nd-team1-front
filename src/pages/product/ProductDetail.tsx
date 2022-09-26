@@ -9,6 +9,7 @@ import Pay from './pay/Pay';
 import Spinner from '../../components/Spinner';
 import useOption from '../../hooks/useOption';
 import { StyledModal, StyledDiv, StyledBtnContainer } from './ProductDetailStyle';
+import { toppingToId } from '../../utils/toppingFromId';
 
 const ProductDetail = () => {
   const { addCartHandler, additinalOption, cartDisabled, errorMessage, errorModal, id, info, isLogin, loading, minusHandler, option, setErrorMessage, setErrorModal, setOption, totalOption, token } = useOption();
@@ -58,6 +59,18 @@ const ProductDetail = () => {
     if (info) {
       if (isLogin) {
         setDisabled(true);
+
+        const toppingData = [];
+
+        for (const [key, value] of Object.entries(option.additionalOption)) {
+          if (value) {
+            toppingData.push({
+              id: toppingToId(key),
+              amount: value,
+            });
+          }
+        }
+
         try {
           const req: OrderReq = {
             amount: option.amount,
@@ -65,32 +78,7 @@ const ProductDetail = () => {
             ice: option.iceSize,
             sugar: option.sugar,
             takeOut: option.isTakeout ? 1 : 0,
-            toppings: [
-              {
-                id: 3,
-                amount: option.additionalOption.aloe,
-              },
-              {
-                id: 6,
-                amount: option.additionalOption.cheeseform,
-              },
-              {
-                id: 4,
-                amount: option.additionalOption.coconut,
-              },
-              {
-                id: 5,
-                amount: option.additionalOption.milkform,
-              },
-              {
-                id: 1,
-                amount: option.additionalOption.pearl,
-              },
-              {
-                id: 2,
-                amount: option.additionalOption.whitePearl,
-              },
-            ],
+            toppings: toppingData,
             totalPrice: (Number(info.detailData.price) + 500 * totalOption) * option.amount,
           };
 

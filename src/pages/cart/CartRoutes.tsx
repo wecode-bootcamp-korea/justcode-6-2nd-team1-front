@@ -1,15 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { AiFillCheckCircle, AiOutlineCheck } from 'react-icons/ai';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import ErrorModal from '../../components/ErrorModal';
 import Spinner from '../../components/Spinner';
 import useStore from '../../context/store';
 import { CartItem, CartOrderRes, GetCartRes, OrderData } from '../../interface';
-import theme from '../../theme';
 import Cart from './Cart';
-import CartList from './CartList';
 import CartOrder from './CartOrder';
 
 const CartRoutes = () => {
@@ -89,6 +85,7 @@ const CartRoutes = () => {
               <Cart //
                 allCheckHandler={allCheckHandler}
                 cartList={cartList}
+                setCartList={setCartList}
                 disabled={disabled}
                 orderHandler={orderHandler}
                 selectList={selectList}

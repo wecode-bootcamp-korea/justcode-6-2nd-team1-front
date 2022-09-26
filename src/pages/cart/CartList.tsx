@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { CartItem } from '../../interface';
+import { CartItem, GetCartRes } from '../../interface';
 import theme from '../../theme';
 import { toppingFromId } from '../../utils/toppingFromId';
 import Amount from '../../components/Amount';
@@ -73,9 +73,11 @@ interface CartItemProps {
   cartItem: CartItem;
   setSelectList: React.Dispatch<React.SetStateAction<number[]>>;
   selectList: number[];
+  token: string;
+  setCartList: React.Dispatch<React.SetStateAction<CartItem[] | undefined>>;
 }
 
-const CartList = ({ cartItem, setSelectList, selectList }: CartItemProps) => {
+const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: CartItemProps) => {
   const [amount, setAmount] = useState(cartItem.orderAmount);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -84,7 +86,21 @@ const CartList = ({ cartItem, setSelectList, selectList }: CartItemProps) => {
     if (!loading && amount > 1) {
       setLoading(true);
       try {
-        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount - 1}`);
+        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount - 1}`, '', {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        const {
+          data: { cartData },
+        } = await axios.get<GetCartRes>(`http://localhost:8000/beverages/cart`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        setCartList(cartData);
         setAmount(cartItem.orderAmount - 1);
         setLoading(false);
       } catch (error) {
@@ -99,7 +115,21 @@ const CartList = ({ cartItem, setSelectList, selectList }: CartItemProps) => {
     if (!loading) {
       setLoading(true);
       try {
-        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount + 1}`);
+        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount + 1}`, '', {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        const {
+          data: { cartData },
+        } = await axios.get<GetCartRes>(`http://localhost:8000/beverages/cart`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+
+        setCartList(cartData);
         setAmount(cartItem.orderAmount + 1);
         setLoading(false);
       } catch (error) {
@@ -131,7 +161,7 @@ const CartList = ({ cartItem, setSelectList, selectList }: CartItemProps) => {
           </div>
           <div className='textContainer'>
             <h4>{cartItem.beverage_name}</h4>
-            <p>{((Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * cartItem.orderAmount).toLocaleString()}원</p>
+            <p>{((Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * amount).toLocaleString()}원</p>
           </div>
         </div>
         <div className='downSide'>
@@ -145,10 +175,11 @@ const CartList = ({ cartItem, setSelectList, selectList }: CartItemProps) => {
             </p>
             <p>{Number(cartItem.price).toLocaleString()}원</p>
           </div>
-          {!!cartItem.toppingData.length && (
+          {!!cartItem.toppingData.filter(e => e.amount).length && (
             <div className='option topping'>
               <p>
                 {cartItem.toppingData
+                  .filter(data => data.amount)
                   .map(topping => {
                     if (topping.amount > 1) {
                       return `${toppingFromId(topping.topping_id)} ${topping.amount}개`;

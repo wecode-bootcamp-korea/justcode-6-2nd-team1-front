@@ -1,6 +1,7 @@
 import { AiOutlineCheck } from 'react-icons/ai';
 import styled from 'styled-components';
 import Spinner from '../../components/Spinner';
+import useStore from '../../context/store';
 import { CartItem } from '../../interface';
 import theme from '../../theme';
 import CartList from './CartList';
@@ -80,9 +81,12 @@ interface CartProps {
   orderHandler: () => void;
   disabled: boolean;
   setSelectList: React.Dispatch<React.SetStateAction<number[]>>;
+  setCartList: React.Dispatch<React.SetStateAction<CartItem[] | undefined>>;
 }
 
-const Cart = ({ cartList, selectList, allCheckHandler, disabled, orderHandler, setSelectList }: CartProps) => {
+const Cart = ({ cartList, selectList, allCheckHandler, disabled, orderHandler, setSelectList, setCartList }: CartProps) => {
+  const { token } = useStore();
+
   return (
     <>
       <StyledCart allChecked={cartList.every(cartItem => selectList.includes(cartItem.orderId))}>
@@ -95,7 +99,7 @@ const Cart = ({ cartList, selectList, allCheckHandler, disabled, orderHandler, s
         </div>
         <ul>
           {cartList.map(cartItem => (
-            <CartList key={cartItem.orderId} cartItem={cartItem} setSelectList={setSelectList} selectList={selectList} />
+            <CartList key={cartItem.orderId} cartItem={cartItem} setSelectList={setSelectList} selectList={selectList} token={token} setCartList={setCartList} />
           ))}
         </ul>
         <h4 className='total'>

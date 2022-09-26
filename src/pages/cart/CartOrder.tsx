@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import ErrorModal from '../../components/ErrorModal';
 import Line from '../../components/Line';
 import Spinner from '../../components/Spinner';
+import useStore from '../../context/store';
 import { CartPayReq, OrderData } from '../../interface';
 import theme from '../../theme';
 import OrderList from './OrderList';
@@ -82,6 +83,7 @@ const CartOrder = ({ order, selectList }: CartOrderProps) => {
   const navigate = useNavigate();
   const [disabled, setDisabled] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
+  const { token } = useStore();
 
   useEffect(() => {
     if (!order) {
@@ -97,7 +99,12 @@ const CartOrder = ({ order, selectList }: CartOrderProps) => {
     try {
       await axios.patch<{ message: string }, AxiosResponse<{ message: string }>, CartPayReq>(
         'http://localhost:8000/beverages/cartOrder',
-        selectList.map(id => ({ id }))
+        selectList.map(id => ({ id })),
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
 
       navigate('/history');
@@ -122,7 +129,7 @@ const CartOrder = ({ order, selectList }: CartOrderProps) => {
           <p>{order.phone_number}</p>
           <h4>주문 매장</h4>
           <Line />
-          <p>{order.address}</p>
+          <p>{order.shopName}</p>
           <h4>주문 옵션</h4>
           <Line />
           <p>{order.take_out ? '테이크아웃' : '매장'}</p>
@@ -138,22 +145,36 @@ const CartOrder = ({ order, selectList }: CartOrderProps) => {
           <Line />
           <ul>
             {order.beverageData
-              .filter(beverageData => selectList.includes(beverageData.id))
+              .filter(beverageData => selectList.includes(beverageData.orderId))
               .map(beverageData => (
-                <OrderList beverageData={beverageData} key={beverageData.id} />
+                <OrderList beverageData={beverageData} key={beverageData.orderId} />
               ))}
           </ul>
         </div>
         <div className='receipt'>
           <p>
-            총 주문 금액 <span>{order.totalPrice.toLocaleString()}원</span>
+            총 주문 금액
+            <span>
+              {order.beverageData
+                .filter(data => selectList.includes(data.orderId))
+                .reduce((prev, acc) => prev + acc.amount * (Number(acc.price) + acc.toppingData.filter(top => top.amount).reduce((prev, acc) => prev + acc.amount * 500, 0)), 0)
+                .toLocaleString()}
+              원
+            </span>
           </p>
           <p>
             총 할인 금액 <span>0원</span>
           </p>
           <Line />
           <p>
-            총 결제 금액<span>{order.totalPrice.toLocaleString()}원</span>
+            총 결제 금액
+            <span>
+              {order.beverageData
+                .filter(data => selectList.includes(data.orderId))
+                .reduce((prev, acc) => prev + acc.amount * (Number(acc.price) + acc.toppingData.filter(top => top.amount).reduce((prev, acc) => prev + acc.amount * 500, 0)), 0)
+                .toLocaleString()}
+              원
+            </span>
           </p>
         </div>
         <StyledBtn disabled={disabled} onClick={cartPayHandler}>

@@ -4,18 +4,12 @@ import { AiFillCaretDown } from 'react-icons/ai';
 import { GrClose } from 'react-icons/gr';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Line from '../../../components/Line';
 import Spinner from '../../../components/Spinner';
 import useStore from '../../../context/store';
 import { OrderRes } from '../../../interface';
 import theme from '../../../theme';
 import { toppingFromId } from '../../../utils/toppingFromId';
-
-const Line = styled.div`
-  width: 100%;
-  height: 2px;
-  background-color: #aaaaaa;
-  margin: 20px 0;
-`;
 
 const StyledPay = styled.div<{ detail: boolean; length: number }>`
   padding-bottom: calc(40px + 6vw);

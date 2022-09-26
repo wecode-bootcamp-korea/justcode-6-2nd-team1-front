@@ -1,21 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import { AiFillCaretDown } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ErrorModal from '../../components/ErrorModal';
+import Line from '../../components/Line';
 import Spinner from '../../components/Spinner';
-import { OrderData } from '../../interface';
+import { CartPayReq, OrderData } from '../../interface';
 import theme from '../../theme';
-import { toppingFromId } from '../../utils/toppingFromId';
 import OrderList from './OrderList';
-
-const Line = styled.div`
-  width: 100%;
-  height: 2px;
-  background-color: #aaaaaa;
-  margin: 20px 0;
-`;
 
 const StyledBtn = styled.button`
   position: fixed;
@@ -103,7 +95,7 @@ const CartOrder = ({ order, selectList }: CartOrderProps) => {
     setDisabled(true);
 
     try {
-      await axios.patch<{ message: string }, AxiosResponse<{ message: string }>, { id: number }[]>(
+      await axios.patch<{ message: string }, AxiosResponse<{ message: string }>, CartPayReq>(
         'http://localhost:8000/beverages/cartOrder',
         selectList.map(id => ({ id }))
       );
@@ -121,7 +113,7 @@ const CartOrder = ({ order, selectList }: CartOrderProps) => {
 
   return (
     <>
-      {errorModal && <ErrorModal errorMessage='주문에 실패하였습니다.' errorModal={errorModal} setErrorModal={setErrorModal} />}
+      {errorModal && <ErrorModal errorMessage='주문에 실패하였습니다. 포인트를 확인해주세요.' errorModal={errorModal} setErrorModal={setErrorModal} />}
       <StyledOrder>
         <div className='container'>
           <h4>주문 정보</h4>

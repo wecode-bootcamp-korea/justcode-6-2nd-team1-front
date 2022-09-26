@@ -96,15 +96,7 @@ const CartRoutes = () => {
               />
             }
           />
-          <Route
-            path='/order'
-            element={
-              <CartOrder //
-                order={order}
-                selectList={selectList}
-              />
-            }
-          />
+          <Route path='/order' element={<CartOrder order={order} selectList={selectList} />} />
         </Routes>
       )}
     </>

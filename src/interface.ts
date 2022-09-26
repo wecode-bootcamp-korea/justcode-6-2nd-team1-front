@@ -204,3 +204,19 @@ export interface CartOrderRes {
 export type CartPayReq = {
   id: number;
 }[];
+
+export interface OrderHistory {
+  orderId: number;
+  beverage_name: string;
+  beverage_image: string;
+  amount: number;
+  total_price: string;
+  order_status_id: number;
+  cold: number;
+  sugar: number;
+  ice: 'regular' | 'less' | 'full';
+  toppings: {
+    amount: number;
+    topping_id: number;
+  }[];
+}

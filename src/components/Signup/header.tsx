@@ -1,10 +1,9 @@
-import styled  from "styled-components";
-
+import styled from 'styled-components';
 
 interface HeaderProps {
-  page:number
+  page: number;
 }
-const Header = ({ page }:HeaderProps) => {
+const Header = ({ page }: HeaderProps) => {
   return (
     <div className='header'>
       <span className={page === 0 ? 'inColor' : 'fullColor'}>약관동의</span>
@@ -14,11 +13,11 @@ const Header = ({ page }:HeaderProps) => {
           <Line />
         </>
       )}
-      {page >= 1 && <span className={page>=1? 'fullColor' : 'inColor'}>회원정보</span>}
-      <span className={page === 2 ? 'fullColor': ''}>가입완료</span>
+      {page >= 1 && <span className={page > 1 ? 'fullColor' : 'inColor'}>회원정보</span>}
+      <span className={page === 2 ? 'fullColor' : ''}>가입완료</span>
     </div>
   );
-}
+};
 export default Header;
 
 const Line = styled.div`

@@ -24,29 +24,30 @@ const StyledAmount = styled.div`
 
 interface AmountProps {
   name: string;
-  price: string;
+  price?: string;
   amount: number;
   minusHandler: () => void;
   plusHandler: () => void;
+  color?: string;
 }
 
-const Amount = ({ amount, name, price, minusHandler, plusHandler }: AmountProps) => {
+const Amount = ({ amount, name, price, minusHandler, plusHandler, color }: AmountProps) => {
   return (
     <StyledAmount>
       <div className='textContainer'>
         <p>{name}</p>
-        <p>{price}</p>
+        {!!price && <p>{price}</p>}
       </div>
       <div className='amountContainer'>
         <AiFillLeftCircle
           size='10vw' //
-          color='#aaaaaa'
+          color={color ? color : '#aaaaaa'}
           onClick={minusHandler}
         />
         <p>{amount}</p>
         <AiFillRightCircle //
           size='10vw'
-          color='#aaaaaa'
+          color={color ? color : '#aaaaaa'}
           onClick={plusHandler}
         />
       </div>

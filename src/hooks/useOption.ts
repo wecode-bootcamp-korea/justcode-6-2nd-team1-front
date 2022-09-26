@@ -57,6 +57,7 @@ const useOption = () => {
       } catch (error) {
         setErrorMessage('로그인을 먼저 해주세요.');
         setErrorModal(true);
+        setLoading(false);
       }
     })();
   }, []);

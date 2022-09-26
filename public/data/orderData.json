@@ -1,0 +1,53 @@
+{
+  "orderData": {
+    "userName": "전준영",
+    "phone_number": "010-1234-5678",
+    "shopName": "수원",
+    "address": "3545687",
+    "take_out": 0,
+    "point": 500,
+    "beverageData": [
+      {
+        "id": 64,
+        "beverage_name": "조선향米 달콤 구수 스무디",
+        "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220825/Nb2Bu3MrWzG79OFf_20220825.jpg",
+        "price": "5500",
+        "amount": 2,
+        "cold": 0,
+        "sugar": 30,
+        "ice": "less",
+        "toppingData": [
+          {
+            "amount": 1,
+            "topping_id": 4
+          },
+          {
+            "amount": 1,
+            "topping_id": 5
+          }
+        ]
+      },
+      {
+        "id": 66,
+        "beverage_name": "블랙티 카페 스무디 + 펄",
+        "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220728/52dCkEe6HX4RTvNn_20220728.jpg",
+        "price": "5500",
+        "amount": 2,
+        "cold": 0,
+        "sugar": 30,
+        "ice": "less",
+        "toppingData": [
+          {
+            "amount": 1,
+            "topping_id": 4
+          },
+          {
+            "amount": 3,
+            "topping_id": 5
+          }
+        ]
+      }
+    ],
+    "totalPrice": 10600
+  }
+}

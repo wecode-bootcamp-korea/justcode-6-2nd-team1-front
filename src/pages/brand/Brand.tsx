@@ -40,15 +40,24 @@ const StyledIntroduce = styled.div`
     margin-bottom: 10px;
 
     h1 {
-      font-size: 20px;
+      font-size: 5vw;
       font-weight: 2.5em;
+      margin-top: 10px;
       margin-bottom: 10px;
     }
     p.gray {
       color: #666666;
+      font-size: 4vw;
+      font-weight: 300;
     }
     p.red {
       color: ${theme.red};
+      font-size: 4vw;
+      font-weight: 300;
+
+      &:last-of-type {
+        margin-bottom: 10px;
+      }
     }
   }
 `;
@@ -56,18 +65,19 @@ const StyledIntroduce = styled.div`
 const StyledContents = styled.div`
   display: flex;
   width: 100%;
-  padding: auto;
+  padding: 20px;
+  align-items: center;
   border-bottom: 1px solid gray;
 
   img.circle {
     display: flex;
-    width: 25%;
-    margin: 10px 25px 10px 25px;
+    height: 30vw;
+    aspect-ratio: 1 / 1;
   }
   div.title {
     width: 70%;
-    text-align: center;
     margin: 10px 25px 10px 25px;
+    line-height: 1.3;
 
     h2 {
       font-size: 7vw;
@@ -78,9 +88,12 @@ const StyledContents = styled.div`
       font-size: 5vw;
       margin-bottom: 10px;
       line-height: 1.5em;
+      color: gray;
     }
     p {
       font-size: 4vw;
+      color: gray;
+      font-weight: 300;
     }
   }
 `;

@@ -53,15 +53,8 @@ const Search = () => {
         <h1>메뉴검색</h1>
         <p>일차의 다양한 메뉴를 검색해보세요.</p>
       </StyledHeader>
-      <StyledDiv optionOpen={optionOpen}>
+      <StyledDiv center='center'>
         <div className='container'>
-          <ul className='option'>
-            <li>
-              {option} <BsChevronDown />
-            </li>
-            <li onClick={() => setOption('이름')}>이름</li>
-            <li onClick={() => setOption('내용')}>내용</li>
-          </ul>
           <form onSubmit={searchHandler}>
             <input type='text' ref={inputRef} placeholder='검색어를 입력해주세요.' />
             <BiSearch />

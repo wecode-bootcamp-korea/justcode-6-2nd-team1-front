@@ -66,12 +66,12 @@ const StyledNav = styled.nav<{ isNotice: boolean }>`
   }
 `;
 
-export const StyledDiv = styled.div<{ optionOpen?: boolean }>`
+export const StyledDiv = styled.div<{ optionOpen?: boolean; center?: string }>`
   padding: 10px;
 
   div.container {
     display: flex;
-    justify-content: space-between;
+    justify-content: ${props => (props.center ? 'center' : 'space-between')};
     background-color: #f3f4f7;
     height: calc(4vw + 40px);
     padding: 10px;

@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GiSmartphone } from 'react-icons/gi';
 import { GrClose } from 'react-icons/gr';
-import SignForm from '../../components/Signup/SignForm';
-import AgreeList from '../../components/Signup/AgreeList';
-import Header from '../../components/Signup/header';
+import SignForm from '../../components/signup/SignForm';
+import AgreeList from '../../components/signup/AgreeList';
+import Header from '../../components/signup/header';
 import theme from '../../theme';
 import { StyledModal } from '../product/pay/Pay';
 

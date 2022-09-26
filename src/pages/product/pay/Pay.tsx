@@ -211,6 +211,7 @@ const Pay = ({ orderRes }: PayProps) => {
         });
         setModal(true);
         setMessage('결제 및 주문완료.');
+        navigate('/history');
       } catch (error) {
         console.log(error);
         setDisabled(false);

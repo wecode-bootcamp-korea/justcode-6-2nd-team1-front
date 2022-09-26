@@ -15,6 +15,7 @@ import ProductDetail from './pages/product/ProductDetail';
 import Search from './pages/search/Search';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
+import Reviews from './pages/product/Reviews';
 
 const App = () => {
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
@@ -37,6 +38,7 @@ const App = () => {
         <Route path='/product' element={<Product />} />
         <Route path='/product/detail/*' element={<ProductDetail />} />
         <Route path='/product/detail/:id/*' element={<ProductDetail />} />
+        <Route path='/review' element={<Reviews />} />
 
         <Route path='/cart' element={<Cart />} />
         <Route path='/signup' element={<Signup />} />

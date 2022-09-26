@@ -111,6 +111,7 @@ export interface Review {
   id: number;
   nickname: string;
   content: string;
+  score: number;
   created_at: string;
 }
 
@@ -124,4 +125,114 @@ export interface CreateReviewReq {
 
 export interface CreateReviewRes {
   message: string;
+}
+export interface SignUp {
+  email: string;
+  password: string;
+  nickname: string;
+  name: string;
+  phoneNumber: string;
+}
+
+export interface SignUpReq {
+  email: string;
+  password: string;
+  nickname: string;
+  name: string;
+  phoneNumber: string;
+}
+
+export interface AddCartReq {
+  amount: number;
+  cold: number;
+  totalPrice: number;
+  takeOut: number;
+  sugar: number;
+  ice: 'regular' | 'less' | 'full';
+  toppings: {
+    id: number;
+    amount: number;
+  }[];
+}
+
+export interface AddCartRes {
+  message: string;
+}
+
+export interface AmountOption {
+  name: string;
+  price: string;
+  amount: number;
+  minusHandler: () => void;
+  plusHandler: () => void;
+}
+
+export interface CartItem {
+  shopName: string;
+  orderId: number;
+  beverage_image: string;
+  beverage_name: string;
+  price: string;
+  orderAmount: number;
+  cold: number;
+  sugar: 0 | 30 | 50 | 70 | 100;
+  ice: 'regular' | 'less' | 'full';
+  toppingData: {
+    amount: number;
+    topping_id: number;
+  }[];
+}
+
+export interface GetCartRes {
+  cartData: CartItem[];
+}
+
+export interface OrderData {
+  userName: string;
+  phone_number: string;
+  shopName: string;
+  address: string;
+  take_out: number;
+  point: number;
+  totalPrice: number;
+  beverageData: Beverage[];
+}
+
+export interface Beverage {
+  id: number;
+  beverage_name: string;
+  beverage_image: string;
+  price: string;
+  amount: number;
+  cold: number;
+  sugar: number;
+  ice: 'regular' | 'less' | 'full';
+  toppingData: {
+    amount: 1;
+    topping_id: 4;
+  }[];
+}
+
+export interface CartOrderRes {
+  orderData: OrderData;
+}
+
+export type CartPayReq = {
+  id: number;
+}[];
+
+export interface OrderHistory {
+  orderId: number;
+  beverage_name: string;
+  beverage_image: string;
+  amount: number;
+  total_price: string;
+  order_status_id: number;
+  cold: number;
+  sugar: number;
+  ice: 'regular' | 'less' | 'full';
+  toppings: {
+    amount: number;
+    topping_id: number;
+  }[];
 }

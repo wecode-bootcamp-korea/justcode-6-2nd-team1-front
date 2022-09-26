@@ -13,7 +13,7 @@ const useStore = create(
     token: '',
     isLogin: false,
     login(loginRes: User) {
-      set(() => ({ ...loginRes, isLogin: true }));
+      set(() => ({ token: loginRes.token, isLogin: true }));
     },
     logout() {
       set(() => ({ token: '', isLogin: false }));

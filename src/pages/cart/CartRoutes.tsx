@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import ErrorModal from '../../components/ErrorModal';
 import Spinner from '../../components/Spinner';
 import useStore from '../../context/store';
-import { CartItem, CartOrderRes, GetCartRes, OrderData } from '../../interface';
+import { CartItem, CartOrderRes, CartPayReq, GetCartRes, OrderData } from '../../interface';
 import Cart from './Cart';
 import CartOrder from './CartOrder';
 
@@ -56,11 +56,15 @@ const CartRoutes = () => {
     setDisalbed(true);
 
     try {
-      const { data } = await axios.get<CartOrderRes>('http://localhost:8000/beverages/cartOrder', {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const { data } = await axios.post<CartOrderRes, AxiosResponse<CartOrderRes>, CartPayReq>(
+        'http://localhost:8000/beverages/cartOrder',
+        selectList.map(id => ({ id })),
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       setOrder(data.orderData);
       navigate('/cart/order');

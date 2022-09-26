@@ -95,7 +95,7 @@ export interface OrderRes {
     cold: number;
     sugar: number;
     ice: 'regular' | 'less' | 'full';
-    toppingData: {
+    toppingData?: {
       amount: number;
       topping_id: number;
     }[];

@@ -86,7 +86,7 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
     if (!loading && amount > 1) {
       setLoading(true);
       try {
-        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount - 1}`, '', {
+        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount - 1}/${(Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * (amount - 1)}`, '', {
           headers: {
             Authorization: token,
           },
@@ -115,7 +115,7 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
     if (!loading) {
       setLoading(true);
       try {
-        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount + 1}`, '', {
+        await axios.patch(`http://localhost:8000/beverages/cart/${cartItem.orderId}/${cartItem.orderAmount + 1}/${(Number(cartItem.price) + 500 * cartItem.toppingData.reduce((prev, cur) => prev + cur.amount, 0)) * (amount + 1)}`, '', {
           headers: {
             Authorization: token,
           },

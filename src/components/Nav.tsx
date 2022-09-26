@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlinePlus, AiOutlineShoppingCart } from 'react-icons/ai';
 import theme from '../theme';
-import { BiSearch } from 'react-icons/bi';
+import { BiHistory, BiSearch } from 'react-icons/bi';
 import useStore from '../context/store';
 
 const StyledHeader = styled.header`
@@ -73,16 +73,9 @@ const StyledNav = styled.nav<{ menu: boolean }>`
       font-weight: bold;
     }
 
-    ul {
+    & > div {
       display: flex;
       gap: 10px;
-      width: 50%;
-
-      li {
-        img {
-          width: 100%;
-        }
-      }
     }
   }
 
@@ -179,7 +172,10 @@ const Nav = () => {
         <div className='nav-top'>
           {isLogin ? <h2 onClick={logoutHandler}>로그아웃</h2> : <h2 onClick={() => pageTransition('/login')}>로그인</h2>}
 
-          <AiOutlineShoppingCart color='white' size='10vw' onClick={() => pageTransition('/cart')} />
+          <div>
+            <AiOutlineShoppingCart color='white' size='10vw' onClick={() => pageTransition('/cart')} />
+            <BiHistory color='white' size='10vw' onClick={() => pageTransition('/history')} />
+          </div>
         </div>
         <ul className='nav-main'>
           <li onClick={toggleHandler}>

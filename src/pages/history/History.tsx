@@ -1,17 +1,40 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import ErrorModal from '../../components/ErrorModal';
 import Line from '../../components/Line';
 import Spinner from '../../components/Spinner';
 import useStore from '../../context/store';
 import { OrderHistory } from '../../interface';
 import theme from '../../theme';
+import { stateFromId } from '../../utils/stateFromId';
 
 const StyleHistory = styled.div`
   padding: 10px;
 
   h4 {
     font-size: 6vw;
+  }
+
+  div.upSide {
+    display: flex;
+    align-items: center;
+  }
+
+  div.option {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: ${theme.grey};
+
+    p {
+      display: flex;
+      justify-content: space-between;
+      color: black;
+
+      span {
+        color: ${theme.red};
+      }
+    }
   }
 
   div.imgContainer {
@@ -30,8 +53,6 @@ const StyleHistory = styled.div`
   }
 
   li {
-    display: flex;
-    align-items: center;
     padding: 10px;
     width: 100%;
 
@@ -52,6 +73,7 @@ const StyleHistory = styled.div`
 
 const History = () => {
   const { token } = useStore();
+  const [modal, setModal] = useState(false);
   const [historyList, setHistoryList] = useState<OrderHistory[]>();
 
   useEffect(() => {
@@ -65,47 +87,14 @@ const History = () => {
 
         setHistoryList(data);
       } catch (error) {
-        setHistoryList([
-          {
-            orderId: 87,
-            beverage_name: '조선향米 쌀 밀크티 + 펄',
-            beverage_image: 'https://www.gong-cha.co.kr/uploads/product/20220825/lcd4UXN97L6hbafW_20220825.jpg',
-            amount: 1,
-            total_price: '5300',
-            order_status_id: 3,
-            cold: 0,
-            sugar: 30,
-            ice: 'less',
-            toppings: [
-              {
-                amount: 1,
-                topping_id: 3,
-              },
-              {
-                amount: 2,
-                topping_id: 5,
-              },
-            ],
-          },
-          {
-            orderId: 88,
-            beverage_name: '조선향米 달콤 구수 스무디',
-            beverage_image: 'https://www.gong-cha.co.kr/uploads/product/20220825/Nb2Bu3MrWzG79OFf_20220825.jpg',
-            amount: 1,
-            total_price: '5300',
-            order_status_id: 3,
-            cold: 0,
-            sugar: 30,
-            ice: 'less',
-            toppings: [],
-          },
-        ]);
+        setModal(true);
       }
     })();
   }, []);
 
   return (
     <>
+      {modal && <ErrorModal errorMessage='불러오는데 실패하였습니다.' errorModal={modal} setErrorModal={setModal} />}
       {historyList ? (
         <StyleHistory>
           <h4>주문 내역</h4>
@@ -113,21 +102,34 @@ const History = () => {
           <ul>
             {historyList.map(history => (
               <li key={history.orderId}>
-                <div className='imgContainer'>
-                  <img src={history.beverage_image} alt={history.beverage_name} />
-                </div>
+                <div className='upSide'>
+                  <div className='imgContainer'>
+                    <img src={history.beverage_image} alt={history.beverage_name} />
+                  </div>
 
-                <div className='text'>
-                  <h5>{history.beverage_name}</h5>
-                  <p>{Number(history.total_price).toLocaleString()}원</p>
-                  <h6>{history.order_status_id}</h6>
+                  <div className='text'>
+                    <h5>{history.beverage_name}</h5>
+                    <p>{Number(history.total_price).toLocaleString()}원</p>
+                    <h6>{stateFromId(history.order_status_id)}</h6>
+                  </div>
+                </div>
+                <div className='option'>
+                  <p>
+                    {history.cold ? 'ICE' : 'HOT'}/{history.sugar}%/
+                    {history.ice
+                      .split('')
+                      .map((a, i) => (i === 0 ? a.toLocaleUpperCase() : a))
+                      .join('') + ' Ice'}
+                    <span>{Number(history.total_price).toLocaleString()}원</span>
+                  </p>
+                  <p></p>
                 </div>
               </li>
             ))}
           </ul>
         </StyleHistory>
       ) : (
-        <Spinner fixed={true} />
+        !modal && <Spinner fixed={true} />
       )}
     </>
   );

@@ -154,13 +154,7 @@ const CartOrder = ({ order, selectList }: CartOrderProps) => {
         <div className='receipt'>
           <p>
             총 주문 금액
-            <span>
-              {order.beverageData
-                .filter(data => selectList.includes(data.orderId))
-                .reduce((prev, acc) => prev + acc.amount * (Number(acc.price) + acc.toppingData.filter(top => top.amount).reduce((prev, acc) => prev + acc.amount * 500, 0)), 0)
-                .toLocaleString()}
-              원
-            </span>
+            <span>{order.beverageData.reduce((prev, acc) => prev + acc.amount * (Number(acc.price) + acc.toppingData.filter(top => top.amount).reduce((prev, acc) => prev + acc.amount * 500, 0)), 0).toLocaleString()}원</span>
           </p>
           <p>
             총 할인 금액 <span>0원</span>

@@ -15,8 +15,32 @@ import Search from './pages/search/Search';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 import History from './pages/history/History';
+import useStore from './context/store';
+import axios, { AxiosResponse } from 'axios';
+import { LoginReq, User } from './interface';
 
 const App = () => {
+  const { login } = useStore();
+
+  useEffect(() => {
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+
+    if (email && password) {
+      (async () => {
+        try {
+          const { data } = await axios.post<User, AxiosResponse<User>, LoginReq>('http://localhost:8000/users/login', {
+            email,
+            password,
+          });
+          login(data);
+        } catch (error) {
+          console.log(error);
+        }
+      })();
+    }
+  }, []);
+
   const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(setLocationInfo);

@@ -17,7 +17,7 @@ import Store from './pages/store/Store';
 import History from './pages/history/History';
 import useStore from './context/store';
 import axios, { AxiosResponse } from 'axios';
-import { LoginReq, User } from './interface';
+import { LoginReq, LoginRes } from './interface';
 
 const App = () => {
   const { login } = useStore();
@@ -29,7 +29,7 @@ const App = () => {
     if (email && password) {
       (async () => {
         try {
-          const { data } = await axios.post<User, AxiosResponse<User>, LoginReq>('http://localhost:8000/users/login', {
+          const { data } = await axios.post<LoginRes, AxiosResponse<LoginRes>, LoginReq>('http://localhost:8000/users/login', {
             email,
             password,
           });

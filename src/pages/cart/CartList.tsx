@@ -101,7 +101,7 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
         });
 
         setCartList(cartData);
-        setAmount(cartItem.orderAmount - 1);
+        // setAmount(cartItem.orderAmount - 1);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -130,7 +130,7 @@ const CartList = ({ cartItem, setSelectList, selectList, token, setCartList }: C
         });
 
         setCartList(cartData);
-        setAmount(cartItem.orderAmount + 1);
+        // setAmount(cartItem.orderAmount + 1);
         setLoading(false);
       } catch (error) {
         console.log(error);

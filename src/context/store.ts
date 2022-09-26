@@ -17,6 +17,9 @@ const useStore = create(
     },
     logout() {
       set(() => ({ token: '', isLogin: false }));
+
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
     },
   }))
 );

@@ -1,30 +1,74 @@
 [
   {
     "id": 1,
-    "beverageName": "가제품이름",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": "5000",
-    "description": "맛있는진 모르겠지만 너무 비싸요"
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
   },
   {
     "id": 2,
-    "beverageName": "나제품이름",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": "5000",
-    "description": "맛있는진 모르겠지만 너무 비싸요"
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
   },
   {
     "id": 3,
-    "beverageName": "다제품이름",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": "5000",
-    "description": "맛있는진 모르겠지만 너무 비싸요"
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
   },
   {
     "id": 4,
-    "beverageName": "라제품이름",
-    "imageURL": "http://www.gong-cha.co.kr/uploads/product/20220825/TmnBEV3LODsteK5M_20220825.jpg",
-    "price": "5000",
-    "description": "맛있는진 모르겠지만 너무 비싸요"
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
+  },
+  {
+    "id": 5,
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
+  },
+  {
+    "id": 6,
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
+  },
+  {
+    "id": 7,
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
+  },
+  {
+    "id": 8,
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
+  },
+  {
+    "id": 9,
+    "category_name": "시즌메뉴",
+    "beverage_name": "제주 오름 밀크티 + 펄",
+    "beverage_image": "https://www.gong-cha.co.kr/uploads/product/20220705/ugYTzmp7S80kvNQH_20220705.png",
+    "price": "5300",
+    "description": "제주 오름과 높은 하늘을 한 잔에 담아 청량함이 전해지는 그린티&민트 밀크티에 쫀득쫀득한 타피오카펄을 토핑한 밀크티"
   }
 ]

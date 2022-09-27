@@ -42,7 +42,7 @@ const StyledNav = styled.nav<{ mode: number }>`
   }
 `;
 
-const StyledList = styled.ul`
+export const StyledList = styled.ul`
   padding: 10px 10px;
   margin-bottom: 20px;
 

@@ -5,6 +5,7 @@ import axios from 'axios';
 import addressData from '././addressData.json';
 import { BiSearch } from 'react-icons/bi';
 import Modal from './Modal';
+import { StyledHeader } from '../notice/Notice';
 
 export type Storetype = {
   id: number;
@@ -15,27 +16,6 @@ export type Storetype = {
   lng: number;
 };
 
-const StyledHeader = styled.header`
-  display: flex;
-  height: 150px;
-  flex-direction: column;
-  align-items: center;
-  background-image: url(${noticeTop});
-  background-position: center;
-  background-size: cover;
-  gap: 20px;
-  color: white;
-  padding: 30px 0;
-
-  h1 {
-    font-size: 8vw;
-    font-weight: 500;
-  }
-
-  p {
-    font-size: 4vw;
-  }
-`;
 const StyledSearch = styled.div`
   div.container {
     background-color: #f3f4f7;

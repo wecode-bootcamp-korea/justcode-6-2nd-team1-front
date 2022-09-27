@@ -17,7 +17,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const [nickname, setNickname] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [btn, setBtn] = useState(true);
+  const [btn, setBtn] = useState(false);
 
   type Email = '0' | '1';
 
@@ -28,6 +28,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   console.log('render check');
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = async e => {
     // 이메일 중복검사
+
     e.preventDefault();
     try {
       const { data } = await axios.get<Email>(`http://localhost:8000/users/userCheck?email=${email}`);
@@ -59,7 +60,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   }, [password, nickname, name, phoneNumber, emailCheck]);
 
   useEffect(() => {
-    // 비밀번호 확인 input
+    // 비밀번호 재확인 input
     password === passwordTwice ? setPasswordCheck(true) : setPasswordCheck(false);
   }, [passwordTwice]);
 
@@ -74,6 +75,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   }, [email, emailState]);
 
   const submitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+    console.log('submit');
     e.preventDefault();
     // 기입한 정보 보내기
     try {
@@ -169,6 +171,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
           </div>
         </div>
       </SignUpForm>
+
       <NextBtn //
         type='button'
         disabled={btn}

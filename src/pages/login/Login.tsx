@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import logo from '../../assets/ilcha_logo_reverse.png';
-
+import Spinner from '../../components/Spinner';
 import { BsPerson } from 'react-icons/bs';
 import { FiLock } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
@@ -55,14 +55,14 @@ const Login = () => {
         <form onSubmit={signUpHandler}>
           <div className='inputBox'>
             <BsPerson className='icon' size='24px' />
-            <input type='text' placeholder='이메일' onChange={e => setEmail(e.target.value)} />
+            <input type='email' placeholder='이메일' onChange={e => setEmail(e.target.value)} required />
           </div>
           <div className='inputBox'>
             <FiLock className='icon' size='23px' />
-            <input type='password' placeholder='비밀번호' onChange={e => setPassword(e.target.value)} />
+            <input type='password' placeholder='비밀번호' onChange={e => setPassword(e.target.value)} required />
           </div>
           <button className='loginBtn' disabled={disabled}>
-            {disabled ? '로그인 중' : '로그인'}
+            {disabled ? <Spinner /> : '로그인'}
           </button>
           <KaKaoLogin />
         </form>

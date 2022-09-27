@@ -32,7 +32,7 @@ const StyledModal = styled.div`
 
       span.title {
         color: white;
-        font-size: 25px;
+        font-size: 6vw;
         margin-left: 10px;
       }
       button {
@@ -86,17 +86,16 @@ const StyledModal = styled.div`
 `;
 
 interface ModalDefaultType {
-  onClickModal: (a: { id: number; title: string; address: string; states: string; lat: number; lng: number }) => void;
+  onClickModal: (a: { id: number; name: string; address: string; latitude: number; longitude: number }) => void;
   addressList: Storetype[];
-  title: string;
+  name: string;
   address: string;
-  states: string;
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Modal = ({ onClickModal, setModal, lat, lng, addressList, states, title, address }: ModalDefaultType) => {
+const Modal = ({ onClickModal, setModal, latitude, longitude, addressList, name, address }: ModalDefaultType) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -111,19 +110,19 @@ const Modal = ({ onClickModal, setModal, lat, lng, addressList, states, title, a
           <div className='name'>
             <img src='http://www.gong-cha.co.kr/view/m/images/common/icon_new_p.png' />
 
-            <span className='title'>{title}</span>
+            <span className='title'>{name}</span>
             <button onClick={() => setModal(false)}>
               <span>X</span>
             </button>
           </div>
           <div className='map'>
-            <Location lat={lat} lng={lng} />
+            <Location latitude={latitude} longitude={longitude} />
           </div>
           <table className='adress'>
             <thead>
               <tr>
                 <th>지역</th>
-                <td>{states}</td>
+                <td>{address.slice(0, 2)}</td>
               </tr>
             </thead>
             <thead>

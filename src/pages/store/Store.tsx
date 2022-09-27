@@ -2,17 +2,20 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import noticeTop from '../../assets/notice_top.jpg';
 import axios from 'axios';
-import addressData from '././addressData.json';
+// import addressData from '././addressData.json';
 import { BiSearch } from 'react-icons/bi';
 import Modal from './Modal';
 
+export interface StoreRes {
+  addressData: Storetype[];
+}
+
 export type Storetype = {
   id: number;
-  title: string;
+  name: string;
   address: string;
-  states: string;
-  lat: number;
-  lng: number;
+  latitude: number;
+  longitude: number;
 };
 
 const StyledHeader = styled.header`
@@ -110,26 +113,36 @@ const StyledList = styled.ul`
 
 const Store = () => {
   const [selectedOption, setSelectedOption] = useState<string>('');
-  const [addressList, setAddressList] = useState<Storetype[]>(addressData);
+  const [addressList, setAddressList] = useState<Storetype[]>([]);
   const [address, setAddress] = useState<string>('');
-  const [states, setStates] = useState<string>('');
-  const [lat, setLat] = useState<number>(0);
-  const [lng, setlng] = useState<number>(0);
+  const [name, setName] = useState<string>('');
+  const [latitude, setLatitude] = useState<number>(0);
+  const [longitude, setLongitude] = useState<number>(0);
   const [value, setValue] = useState<string>('');
   const [modal, setModal] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
+  // const { data } = await axios.get<Storetype>(`localhost:8000/shops`);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await axios.get<Storetype[]>('./data/addressData.json');
+        setAddressList(data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
 
   const onClickModal = useCallback(
-    (add: { id: number; title: string; address: string; states: string; lat: number; lng: number }) => {
+    (add: { id: number; name: string; address: string; latitude: number; longitude: number }) => {
       setModal(!modal);
-      setTitle(add.title);
+      setName(add.name);
       setAddress(add.address);
-      setStates(add.states);
-      setLat(add.lat);
-      setlng(add.lng);
+      setLatitude(add.latitude);
+      setLongitude(add.longitude);
     },
     [modal]
   );
@@ -137,8 +150,7 @@ const Store = () => {
   const selectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setSelectedOption(value);
-    setAddressList(addressData);
-    console.log(selectedOption.slice(0, 2));
+    setAddressList(addressList);
   };
 
   const submitHandler: React.FormEventHandler<HTMLButtonElement> = e => {
@@ -177,12 +189,12 @@ const Store = () => {
       </StyledSearch>
       <StyledList>
         <>
-          {addressData
+          {addressList
             .filter(val => {
               if (selectedOption == '시,도') {
                 return val;
               }
-              if (val.states.toLowerCase().includes(selectedOption.toLowerCase())) {
+              if (val.address.slice(0, 3).includes(selectedOption.slice(0, 3))) {
                 return val;
               }
             })
@@ -190,18 +202,17 @@ const Store = () => {
               if (value == ' ') {
                 return val;
               }
-              if (val.title.toLowerCase().includes(value.toLowerCase())) {
+              if (val.name.toLowerCase().includes(value.toLowerCase())) {
                 return val;
               }
             })
             .map((add, i) => (
               <li onClick={() => onClickModal(add)} key={add.id}>
-                <p>{add.states}</p>
-                <h4>{add.title}</h4>
+                <h4>{add.name}</h4>
                 <p>{add.address}</p>
               </li>
             ))}
-          {modal && <Modal lat={lat} lng={lng} states={states} setModal={setModal} title={title} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
+          {modal && <Modal latitude={latitude} longitude={longitude} setModal={setModal} name={name} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
     </div>

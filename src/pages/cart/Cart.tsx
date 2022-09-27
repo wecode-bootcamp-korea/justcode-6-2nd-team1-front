@@ -33,12 +33,22 @@ const StyledCart = styled.div<{ allChecked: boolean }>`
       align-items: center;
       gap: 10px;
 
+      h2 {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
       button {
         border: 1px solid gray;
         border-radius: 4px;
         background: white;
         padding: 2px 8px;
         font-size: 4vw;
+
+        p {
+          transform: translateY(-1px);
+        }
       }
 
       svg {
@@ -78,13 +88,14 @@ interface CartProps {
   cartList: CartItem[];
   selectList: number[];
   allCheckHandler: () => void;
-  orderHandler: () => void;
+  orderHandler: () => Promise<void>;
+  removeSelectHandler: () => Promise<void>;
   disabled: boolean;
   setSelectList: React.Dispatch<React.SetStateAction<number[]>>;
   setCartList: React.Dispatch<React.SetStateAction<CartItem[] | undefined>>;
 }
 
-const Cart = ({ cartList, selectList, allCheckHandler, disabled, orderHandler, setSelectList, setCartList }: CartProps) => {
+const Cart = ({ cartList, selectList, allCheckHandler, disabled, orderHandler, setSelectList, setCartList, removeSelectHandler }: CartProps) => {
   const { token } = useStore();
 
   return (
@@ -92,9 +103,14 @@ const Cart = ({ cartList, selectList, allCheckHandler, disabled, orderHandler, s
       <StyledCart allChecked={cartList.every(cartItem => selectList.includes(cartItem.orderId))}>
         <div className='select'>
           <h4>음료({cartList.length})</h4>
-          <div className='btnContainer' onClick={allCheckHandler}>
-            <AiOutlineCheck size='5vw' />
-            <h2>전체선택</h2>
+          <div className='btnContainer'>
+            <h2 onClick={allCheckHandler}>
+              <AiOutlineCheck size='5vw' />
+              전체선택
+            </h2>
+            <button onClick={removeSelectHandler} disabled={disabled}>
+              <p>선택 삭제</p>
+            </button>
           </div>
         </div>
         <ul>

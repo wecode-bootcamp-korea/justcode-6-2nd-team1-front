@@ -55,9 +55,6 @@ const ProductDetail = () => {
               Authorization: token,
             },
           });
-
-          console.log(data);
-
           setOrderRes(data);
           navigate('./pay');
           setDisabled(false);

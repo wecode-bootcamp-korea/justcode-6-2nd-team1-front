@@ -77,6 +77,33 @@ const CartRoutes = () => {
     }
   };
 
+  const removeSelectHandler = async () => {
+    try {
+      setDisalbed(true);
+      await axios.post('localhost:8000/beverages/cart', selectList, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      const {
+        data: { cartData },
+      } = await axios.get<GetCartRes>(`http://localhost:8000/beverages/cart`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      setCartList(cartData);
+      setSelectList([]);
+      setDisalbed(false);
+    } catch (error) {
+      console.log(error);
+      setErrorModal(true);
+      setDisalbed(false);
+    }
+  };
+
   return (
     <>
       {errorModal && <ErrorModal errorMessage='로그인을 먼저 해주세요.' errorModal={errorModal} setErrorModal={setErrorModal} />}
@@ -94,6 +121,7 @@ const CartRoutes = () => {
                 orderHandler={orderHandler}
                 selectList={selectList}
                 setSelectList={setSelectList}
+                removeSelectHandler={removeSelectHandler}
               />
             }
           />

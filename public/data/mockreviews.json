@@ -1,0 +1,18 @@
+{
+  "reviewData": [
+    {
+      "id": 1,
+      "nickname": "고우니",
+      "content": "이 음료는 넘 맛도리에여",
+      "created_at": "2022-09-21T03:24:13.000Z",
+      "score": 4
+    },
+    {
+      "id": 2,
+      "nickname": "고우니2",
+      "content": "이 음료는 넘 맛도리에여2",
+      "created_at": "2022-09-21T03:24:13.000Z",
+      "score": 5
+    }
+  ]
+}

@@ -183,7 +183,6 @@ const useOption = () => {
   const addCartHandler = async () => {
     if (info) {
       setCartDisabled(true);
-
       const toppingData = [];
 
       for (const [key, value] of Object.entries(option.additionalOption)) {

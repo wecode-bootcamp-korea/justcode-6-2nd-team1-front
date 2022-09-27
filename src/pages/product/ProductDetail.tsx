@@ -10,6 +10,7 @@ import Spinner from '../../components/Spinner';
 import useOption from '../../hooks/useOption';
 import { StyledModal, StyledDiv, StyledBtnContainer } from './ProductDetailStyle';
 import { toppingToId } from '../../utils/toppingFromId';
+import Reviews from './Reviews';
 
 const ProductDetail = () => {
   const { addCartHandler, additinalOption, cartDisabled, errorMessage, errorModal, id, info, isLogin, loading, minusHandler, option, setErrorMessage, setErrorModal, setOption, totalOption, token } = useOption();
@@ -22,38 +23,38 @@ const ProductDetail = () => {
   const [inputValue, setInputValue] = useState('');
   const [reviewList, setReviewList] = useState<Review[]>();
 
-  const createReviewHandler = async () => {
-    await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
-      `http://localhost:8000/beverages/review/${id}`,
-      {
-        content: inputValue,
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-  };
+  // const createReviewHandler = async () => {
+  //   await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
+  //     `http://localhost:8000/beverages/review/${id}`,
+  //     {
+  //       content: inputValue,
+  //     },
+  //     {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     }
+  //   );
+  // };
 
-  const removeReviewHandler = async (review_id: number) => {
-    await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
-      headers: {
-        Authorization: token,
-      },
-    });
-  };
+  // const removeReviewHandler = async (review_id: number) => {
+  //   await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
+  //     headers: {
+  //       Authorization: token,
+  //     },
+  //   });
+  // };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
-        setReviewList(reviewRes.reviewData);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
+  //       setReviewList(reviewRes.reviewData);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, []);
 
   const payHandler = async () => {
     if (info) {
@@ -297,6 +298,7 @@ const ProductDetail = () => {
                   {disabled ? <Spinner /> : <p>바로주문</p>}
                 </button>
               </StyledBtnContainer>
+              <Reviews />
             </>
           }
         />

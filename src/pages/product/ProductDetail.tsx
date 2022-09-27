@@ -1,17 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { AiFillMinusCircle, AiFillPlusCircle, AiFillRightCircle, AiOutlineLeft } from 'react-icons/ai';
-import styled from 'styled-components';
-import { AddCartReq, AddCartRes, AmountOption, CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
-import theme from '../../theme';
-import Amount from './Amount';
+import { CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
+import Amount from '../../components/Amount';
 import ErrorModal from '../../components/ErrorModal';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Pay from './pay/Pay';
-import { sugarToRatio } from '../../utils/sugarToRatio';
 import Spinner from '../../components/Spinner';
 import useOption from '../../hooks/useOption';
 import { StyledModal, StyledDiv, StyledBtnContainer } from './ProductDetailStyle';
+import { toppingToId } from '../../utils/toppingFromId';
+import Reviews from './Reviews';
 
 const ProductDetail = () => {
   const { addCartHandler, additinalOption, cartDisabled, errorMessage, errorModal, id, info, isLogin, loading, minusHandler, option, setErrorMessage, setErrorModal, setOption, totalOption, token } = useOption();
@@ -24,43 +23,55 @@ const ProductDetail = () => {
   const [inputValue, setInputValue] = useState('');
   const [reviewList, setReviewList] = useState<Review[]>();
 
-  const createReviewHandler = async () => {
-    await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
-      `http://localhost:8000/beverages/review/${id}`,
-      {
-        content: inputValue,
-      },
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-  };
+  // const createReviewHandler = async () => {
+  //   await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
+  //     `http://localhost:8000/beverages/review/${id}`,
+  //     {
+  //       content: inputValue,
+  //     },
+  //     {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     }
+  //   );
+  // };
 
-  const removeReviewHandler = async (review_id: number) => {
-    await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
-      headers: {
-        Authorization: token,
-      },
-    });
-  };
+  // const removeReviewHandler = async (review_id: number) => {
+  //   await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
+  //     headers: {
+  //       Authorization: token,
+  //     },
+  //   });
+  // };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
-        setReviewList(reviewRes.reviewData);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
+  //       setReviewList(reviewRes.reviewData);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   })();
+  // }, []);
 
   const payHandler = async () => {
     if (info) {
       if (isLogin) {
         setDisabled(true);
+
+        const toppingData = [];
+
+        for (const [key, value] of Object.entries(option.additionalOption)) {
+          if (value) {
+            toppingData.push({
+              id: toppingToId(key),
+              amount: value,
+            });
+          }
+        }
+
         try {
           const req: OrderReq = {
             amount: option.amount,
@@ -68,32 +79,7 @@ const ProductDetail = () => {
             ice: option.iceSize,
             sugar: option.sugar,
             takeOut: option.isTakeout ? 1 : 0,
-            toppings: [
-              {
-                id: 3,
-                amount: option.additionalOption.aloe,
-              },
-              {
-                id: 6,
-                amount: option.additionalOption.cheeseform,
-              },
-              {
-                id: 4,
-                amount: option.additionalOption.coconut,
-              },
-              {
-                id: 5,
-                amount: option.additionalOption.milkform,
-              },
-              {
-                id: 1,
-                amount: option.additionalOption.pearl,
-              },
-              {
-                id: 2,
-                amount: option.additionalOption.whitePearl,
-              },
-            ],
+            toppings: toppingData,
             totalPrice: (Number(info.detailData.price) + 500 * totalOption) * option.amount,
           };
 
@@ -124,7 +110,7 @@ const ProductDetail = () => {
     return (
       <>
         {errorModal && <ErrorModal errorModal={errorModal} setErrorModal={setErrorModal} errorMessage={errorMessage} />}
-        <Spinner fixed={true} />
+        {loading && <Spinner fixed={true} />}
       </>
     );
   } else {
@@ -312,6 +298,7 @@ const ProductDetail = () => {
                   {disabled ? <Spinner /> : <p>바로주문</p>}
                 </button>
               </StyledBtnContainer>
+              <Reviews />
             </>
           }
         />

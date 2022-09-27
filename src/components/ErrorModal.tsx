@@ -36,6 +36,8 @@ const StyledError = styled.div`
     h4 {
       padding: 20px 0;
       text-align: center;
+      word-break: keep-all;
+      line-height: 1.3;
     }
 
     button {

@@ -198,22 +198,26 @@ const Reviews = () => {
       created_at: new Date().toLocaleString(),
     };
 
-    await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
-      // './data/mockreviews.json',
-      `http://localhost:8000/beverages/review/${id}`,
-      {
-        content: inputValue,
-        score: score,
-      },
-      {
-        headers: {
-          Authorization: token,
+    try {
+      await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
+        // './data/mockreviews.json',
+        `http://localhost:8000/beverages/review/${id}`,
+        {
+          content: inputValue,
+          score: score,
         },
-      }
-    );
-    const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
-    setReviewList(reviewRes.reviewData);
-    setInputValue('');
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
+      setReviewList(reviewRes.reviewData);
+      setInputValue('');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInput = (e: any) => {

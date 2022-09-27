@@ -75,7 +75,7 @@ const CartRoutes = () => {
       console.log(error);
 
       setErrorModal(true);
-      setMessage('장바구니가 비어있습니다.');
+      setMessage('장바구니가 비어있거나 선택한 상품이 없습니다.');
       setDisalbed(false);
     }
   };

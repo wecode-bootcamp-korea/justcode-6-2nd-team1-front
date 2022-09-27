@@ -14,14 +14,10 @@ import ProductDetail from './pages/product/ProductDetail';
 import Search from './pages/search/Search';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
-<<<<<<< HEAD
-import Reviews from './pages/product/Reviews';
-=======
 import History from './pages/history/History';
 import useStore from './context/store';
 import axios, { AxiosResponse } from 'axios';
 import { LoginReq, LoginRes } from './interface';
->>>>>>> main
 
 const App = () => {
   const { login } = useStore();
@@ -65,11 +61,7 @@ const App = () => {
         <Route path='/product' element={<Product />} />
         <Route path='/product/detail/*' element={<ProductDetail />} />
         <Route path='/product/detail/:id/*' element={<ProductDetail />} />
-<<<<<<< HEAD
-        <Route path='/review' element={<Reviews />} />
-=======
         <Route path='/history' element={<History />} />
->>>>>>> main
 
         <Route path='/cart/*' element={<CartRoutes />} />
         <Route path='/signup' element={<Signup />} />

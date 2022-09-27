@@ -48,6 +48,7 @@ export interface ProductDetailInfo {
     review_data: {
       id: number;
       content: string;
+      score: number;
       nickname: string;
       createdAt: string;
     }[];
@@ -126,6 +127,7 @@ export interface ReviewRes {
 
 export interface CreateReviewReq {
   content: string;
+  score: number;
 }
 
 export interface CreateReviewRes {
@@ -204,11 +206,7 @@ export interface OrderData {
 }
 
 export interface Beverage {
-<<<<<<< HEAD
-  id: number;
-=======
   orderId: number;
->>>>>>> main
   beverage_name: string;
   beverage_image: string;
   price: string;

@@ -9,7 +9,7 @@ import axios from 'axios';
 import ListSkeleton from './ListSkeleton';
 import theme from '../../theme';
 
-const StyledHeader = styled.header`
+export const StyledHeader = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,6 +21,10 @@ const StyledHeader = styled.header`
   padding: 30px 0;
 
   h2 {
+    font-size: 8vw;
+    font-weight: 500;
+  }
+  h1 {
     font-size: 8vw;
     font-weight: 500;
   }
@@ -62,12 +66,12 @@ const StyledNav = styled.nav<{ isNotice: boolean }>`
   }
 `;
 
-const StyledDiv = styled.div<{ optionOpen: boolean }>`
+export const StyledDiv = styled.div<{ optionOpen?: boolean; center?: string }>`
   padding: 10px;
 
   div.container {
     display: flex;
-    justify-content: space-between;
+    justify-content: ${props => (props.center ? 'center' : 'space-between')};
     background-color: #f3f4f7;
     height: calc(4vw + 40px);
     padding: 10px;

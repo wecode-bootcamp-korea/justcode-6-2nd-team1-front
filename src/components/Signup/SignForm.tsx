@@ -5,6 +5,7 @@ import { AgreeListProps } from '../../interface';
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { SignUpReq, SignUp } from '../../interface';
+import theme from '../../theme';
 
 const SignForm = ({ setPage }: AgreeListProps) => {
   const [email, setEmail] = useState('');
@@ -17,7 +18,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const [nickname, setNickname] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [btn, setBtn] = useState(false);
+  const [btn, setBtn] = useState(true);
 
   type Email = '0' | '1';
 
@@ -25,7 +26,6 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const onlyKor = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
   const passwordReg = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/;
 
-  console.log('render check');
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = async e => {
     // 이메일 중복검사
 
@@ -172,14 +172,20 @@ const SignForm = ({ setPage }: AgreeListProps) => {
         </div>
       </SignUpForm>
 
-      <NextBtn //
+      {/* <NextBtn //
         type='button'
         disabled={btn}
         onClick={() => setPage(2)}
       >
         다음
-      </NextBtn>
-      <button>이 버튼으로 회원가입(해결중)</button>
+      </NextBtn> */}
+      <button //
+        className='btn'
+        disabled={btn}
+        onClick={() => setPage(2)}
+      >
+        다음
+      </button>
     </StyedForm>
   );
 };
@@ -190,5 +196,19 @@ const StyedForm = styled.form`
   width: 100vw;
   div {
     padding: 0 10px;
+  }
+  .btn {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    height: 60px;
+    background-color: ${theme.red};
+    border: none;
+    font-size: 20px;
+    color: white;
+    &:disabled {
+      background-color: ${theme.grey};
+      color: grey;
+    }
   }
 `;

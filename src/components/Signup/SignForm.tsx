@@ -174,7 +174,6 @@ const SignForm = ({ setPage }: AgreeListProps) => {
       >
         다음
       </NextBtn>
-      <button>test</button>
     </StyedForm>
   );
 };

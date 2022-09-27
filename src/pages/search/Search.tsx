@@ -21,7 +21,7 @@ const Search = () => {
 
   useEffect(() => {
     (async () => {
-      const { data } = await axios.get<SearchInfo[]>('data/search/search.json');
+      const { data } = await axios.get<SearchInfo[]>(`http://localhost:8000/search?keyword=${value}`);
       if (value) {
         const list = data.filter(search => {
           return search.description.includes(value);

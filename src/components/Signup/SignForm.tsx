@@ -170,7 +170,8 @@ const SignForm = ({ setPage }: AgreeListProps) => {
         </div>
       </SignUpForm>
       <NextBtn //
-        disabled={btn ? true : false}
+        type='button'
+        disabled={btn}
         onClick={() => setPage(2)}
       >
         다음

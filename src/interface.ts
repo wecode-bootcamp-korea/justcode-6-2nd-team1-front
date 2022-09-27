@@ -174,6 +174,21 @@ export interface AmountOption {
   plusHandler: () => void;
 }
 
+export interface SearchInfo {
+  id: number;
+  category_name: string;
+  beverage_name: string;
+  beverage_image: string;
+  price: string;
+  description: string;
+}
+export interface ProductInfo {
+  id: number;
+  beverage_name: string;
+  beverage_image: string;
+  price: string;
+  description: string;
+}
 export interface CartItem {
   shopName: string;
   orderId: number;
@@ -242,4 +257,12 @@ export interface OrderHistory {
     amount: number;
     topping_id: number;
   }[];
+}
+
+export interface CartRemoveReq {
+  id: number[];
+}
+
+export interface CartRemoveRes {
+  message: string;
 }

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import logo from '../../assets/ilcha_logo_reverse.png';
+
 import { BsPerson } from 'react-icons/bs';
 import { FiLock } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,8 +8,9 @@ import theme from '../../theme';
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import useStore from '../../context/store';
-import { LoginReq, User } from '../../interface';
+import { LoginReq, LoginRes, User } from '../../interface';
 import ErrorModal from '../../components/ErrorModal';
+import KaKaoLogin from '../../components/login/KakaoButton';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -27,12 +29,15 @@ const Login = () => {
     if (email.includes('@') && password.length >= 8) {
       setDisabled(true);
       try {
-        const { data } = await axios.post<User, AxiosResponse<User>, LoginReq>('http://localhost:8000/users/login', {
+        const { data } = await axios.post<LoginRes, AxiosResponse<LoginRes>, LoginReq>('http://localhost:8000/users/login', {
           email,
           password,
         });
         login(data);
         setDisabled(false);
+
+        localStorage.setItem('email', email);
+        localStorage.setItem('password', password);
       } catch (error) {
         setDisabled(false);
         setErrorModal(true);
@@ -56,8 +61,10 @@ const Login = () => {
             <FiLock className='icon' size='23px' />
             <input type='password' placeholder='비밀번호' onChange={e => setPassword(e.target.value)} />
           </div>
-
-          <button disabled={disabled}>{disabled ? '로그인 중' : '로그인'}</button>
+          <button className='loginBtn' disabled={disabled}>
+            {disabled ? '로그인 중' : '로그인'}
+          </button>
+          <KaKaoLogin />
         </form>
         <div className='signUp'>
           <Link to='/signup'>회원가입</Link>
@@ -136,7 +143,7 @@ const StyledLogin = styled.div`
       margin: 10px;
       color: gray;
     }
-    button {
+    .loginBtn {
       height: 45px;
       width: 90%;
       margin-top: 10px;

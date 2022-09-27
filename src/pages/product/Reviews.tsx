@@ -29,7 +29,14 @@ const Container = styled.div`
     padding-bottom: 10px;
     border-bottom: 1px solid gray;
     li {
-      line-height: 1.5em;
+      line-height: 4vh;
+
+      form {
+        display: inline-block;
+      }
+      span.score {
+        font-size: 4vw;
+      }
 
       span.nickname {
         font-size: 5vw;
@@ -41,6 +48,7 @@ const Container = styled.div`
       span.date {
         font-size: 3vw;
       }
+
       button.deleteButton {
         font-size: 4vw;
         margin-left: 10px;
@@ -108,8 +116,10 @@ const Stars = styled.div`
   & svg:hover ~ svg {
     color: gray;
   }
-
-  .yellowStar {
+  &svg:focus {
+    color: ${theme.red};
+  }
+  &svg:checked ~ svg {
     color: ${theme.red};
   }
 `;
@@ -119,6 +129,7 @@ const Reviews = () => {
   const [inputValue, setInputValue] = useState<string>('');
   const [startScore, setStarScore] = useState<number>(0);
   const [nickname, setNickname] = useState<string>('');
+  const [starColor, setStarcolor] = useState<string>('gray');
   const [reviewList, setReviewList] = useState<Review[]>();
   const [clicked, setClicked] = useState<boolean[]>([false, false, false, false, false]);
   const array = [0, 1, 2, 3, 4];
@@ -130,13 +141,14 @@ const Reviews = () => {
       clickStates[i] = i <= index ? true : false;
     }
     setClicked(clickStates);
+    setStarcolor('red');
   };
   //리뷰 get
   useEffect(() => {
     (async () => {
       try {
-        // const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
-        const { data: reviewRes } = await axios.get<ReviewRes>('./data/mockreviews.json');
+        const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
+        // const { data: reviewRes } = await axios.get<ReviewRes>('./data/mockreviews.json');
         setReviewList(reviewRes.reviewData);
       } catch (error) {
         console.log(error);
@@ -188,8 +200,8 @@ const Reviews = () => {
     console.log(newComment);
 
     await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
-      './data/mockreviews.json',
-      // `http://localhost:8000/beverages/review/${id}`,
+      // './data/mockreviews.json',
+      `http://localhost:8000/beverages/review/${id}`,
       {
         content: inputValue,
       },
@@ -228,8 +240,8 @@ const Reviews = () => {
   //리뷰 삭제
   const removeReviewHandler = (e: React.MouseEvent<HTMLButtonElement>) => async (id: number) => {
     e.preventDefault();
-    // await axios.delete(`http://localhost:8000/beverages/review/${id}`, {
-    await axios.delete('./data/mockreviews.json', {
+    await axios.delete(`http://localhost:8000/beverages/review/${id}`, {
+      // await axios.delete('./data/mockreviews.json', {
       headers: {
         Authorization: token,
       },
@@ -255,16 +267,16 @@ const Reviews = () => {
                 {data.nickname || '익명'}
                 :&nbsp;
               </span>
-              <span className='score'>{data.score}점&nbsp;</span>
+              <span className='score'>{data.score}점</span>
+              <form>
+                <button className='deleteButton' onClick={removeReviewHandler}>
+                  {' '}
+                  삭제
+                </button>
+              </form>
               <div>
                 <span className='content'>{data.content}&nbsp;</span>
                 <span className='date'>{data.created_at || '2022-01-01'}</span>
-                <form>
-                  <button className='deleteButton' onClick={removeReviewHandler}>
-                    {' '}
-                    삭제
-                  </button>
-                </form>
               </div>
             </li>
           );

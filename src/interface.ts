@@ -48,6 +48,7 @@ export interface ProductDetailInfo {
     review_data: {
       id: number;
       content: string;
+      score: number;
       nickname: string;
       createdAt: string;
     }[];
@@ -116,6 +117,7 @@ export interface Review {
   id: number;
   nickname: string;
   content: string;
+  score: number;
   created_at: string;
 }
 
@@ -125,6 +127,7 @@ export interface ReviewRes {
 
 export interface CreateReviewReq {
   content: string;
+  score: number;
 }
 
 export interface CreateReviewRes {

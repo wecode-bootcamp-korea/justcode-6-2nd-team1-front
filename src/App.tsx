@@ -16,35 +16,16 @@ import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 import History from './pages/history/History';
 import useStore from './context/store';
-import axios, { AxiosResponse } from 'axios';
-import { LoginReq, LoginRes } from './interface';
 
 const App = () => {
-  const { login } = useStore();
+  const { login, isLogin } = useStore();
+  const {} = useState();
 
   useEffect(() => {
-    const email = localStorage.getItem('email');
-    const password = localStorage.getItem('password');
-
-    if (email && password) {
-      (async () => {
-        try {
-          const { data } = await axios.post<LoginRes, AxiosResponse<LoginRes>, LoginReq>('http://localhost:8000/users/login', {
-            email,
-            password,
-          });
-          login(data);
-        } catch (error) {
-          console.log(error);
-        }
-      })();
+    if (isLogin) {
+      // 매장 선택
     }
-  }, []);
-
-  const [locationInfo, setLocationInfo] = useState<GeolocationPosition>();
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(setLocationInfo);
-  }, []);
+  }, [isLogin]);
 
   return (
     <>

@@ -23,39 +23,6 @@ const ProductDetail = () => {
   const [inputValue, setInputValue] = useState('');
   const [reviewList, setReviewList] = useState<Review[]>();
 
-  // const createReviewHandler = async () => {
-  //   await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
-  //     `http://localhost:8000/beverages/review/${id}`,
-  //     {
-  //       content: inputValue,
-  //     },
-  //     {
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     }
-  //   );
-  // };
-
-  // const removeReviewHandler = async (review_id: number) => {
-  //   await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
-  //     headers: {
-  //       Authorization: token,
-  //     },
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
-  //       setReviewList(reviewRes.reviewData);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   })();
-  // }, []);
-
   const payHandler = async () => {
     if (info) {
       if (isLogin) {
@@ -88,6 +55,8 @@ const ProductDetail = () => {
               Authorization: token,
             },
           });
+
+          console.log(data);
 
           setOrderRes(data);
           navigate('./pay');

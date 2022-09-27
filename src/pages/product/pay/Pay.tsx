@@ -217,7 +217,7 @@ const Pay = ({ orderRes }: PayProps) => {
         console.log(error);
         setDisabled(false);
         setModal(true);
-        setMessage('통신에 실패하였거나 포인트가 부족합니다.');
+        setMessage('통신에 실패하였거나 포인트가 부족하거나 유효시간이 지난 주문입니다.');
       }
     }
   };

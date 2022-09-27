@@ -243,3 +243,11 @@ export interface OrderHistory {
     topping_id: number;
   }[];
 }
+
+export interface CartRemoveReq {
+  id: number[];
+}
+
+export interface CartRemoveRes {
+  message: string;
+}

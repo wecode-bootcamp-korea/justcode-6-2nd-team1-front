@@ -4,7 +4,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import ErrorModal from '../../components/ErrorModal';
 import Spinner from '../../components/Spinner';
 import useStore from '../../context/store';
-import { CartItem, CartOrderRes, CartPayReq, GetCartRes, OrderData } from '../../interface';
+import { CartItem, CartOrderRes, CartPayReq, CartRemoveReq, CartRemoveRes, GetCartRes, OrderData } from '../../interface';
 import Cart from './Cart';
 import CartOrder from './CartOrder';
 
@@ -17,6 +17,7 @@ const CartRoutes = () => {
   const [disabled, setDisalbed] = useState(false);
   const [order, setOrder] = useState<OrderData>();
   const navigate = useNavigate();
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -37,6 +38,7 @@ const CartRoutes = () => {
       } catch (error) {
         console.log(error);
         setLoading(false);
+        setMessage('로그인을 확인해주세요.');
         setErrorModal(true);
       }
     })();
@@ -73,6 +75,7 @@ const CartRoutes = () => {
       console.log(error);
 
       setErrorModal(true);
+      setMessage('장바구니가 비어있습니다.');
       setDisalbed(false);
     }
   };
@@ -80,11 +83,17 @@ const CartRoutes = () => {
   const removeSelectHandler = async () => {
     try {
       setDisalbed(true);
-      await axios.post('localhost:8000/beverages/cart', selectList, {
-        headers: {
-          Authorization: token,
+      await axios.post<CartRemoveRes, AxiosResponse<CartRemoveRes>, CartRemoveReq>(
+        'http://localhost:8000/beverages/delete_cart',
+        {
+          id: selectList,
         },
-      });
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
 
       const {
         data: { cartData },
@@ -106,7 +115,7 @@ const CartRoutes = () => {
 
   return (
     <>
-      {errorModal && <ErrorModal errorMessage='로그인을 먼저 해주세요.' errorModal={errorModal} setErrorModal={setErrorModal} />}
+      {errorModal && <ErrorModal errorMessage={message} errorModal={errorModal} setErrorModal={setErrorModal} />}
       {loading && <Spinner fixed={true} />}
       {!loading && cartList && (
         <Routes>

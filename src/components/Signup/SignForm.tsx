@@ -23,6 +23,8 @@ const SignForm = ({ setPage }: AgreeListProps) => {
 
   // 정규식 검사
   const onlyKor = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
+  const passwordReg = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/;
+
   console.log('render check');
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = async e => {
     // 이메일 중복검사
@@ -43,11 +45,11 @@ const SignForm = ({ setPage }: AgreeListProps) => {
 
   useEffect(() => {
     // 유효성 검사
-    if (password.length > 7) {
+    if (passwordReg.test(password)) {
       setPasswordCondition(true);
       if (passwordCheck && emailCheck && nickname.length > 1 && name.length > 1 && phoneNumber.length > 9) {
         setBtn(false);
-        console.log('login Condition checked');
+        console.log('login Condition clear');
       } else setBtn(true);
     } else {
       setPasswordCondition(false);

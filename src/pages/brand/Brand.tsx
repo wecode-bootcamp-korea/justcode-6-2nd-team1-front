@@ -6,28 +6,7 @@ import innovation from '../../assets/brand/innovation.png';
 import theme from '../../theme';
 import ReactPlayer from 'react-player';
 import Footer from '../../components/Footer';
-
-const StyledHeader = styled.header`
-  display: flex;
-  height: 150px;
-  flex-direction: column;
-  align-items: center;
-  background-image: url(${noticeTop});
-  background-position: center;
-  background-size: cover;
-  gap: 20px;
-  color: white;
-  padding: 30px 0;
-
-  h1 {
-    font-size: 8vw;
-    font-weight: 500;
-  }
-
-  p {
-    font-size: 4vw;
-  }
-`;
+import { StyledHeader } from '../notice/Notice';
 const StyledIntroduce = styled.div`
   display: block;
   background-color: #e4dcd2;

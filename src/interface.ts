@@ -13,6 +13,11 @@ export interface LoginReq {
   password: string;
 }
 
+export interface LoginRes {
+  token: string;
+  message: string;
+}
+
 export interface ProductInfo {
   id: number;
   beverage_name: string;
@@ -95,7 +100,7 @@ export interface OrderRes {
     cold: number;
     sugar: number;
     ice: 'regular' | 'less' | 'full';
-    toppingData: {
+    toppingData?: {
       amount: number;
       topping_id: number;
     }[];
@@ -139,6 +144,7 @@ export interface SignUpReq {
   nickname: string;
   name: string;
   phoneNumber: string;
+}
 
 export interface AddCartReq {
   amount: number;
@@ -197,7 +203,7 @@ export interface OrderData {
 }
 
 export interface Beverage {
-  id: number;
+  orderId: number;
   beverage_name: string;
   beverage_image: string;
   price: string;

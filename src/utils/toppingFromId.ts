@@ -16,3 +16,22 @@ export const toppingFromId = (id: number) => {
       return '잘못된 id입니다';
   }
 };
+
+export const toppingToId = (topping: string) => {
+  switch (topping) {
+    case 'pearl':
+      return 1;
+    case 'whitePearl':
+      return 2;
+    case 'aloe':
+      return 3;
+    case 'coconut':
+      return 4;
+    case 'milkform':
+      return 5;
+    case 'cheeseform':
+      return 6;
+    default:
+      return 0;
+  }
+};

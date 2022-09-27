@@ -7,7 +7,7 @@ import theme from '../../theme';
 import axios, { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import useStore from '../../context/store';
-import { LoginReq, User } from '../../interface';
+import { LoginReq, LoginRes, User } from '../../interface';
 import ErrorModal from '../../components/ErrorModal';
 
 const Login = () => {
@@ -27,12 +27,15 @@ const Login = () => {
     if (email.includes('@') && password.length >= 8) {
       setDisabled(true);
       try {
-        const { data } = await axios.post<User, AxiosResponse<User>, LoginReq>('http://localhost:8000/users/login', {
+        const { data } = await axios.post<LoginRes, AxiosResponse<LoginRes>, LoginReq>('http://localhost:8000/users/login', {
           email,
           password,
         });
         login(data);
         setDisabled(false);
+
+        localStorage.setItem('email', email);
+        localStorage.setItem('password', password);
       } catch (error) {
         setDisabled(false);
         setErrorModal(true);
@@ -76,26 +79,25 @@ export default Login;
 const StyledLogin = styled.div`
   font-family: 'Noto Sans KR', sans-serif;
   button {
-    border: none;
     background-color: inherit;
+    border: none;
     &:disabled {
       opacity: 0.6;
     }
   }
 
   div.signUp {
-    margin-top: 20px;
     display: flex;
     justify-content: center;
     margin-top: 20px;
     button {
-      font-size: 13px;
       padding: 0 12px;
+      font-size: 13px;
     }
     a {
-      font-size: 13px;
       padding: 0 12px;
       text-decoration: none;
+      font-size: 13px;
       color: black;
     }
   }
@@ -104,8 +106,8 @@ const StyledLogin = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-    background: ${theme.red};
     padding: 50px 0 40px 0;
+    background: ${theme.red};
     img {
       width: 70%;
     }
@@ -115,8 +117,8 @@ const StyledLogin = styled.div`
     display: flex;
     align-items: center;
     flex-direction: column;
-    padding-top: 20px;
     width: 100%;
+    padding-top: 20px;
     .inputBox {
       display: flex;
       align-items: center;
@@ -128,24 +130,24 @@ const StyledLogin = styled.div`
       background-color: white;
     }
     input {
-      font-size: 16px;
-      margin: 5px 0;
       width: 80%;
+      margin: 5px 0;
       border: none;
+      font-size: 16px;
     }
     .icon {
-      color: gray;
       margin: 10px;
+      color: gray;
     }
     button {
       height: 45px;
       width: 90%;
       margin-top: 10px;
       background-color: ${theme.red};
-      color: white;
-      font-size: 20px;
       border: none;
       border-radius: 50px;
+      font-size: 20px;
+      color: white;
     }
   }
 `;

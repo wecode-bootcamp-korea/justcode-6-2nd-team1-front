@@ -94,7 +94,7 @@ const Product = () => {
     (async () => {
       setLoading(true);
       // http://localhost:8000/beverages/category/${mode + 1}
-      const { data } = await axios.get<CategoryRes>(`data/seasonData.json`);
+      const { data } = await axios.get<CategoryRes>(`http://localhost:8000/beverages/category/${mode + 1}`);
       setProductList(data.beverageData);
       setLoading(false);
     })();
@@ -126,7 +126,7 @@ const Product = () => {
               </div>
               <div className='container'>
                 <h3>{productInfo.beverage_name}</h3>
-                <h4>{productInfo.price}</h4>
+                <h4>{Number(productInfo.price).toLocaleString()}원</h4>
               </div>
             </li>
           ))}

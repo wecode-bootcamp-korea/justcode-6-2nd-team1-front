@@ -4,19 +4,15 @@ import { AiFillCaretDown } from 'react-icons/ai';
 import { GrClose } from 'react-icons/gr';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import ErrorModal from '../../../components/ErrorModal';
+import Line from '../../../components/Line';
+import Spinner from '../../../components/Spinner';
 import useStore from '../../../context/store';
 import { OrderRes } from '../../../interface';
 import theme from '../../../theme';
 import { toppingFromId } from '../../../utils/toppingFromId';
 
-const Line = styled.div`
-  width: 100%;
-  height: 2px;
-  background-color: #aaaaaa;
-  margin: 20px 0;
-`;
-
-const StyledPay = styled.div<{ detail: boolean; length: number }>`
+const StyledPay = styled.div<{ detail: boolean; length: number | undefined }>`
   padding-bottom: calc(40px + 6vw);
 
   h4 {
@@ -139,7 +135,7 @@ const StyledBtn = styled.button<{ detail: boolean }>`
   }
 `;
 
-const StyledModal = styled.div`
+export const StyledModal = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
@@ -215,45 +211,24 @@ const Pay = ({ orderRes }: PayProps) => {
           },
         });
         setModal(true);
-        setMessage('결제 및 주문완료!');
+        setMessage('결제 및 주문완료.');
+        navigate('/history');
       } catch (error) {
         console.log(error);
         setDisabled(false);
         setModal(true);
-        setMessage('통신 실패!');
-      }
-    }
-  };
-
-  const closeHandler: React.MouseEventHandler<HTMLDivElement> = ({ target }) => {
-    if (target instanceof Element && target.closest('div.modalShadow')) {
-      if (target.closest('button.close') || target.closest('svg.close')) {
-        setModal(false);
-        navigate('/');
-      } else if (!target.closest('div.container')) {
-        setModal(false);
-        navigate('/');
+        setMessage('통신에 실패하였거나 포인트가 부족합니다.');
       }
     }
   };
 
   if (!orderRes) {
-    return <></>;
+    return <Spinner fixed={true} />;
   }
   return (
     <>
-      {modal && (
-        <StyledModal onClick={closeHandler} className='modalShadow'>
-          <div className='container'>
-            <p>
-              알림 <GrClose className='close' />
-            </p>
-            <h4>{message}</h4>
-            <button className='close'>확인</button>
-          </div>
-        </StyledModal>
-      )}
-      <StyledPay detail={detail} length={orderRes.orderData.toppingData.length}>
+      {modal && <ErrorModal errorMessage={message} errorModal={modal} setErrorModal={setModal} />}
+      <StyledPay detail={detail} length={orderRes.orderData.toppingData?.length}>
         <div className='upSide'>
           <h4>주문 정보</h4>
           <Line />
@@ -263,12 +238,15 @@ const Pay = ({ orderRes }: PayProps) => {
           <Line />
           <p>{orderRes.orderData.shopName}</p>
           <p>{orderRes.orderData.address}</p>
-          <h4>주문옵션</h4>
+          <h4>테이크아웃</h4>
           <Line />
           <p>{orderRes.orderData.take_out ? '테이크 아웃' : '매장'}</p>
+          <h4>포인트</h4>
+          <Line />
+          <p>{orderRes.orderData.point.toLocaleString()}원</p>
           <h4>가격</h4>
           <Line />
-          <p>{orderRes.orderData.total_price}</p>
+          <p>{orderRes.orderData.total_price.toLocaleString()}원</p>
 
           <div className='caution'>
             <p>제휴사 혜택은 없습니다.</p>
@@ -281,7 +259,7 @@ const Pay = ({ orderRes }: PayProps) => {
             </div>
             <div className='text'>
               <h4>{orderRes.orderData.beverage_name}</h4>
-              <p>{orderRes.orderData.total_price}</p>
+              <p>{Number(orderRes.orderData.total_price).toLocaleString()}원</p>
             </div>
           </div>
           <StyledBtn detail={detail} onClick={() => setDetail(!detail)}>
@@ -297,17 +275,22 @@ const Pay = ({ orderRes }: PayProps) => {
                     .map((a, i) => (i === 0 ? a.toLocaleUpperCase() : a))
                     .join('') + ' Ice'}
                 </span>
-                {orderRes.orderData.price}원
+                {Number(orderRes.orderData.price).toLocaleString()}원
               </p>
-              {!!orderRes.orderData.toppingData.length && (
+              {!!orderRes.orderData.toppingData?.length && (
                 <p>
                   <span>
                     {orderRes.orderData.toppingData
+
                       .map(top => top.topping_id)
                       .map(id => toppingFromId(id))
                       .join('/')}
                   </span>
-                  {orderRes.orderData.toppingData.map(top => top.amount).reduce((prev, cur) => prev + cur * 500, 0)}원
+                  {orderRes.orderData.toppingData
+                    .map(top => top.amount)
+                    .reduce((prev, cur) => prev + cur * 500, 0)
+                    .toLocaleString()}
+                  원
                 </p>
               )}
               <p>
@@ -330,7 +313,7 @@ const Pay = ({ orderRes }: PayProps) => {
           </p>
         </div>
         <FixedBtn onClick={payHandler} disabled={disabled}>
-          결제 및 주문
+          {disabled ? <Spinner /> : '결제 및 주문'}
         </FixedBtn>
       </StyledPay>
     </>

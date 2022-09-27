@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useStore from '../context/store';
 import { AddCartReq, AddCartRes, AmountOption, OrderReq, ProductDetailInfo, ProductOption } from '../interface';
+import { toppingToId } from '../utils/toppingFromId';
 
 const useOption = () => {
   const { id } = useParams();
@@ -182,38 +183,24 @@ const useOption = () => {
   const addCartHandler = async () => {
     if (info) {
       setCartDisabled(true);
+      const toppingData = [];
+
+      for (const [key, value] of Object.entries(option.additionalOption)) {
+        if (value) {
+          toppingData.push({
+            id: toppingToId(key),
+            amount: value,
+          });
+        }
+      }
+
       const req: OrderReq = {
         amount: option.amount,
         cold: option.isIce ? 1 : 0,
         ice: option.iceSize,
         sugar: option.sugar,
         takeOut: option.isTakeout ? 1 : 0,
-        toppings: [
-          {
-            id: 3,
-            amount: option.additionalOption.aloe,
-          },
-          {
-            id: 6,
-            amount: option.additionalOption.cheeseform,
-          },
-          {
-            id: 4,
-            amount: option.additionalOption.coconut,
-          },
-          {
-            id: 5,
-            amount: option.additionalOption.milkform,
-          },
-          {
-            id: 1,
-            amount: option.additionalOption.pearl,
-          },
-          {
-            id: 2,
-            amount: option.additionalOption.whitePearl,
-          },
-        ],
+        toppings: toppingData,
         totalPrice: (Number(info.detailData.price) + 500 * totalOption) * option.amount,
       };
 

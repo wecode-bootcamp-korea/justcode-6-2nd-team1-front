@@ -21,6 +21,9 @@ const SignForm = ({ setPage }: AgreeListProps) => {
 
   type Email = '0' | '1';
 
+  // 정규식 검사
+  const onlyKor = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
+  console.log('render check');
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = async e => {
     // 이메일 중복검사
     e.preventDefault();
@@ -49,6 +52,8 @@ const SignForm = ({ setPage }: AgreeListProps) => {
     } else {
       setPasswordCondition(false);
     }
+
+    setName(name.replace(onlyKor, ''));
   }, [password, nickname, name, phoneNumber, emailCheck]);
 
   useEffect(() => {
@@ -94,7 +99,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
           <div className='title'>
             <span>이메일</span>
             <div className='content'>
-              <input type='email' onChange={e => setEmail(e.target.value)} />
+              <input type='email' value={email} onChange={e => setEmail(e.target.value)} />
               <span className={`button ${emailCheck ? '' : 'btnCheck'}`} onClick={duplicateEmail}>
                 중복확인
               </span>
@@ -151,7 +156,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
           <div className='title'>
             <span>이름</span>
             <div className='content'>
-              <input type='text' onChange={e => setName(e.target.value)} />
+              <input type='text' value={name} onChange={e => setName(e.target.value)} />
             </div>
           </div>
           <div className='title'>
@@ -168,6 +173,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
       >
         다음
       </NextBtn>
+      <button>이 버튼으로 회원가입(해결중)</button>
     </StyedForm>
   );
 };

@@ -197,7 +197,7 @@ export const CheckList = styled.form`
   }
 `;
 
-export const SignUpForm = styled.div`
+export const SignUpDiv = styled.div`
   .head {
     width: 95%;
     margin-top: 30px;

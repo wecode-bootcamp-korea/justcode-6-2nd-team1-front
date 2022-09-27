@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SignUpForm } from '../../pages/signup/Signup';
+import { SignUpDiv } from '../../pages/signup/Signup';
 import { NextBtn } from '../../pages/signup/Signup';
 import { AgreeListProps } from '../../interface';
 import axios, { AxiosResponse } from 'axios';
@@ -26,9 +26,8 @@ const SignForm = ({ setPage }: AgreeListProps) => {
   const onlyKor = /[a-z0-9]|[ \[\]{}()<>?|`~!@#$%^&*-_+=,.;:\"'\\]/g;
   const passwordReg = /^(?=.*\d)(?=.*[a-zA-Z])[0-9a-zA-Z]{8,20}$/;
 
+  // 이메일 중복검사
   const duplicateEmail: React.MouseEventHandler<HTMLButtonElement> = async e => {
-    // 이메일 중복검사
-
     e.preventDefault();
     try {
       const { data } = await axios.get<Email>(`http://localhost:8000/users/userCheck?email=${email}`);
@@ -44,29 +43,26 @@ const SignForm = ({ setPage }: AgreeListProps) => {
     }
   };
 
+  // 유효성 검사
   useEffect(() => {
-    // 유효성 검사
     if (passwordReg.test(password)) {
       setPasswordCondition(true);
       if (passwordCheck && emailCheck && nickname.length > 1 && name.length > 1 && phoneNumber.length > 9) {
         setBtn(false);
-        console.log('login Condition clear');
       } else setBtn(true);
     } else {
       setPasswordCondition(false);
     }
-
     setName(name.replace(onlyKor, ''));
   }, [password, nickname, name, phoneNumber, emailCheck]);
 
+  // 비밀번호 재확인 input
   useEffect(() => {
-    // 비밀번호 재확인 input
     password === passwordTwice ? setPasswordCheck(true) : setPasswordCheck(false);
   }, [passwordTwice]);
 
-  // 통신해보고 점검하기
+  // 이메일 중복체크 후 다시 이메일 수정했을 때 검사하도록 하는 버튼
   useEffect(() => {
-    // 이메일 중복체크 후 다시 이메일 수정했을 때 검사하도록 하는 버튼
     if (email !== emailState) {
       setEmailCheck(false);
     } else {
@@ -74,10 +70,9 @@ const SignForm = ({ setPage }: AgreeListProps) => {
     }
   }, [email, emailState]);
 
+  // 기입한 정보 보내기
   const submitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
-    console.log('submit');
     e.preventDefault();
-    // 기입한 정보 보내기
     try {
       await axios.post<SignUp, AxiosResponse<SignUp>, SignUpReq>('http://localhost:8000/users/signup', {
         email,
@@ -86,7 +81,6 @@ const SignForm = ({ setPage }: AgreeListProps) => {
         name,
         phoneNumber,
       });
-      // 가입완료 화면으로 넘어가게하는 state
       setEmailState(email);
     } catch (error) {
       console.log(error);
@@ -95,7 +89,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
 
   return (
     <StyedForm onSubmit={submitHandler}>
-      <SignUpForm>
+      <SignUpDiv>
         <div className='head'>
           <span>아이디 설정</span>
         </div>
@@ -138,8 +132,8 @@ const SignForm = ({ setPage }: AgreeListProps) => {
             </div>
           </div>
         </div>
-      </SignUpForm>
-      <SignUpForm>
+      </SignUpDiv>
+      <SignUpDiv>
         <div className='head'>
           <span>닉네임 설정</span>
         </div>
@@ -151,8 +145,8 @@ const SignForm = ({ setPage }: AgreeListProps) => {
             </div>
           </div>
         </div>
-      </SignUpForm>
-      <SignUpForm>
+      </SignUpDiv>
+      <SignUpDiv>
         <div className='head'>
           <span>회원 정보</span>
         </div>
@@ -170,7 +164,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
             </div>
           </div>
         </div>
-      </SignUpForm>
+      </SignUpDiv>
 
       {/* <NextBtn //
         type='button'

@@ -12,7 +12,7 @@ const StyledStore = styled.div`
   text-align: center;
   align-items: center;
   margin-top: 30px;
-  padding-top: 60px;
+  padding-top: 10px;
 
   div.search_wrap {
     display: block;
@@ -21,20 +21,20 @@ const StyledStore = styled.div`
   }
 
   h3 {
-    font-size: 5em;
+    font-size: 1.2em;
     padding-bottom: 20px;
   }
 
   p {
     color: #666666;
-    font-size: 3em;
-    margin-bottom: 20px;
+    font-size: 1em;
+    margin-bottom: 10px;
   }
 
   input {
     width: 70%;
     height: 5vh;
-    font-size: 2em;
+    font-size: 0.8em;
     margin-bottom: 10px;
     padding: 10px;
     outline: none;
@@ -42,9 +42,9 @@ const StyledStore = styled.div`
   }
 
   button {
-    font-size: 15px;
-    width: 70%;
+    font-size: 1em;
     height: 5vh;
+    width: 70%;
     background: #3b3230;
     color: white;
     border: none;

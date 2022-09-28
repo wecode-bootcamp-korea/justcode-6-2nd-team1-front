@@ -35,9 +35,6 @@ const Login = () => {
         });
         login(data);
         setDisabled(false);
-
-        localStorage.setItem('email', email);
-        localStorage.setItem('password', password);
       } catch (error) {
         setDisabled(false);
         setErrorModal(true);

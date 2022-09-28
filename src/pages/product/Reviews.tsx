@@ -1,12 +1,14 @@
 import styled from 'styled-components';
-import mockreview from '../../../public/data/mockreviews.json';
 import axios, { AxiosResponse } from 'axios';
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useOption from '../../hooks/useOption';
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { AddCartReq, AddCartRes, AmountOption, CreateReviewReq, CreateReviewRes, OrderReq, OrderRes, ProductDetailInfo, ProductOption, Review, ReviewRes } from '../../interface';
+import { CreateReviewReq, CreateReviewRes, Review, ReviewRes } from '../../interface';
 import { ImStarFull } from 'react-icons/im';
 import theme from '../../theme';
+import useStore from '../../context/store';
+import { useParams } from 'react-router-dom';
+import ErrorModal from '../../components/ErrorModal';
+import Spinner from '../../components/Spinner';
 
 const Container = styled.div`
   width: 100%;
@@ -15,25 +17,25 @@ const Container = styled.div`
 
   div.title {
     width: 22%;
-    border-bottom: 1px solid gray;
     margin-bottom: 10px;
 
     h1 {
+      color: ${theme.red};
       font-size: 6vw;
+      font-weight: 700;
     }
   }
 
   div.list {
     width: 100%;
     margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid gray;
-    li {
-      line-height: 4vh;
 
-      form {
-        display: inline-block;
-      }
+    li {
+      padding: 10px 0;
+      line-height: 4vh;
+      list-style: none;
+      border-bottom: 1px solid gray;
+
       span.score {
         font-size: 4vw;
       }
@@ -43,15 +45,23 @@ const Container = styled.div`
       }
       span.content {
         font-size: 4vw;
-        margin-left: 20px;
       }
       span.date {
+        display: block;
         font-size: 3vw;
+        text-align: right;
+      }
+
+      form {
+        display: flex;
+        justify-content: flex-end;
       }
 
       button.deleteButton {
+        background-color: transparent;
+        color: gray;
         font-size: 4vw;
-        margin-left: 10px;
+        text-align: right;
         border: none;
       }
     }
@@ -59,9 +69,8 @@ const Container = styled.div`
 
   div.inputContainer {
     width: 100%;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
 
     span {
       font-size: 4vw;
@@ -76,135 +85,97 @@ const Container = styled.div`
 
     div.reviewInput {
       display: inline-block;
-      width: 90%;
+      width: 100%;
       align-items: center;
 
       input {
-        width: 80%;
-        height: 6vh;
+        width: 100%;
         border: none;
+        font-size: 6vw;
+        padding: 10px;
       }
 
       button {
-        color: white;
-        width: 20%;
-        height: 6vh;
+        width: 100%;
         border: none;
+        font-size: 6vw;
+        margin: 0;
+        padding: 10px;
         background-color: ${theme.red};
+        color: white;
+
+        &:disabled {
+          background-color: gray;
+        }
       }
     }
+  }
+
+  form {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  div.inputBox {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 `;
 
 const Stars = styled.div`
   display: flex;
-  width: 30%;
-  margin-top: 10px;
   align-items: center;
+  gap: 10px;
+  margin-top: 10px;
 
-  & svg {
-    width: 40%;
-    height: 40%;
+  svg {
     color: gray;
     cursor: pointer;
     margin-bottom: 10px;
-  }
 
-  :hover svg {
-    color: ${theme.red};
-  }
-  & svg:hover ~ svg {
-    color: gray;
-  }
-  &svg:focus {
-    color: ${theme.red};
-  }
-  &svg:checked ~ svg {
-    color: ${theme.red};
+    &.clicked {
+      color: ${theme.red};
+    }
   }
 `;
 
 const Reviews = () => {
-  const { addCartHandler, additinalOption, cartDisabled, errorMessage, errorModal, id, info, isLogin, loading, minusHandler, option, setErrorMessage, setErrorModal, setOption, totalOption, token } = useOption();
+  const { token } = useStore();
+  const { id } = useParams();
   const [inputValue, setInputValue] = useState<string>('');
   const [startScore, setStarScore] = useState<number>(0);
-  const [nickname, setNickname] = useState<string>('');
-  const [starColor, setStarcolor] = useState<string>('gray');
   const [reviewList, setReviewList] = useState<Review[]>();
-  const [clicked, setClicked] = useState<boolean[]>([false, false, false, false, false]);
-  const array = [0, 1, 2, 3, 4];
+  const [errorModal, setErrorModal] = useState(false);
+  const [message, setErrorMessage] = useState('');
+  const [disabled, setDisabled] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  //별클릭에 따라 점수 구현
-  const handleStarClick = (index: any) => {
-    const clickStates = [...clicked];
-    for (let i = 0; i < 5; i++) {
-      clickStates[i] = i <= index ? true : false;
-    }
-    setClicked(clickStates);
-    setStarcolor('red');
-  };
-  //리뷰 get
   useEffect(() => {
     (async () => {
       try {
         const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
-        // const { data: reviewRes } = await axios.get<ReviewRes>('./data/mockreviews.json');
+
         setReviewList(reviewRes.reviewData);
       } catch (error) {
         console.log(error);
+        setErrorModal(true);
       }
     })();
   }, []);
-  //리뷰 post
-  // const createReviewHandler = (e: any) => {
-  //   e.preventDefault();
-  //   const score = clicked.filter(Boolean).length;
-  //   const body = {
-  //     id,
-  //     inputValue,
-  //     score,
-  //   };
-  //   console.log(body);
-  //   fetch('./data/mockreviews.json', {
-  //     method: 'POST',
-  //     headers: {
-  //       Authorization: token,
-  //       'Content-type': 'application/json',
-  //     },
-  //     body: JSON.stringify(body),
-  //   })
-  //     .then(res => res.json())
-  //     .then(res => {
-  //       loader();
-  //     });
-  //   setInputValue('');
-  //   sendStar();
 
-  // const copyreviewList = [...reviewList];
-  // copyreviewList.push(inputValue);
-  // setReviewList(copyreviewList);
-  // setInputValue('');
-
-  //리뷰 포스트
-  const createReviewHandler = async (e: any) => {
+  const createReviewHandler = async () => {
     if (!id || !inputValue) return;
-    e.preventDefault();
-    const score = clicked.filter(Boolean).length;
-    const newComment = {
-      id: Number(id),
-      nickname: nickname,
-      score: score,
-      content: inputValue,
-      created_at: new Date().toLocaleString(),
-    };
 
     try {
+      setDisabled(true);
       await axios.post<CreateReviewRes, AxiosResponse<CreateReviewRes>, CreateReviewReq>(
-        // './data/mockreviews.json',
         `http://localhost:8000/beverages/review/${id}`,
         {
           content: inputValue,
-          score: score,
+          score: startScore + 1,
         },
         {
           headers: {
@@ -215,102 +186,86 @@ const Reviews = () => {
       const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
       setReviewList(reviewRes.reviewData);
       setInputValue('');
+      inputRef.current && (inputRef.current.value = '');
+
+      setDisabled(false);
     } catch (error) {
+      setErrorModal(true);
       console.log(error);
+      setDisabled(false);
+      setErrorMessage('구매한 사람만 등록할 수 있습니다.');
+      setInputValue('');
+      inputRef.current && (inputRef.current.value = '');
     }
   };
 
-  const handleInput = (e: any) => {
-    e.preventDefault();
-    setInputValue(e.target.value);
-  };
-
-  //리뷰 get
-  // const loader = () => {
-  //   fetch('./data/mockreviews.json')
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setReviewList(data.reviewData);
-  //       console.log(reviewList);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   loader();
-  // }, []);
-
-  //리뷰 삭제
   const removeReviewHandler = async (review_id: number) => {
-    await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
-      // await axios.delete('./data/mockreviews.json', {
-      headers: {
-        Authorization: token,
-      },
-    });
-    const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
-
-    setReviewList(reviewRes.reviewData);
-    console.log(reviewRes.reviewData);
+    setDisabled(true);
+    try {
+      await axios.delete(`http://localhost:8000/beverages/review/${review_id}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      const { data: reviewRes } = await axios.get<ReviewRes>(`http://localhost:8000/beverages/review/${id}`);
+      setReviewList(reviewRes.reviewData);
+      setDisabled(false);
+    } catch (error) {
+      setErrorModal(true);
+      setErrorMessage('실패.');
+      console.log(error);
+      setDisabled(false);
+    }
   };
 
   return (
-    <Container>
-      <div className='title'>
-        <h1>REVIEW</h1>
-      </div>
-      <div className='list'>
-        {reviewList?.map(data => {
-          return (
-            <li key={data.id}>
-              <span className='nickname'>
-                {data.nickname || '익명'}
-                :&nbsp;
-              </span>
-              <span className='score'>{data.score}점</span>
-              <form
-                onSubmit={e => {
-                  e.preventDefault();
-                }}
-              >
-                <button
-                  className='deleteButton'
-                  onClick={e => {
-                    removeReviewHandler(data.id);
-                  }}
-                >
-                  {' '}
-                  삭제
-                </button>
-              </form>
-              <div>
-                <span className='content'>{data.content}&nbsp;</span>
+    <>
+      {errorModal && <ErrorModal errorMessage={message} errorModal={errorModal} setErrorModal={setErrorModal} />}
+      <Container>
+        <div className='title'>
+          <h1>리뷰</h1>
+        </div>
+        <div className='list'>
+          {reviewList?.map(data => {
+            return (
+              <li key={data.id}>
+                <span className='nickname'>{data.nickname || '익명'} </span>
+                <span className='score'>{data.score}점</span>
+                <div>
+                  <span className='content'>{data.content}&nbsp;</span>
+                </div>
                 <span className='date'>{data.created_at || '2022-01-01'}</span>
+                <form onSubmit={e => e.preventDefault()}>
+                  <button className='deleteButton' onClick={() => removeReviewHandler(data.id)} disabled={disabled}>
+                    {disabled ? <Spinner /> : '삭제'}
+                  </button>
+                </form>
+              </li>
+            );
+          })}
+        </div>
+        <div className='inputContainer'>
+          <span>별점 및 리뷰를 입력해주세요.</span>
+          <div className='box'>
+            <Stars>
+              {[...Array(5).keys()].map(num => (
+                <ImStarFull key={num} onClick={() => setStarScore(num)} className={startScore >= num ? 'clicked' : ''} size='5vw' />
+              ))}
+            </Stars>
+          </div>
+          <div className='reviewInput'>
+            <form onSubmit={e => e.preventDefault()}>
+              <div className='inputBox'>
+                <input type='text' placeholder='리뷰를 입력하세요' onChange={e => setInputValue(e.target.value)} ref={inputRef} />
+                <button onClick={createReviewHandler} disabled={disabled}>
+                  {disabled ? <Spinner /> : '확인'}
+                </button>
               </div>
-            </li>
-          );
-        })}
-      </div>
-      <div className='inputContainer'>
-        <span>별점 및 리뷰를 입력해주세요.</span>
-        <div className='box'>
-          <Stars>
-            {array.map(el => {
-              return <ImStarFull key={el} onClick={() => handleStarClick(el)} />;
-            })}
-          </Stars>
+            </form>
+          </div>
         </div>
-        <div className='reviewInput'>
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-            }}
-          >
-            <input type='text' value={inputValue} placeholder='리뷰를 입력하세요' onChange={handleInput}></input>
-            <button onClick={createReviewHandler}>확인</button>
-          </form>
-        </div>
-      </div>
-    </Container>
+      </Container>
+    </>
   );
 };
 

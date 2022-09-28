@@ -268,6 +268,7 @@ const NoticePage = () => {
         }
       });
     });
+
     lastLi && observer.observe(lastLi);
   }, [lastLi]);
 

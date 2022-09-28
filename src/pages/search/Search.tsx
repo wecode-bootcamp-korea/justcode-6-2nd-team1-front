@@ -5,12 +5,10 @@ import { StyledHeader, StyledDiv } from '../notice/Notice';
 import { StyledList } from '../product/Product';
 import { BiSearch } from 'react-icons/bi';
 import { SearchInfo, ProductInfo } from '../../interface';
-import { useNavigate } from 'react-router-dom';
 import CategotySkeleton from '../product/CategorySkeleton';
 
 const Search = () => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
   const [value, setValue] = useState('');
   const [product, setProduct] = useState<ProductInfo[]>([]);
   const timeId = useRef<NodeJS.Timeout>();
@@ -60,7 +58,7 @@ const Search = () => {
       ) : (
         <StyledList>
           {product.map(info => (
-            <li key={info.id} onClick={() => navigate(`/beverages/detail/${info.id}`)}>
+            <li key={info.id}>
               <div className='imgContainer'>
                 <img src={info['beverage_image']} alt='productImage' />
               </div>

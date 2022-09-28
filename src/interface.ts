@@ -18,19 +18,6 @@ export interface LoginRes {
   message: string;
 }
 
-export interface KakaoReq {
-  token: string;
-}
-
-export interface KakaoRes {
-  token: string;
-  message: string;
-}
-
-export interface KakaoPostReq {
-  access_token: string;
-}
-
 export interface ProductInfo {
   id: number;
   beverage_name: string;

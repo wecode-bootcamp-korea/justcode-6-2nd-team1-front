@@ -34,11 +34,9 @@ const SignForm = ({ setPage }: AgreeListProps) => {
       if (data === '1') {
         alert('사용 가능한 이메일 입니다');
         setEmailCheck(true);
-      } else {
-        alert('사용중인 이메일 입니다');
       }
     } catch (error) {
-      console.log(error);
+      alert('사용중인 이메일 입니다');
       setEmailCheck(false);
     }
   };
@@ -72,6 +70,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
 
   // 기입한 정보 보내기
   const submitHandler: React.FormEventHandler<HTMLFormElement> = async e => {
+    // console.log('submit');
     e.preventDefault();
     try {
       await axios.post<SignUp, AxiosResponse<SignUp>, SignUpReq>('http://localhost:8000/users/signup', {
@@ -81,7 +80,7 @@ const SignForm = ({ setPage }: AgreeListProps) => {
         name,
         phoneNumber,
       });
-      setEmailState(email);
+      setPage(2);
     } catch (error) {
       console.log(error);
     }
@@ -169,14 +168,13 @@ const SignForm = ({ setPage }: AgreeListProps) => {
       {/* <NextBtn //
         type='button'
         disabled={btn}
-        onClick={() => setPage(2)}
+        // onClick={() => setPage(2)}
       >
         다음
       </NextBtn> */}
       <button //
-        className='btn'
         disabled={btn}
-        onClick={() => setPage(2)}
+        className='btn'
       >
         다음
       </button>
@@ -188,6 +186,8 @@ export default SignForm;
 
 const StyedForm = styled.form`
   width: 100vw;
+  display: flex;
+  flex-direction: column;
   div {
     padding: 0 10px;
   }

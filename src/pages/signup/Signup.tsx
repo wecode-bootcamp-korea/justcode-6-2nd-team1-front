@@ -126,11 +126,11 @@ const StyledSignUp = styled.div`
   }
 `;
 
-const Line = styled.div`
-  height: 17px;
-  margin: 25px 2px 0 0;
-  border-right: 1px solid gray;
-`;
+// const Line = styled.div`
+//   height: 17px;
+//   margin: 25px 2px 0 0;
+//   border-right: 1px solid gray;
+// `;
 
 export const AgreeBtn = styled.div`
   display: flex;

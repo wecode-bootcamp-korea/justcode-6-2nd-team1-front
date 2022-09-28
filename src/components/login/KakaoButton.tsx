@@ -5,6 +5,7 @@ const KaKaoLogin = () => {
   const RESTAPIKey = '95b40d30bfea9add60abe22405519b58';
   const RedirectURI = 'http://localhost:3000/kakaologin';
   const KaKaoAuthURL = `https://kauth.kakao.com/oauth/authorize?client_id=${RESTAPIKey}&redirect_uri=${RedirectURI}&response_type=code`;
+
   return (
     <StyledKakaoLogin href={KaKaoAuthURL}>
       <img src={kakaoLogo} />

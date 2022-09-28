@@ -19,7 +19,6 @@ const Login = () => {
   const [disabled, setDisabled] = useState(false);
   const { login, isLogin } = useStore();
   const [errorModal, setErrorModal] = useState(false);
-
   useEffect(() => {
     isLogin && navigate('/');
   }, [isLogin]);
@@ -35,9 +34,6 @@ const Login = () => {
         });
         login(data);
         setDisabled(false);
-
-        localStorage.setItem('email', email);
-        localStorage.setItem('password', password);
       } catch (error) {
         setDisabled(false);
         setErrorModal(true);

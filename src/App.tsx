@@ -17,6 +17,7 @@ import Store from './pages/store/Store';
 import History from './pages/history/History';
 import useStore from './context/store';
 import MatchModal from './components/MatchModal';
+import AskStore from './pages/store/Askstore';
 
 const App = () => {
   const { isLogin, isMatch } = useStore();
@@ -30,6 +31,7 @@ const App = () => {
         <Route path='/' element={<Main />} />
         <Route path='/brand' element={<Brand />} />
         <Route path='/store' element={<Store />} />
+        <Route path='/askstore' element={<AskStore />} />
 
         <Route path='/order' element={<Order />} />
         <Route path='/notice' element={<NoticePage />} />

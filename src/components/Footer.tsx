@@ -5,6 +5,7 @@ import { FaPhoneAlt } from 'react-icons/fa';
 
 const StyledFooter = styled.div`
   div.footer-wrap {
+    position: relative;
     bottom: 0;
     display: flex;
     height: 25vh;

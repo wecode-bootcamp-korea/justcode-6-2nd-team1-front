@@ -17,7 +17,7 @@ import Store from './pages/store/Store';
 import History from './pages/history/History';
 import useStore from './context/store';
 import MatchModal from './components/MatchModal';
-import AskStore from './pages/store/Askstore';
+import AskStore from './pages/store/AskStore';
 
 const App = () => {
   const { isLogin, isMatch } = useStore();

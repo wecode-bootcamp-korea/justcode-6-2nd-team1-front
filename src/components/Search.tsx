@@ -78,19 +78,18 @@ const Search = () => {
     }
   };
 
-  const goToOrderFilter = {};
-
   const submitHandler: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
     if (inputValue.length < 1) {
       alert('매장명을 입력해주세요');
     }
     if (inputValue.length >= 1) {
-      navigate('/store', {
-        state: {
-          text: inputValue,
-        },
-      });
+      goToStore();
+      // navigate('/store', {
+      //   state: {
+      //     text: inputValue,
+      //   },
+      // });
     }
   };
 
@@ -101,7 +100,7 @@ const Search = () => {
           <h3>매장검색</h3>
           <p className='speed'>공차 매장을 쉽고 빠르게 찾아보세요</p>
           <form>
-            <input onChange={inputHandler} type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
+            <input onChange={inputHandler} name='store' type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
             <div>
               <button type='submit' onClick={submitHandler}>
                 매장 검색하기

@@ -104,8 +104,6 @@ const Store = () => {
   // const { data } = await axios.get<Storetype>(`localhost:8000/shops`);
   // const { data } = await axios.get<Storetype>('./data/addressData.json');
 
-  const text = location.state.text;
-
   useEffect(() => {
     (async () => {
       try {

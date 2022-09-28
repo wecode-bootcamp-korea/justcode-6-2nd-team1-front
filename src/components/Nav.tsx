@@ -23,6 +23,11 @@ const StyledHeader = styled.header`
   justify-content: space-between;
   align-items: center;
 
+  h2 {
+    width: 100%;
+    transform: translateX(-5vw);
+  }
+
   img {
     height: 100%;
     transform: translateX(-5vw);
@@ -133,7 +138,7 @@ const StyledNav = styled.nav<{ menu: boolean }>`
 const Nav = () => {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
-  const { isLogin, logout } = useStore();
+  const { isLogin, logout, matchStore } = useStore();
 
   const closeHandler: React.MouseEventHandler<HTMLDivElement> = e => {
     if (e.target instanceof HTMLElement) {
@@ -162,6 +167,7 @@ const Nav = () => {
     <>
       <StyledHeader>
         <img src={logo} alt='ilcha logo' onClick={() => pageTransition('/')} />
+        <h2>{matchStore}</h2>
         <div className='iconContainer'>
           <BiSearch size='10vw' onClick={() => navigate('/search')} />
           <HiMenu size='10vw' onClick={() => setMenu(!menu)} />

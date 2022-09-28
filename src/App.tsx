@@ -17,20 +17,16 @@ import Store from './pages/store/Store';
 import History from './pages/history/History';
 import useStore from './context/store';
 import RedirectHandler from './components/login/RedirectHandler';
-const App = () => {
-  const { login, isLogin } = useStore();
-  const {} = useState();
+import MatchModal from './components/MatchModal';
 
-  useEffect(() => {
-    if (isLogin) {
-      // 매장 선택
-    }
-  }, [isLogin]);
+const App = () => {
+  const { isLogin, isMatch } = useStore();
 
   return (
     <>
       <GlobalStyle />
       <Nav />
+      {isLogin && !isMatch && <MatchModal />}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/brand' element={<Brand />} />

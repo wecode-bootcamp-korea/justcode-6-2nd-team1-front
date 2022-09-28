@@ -279,3 +279,19 @@ export interface CartRemoveReq {
 export interface CartRemoveRes {
   message: string;
 }
+
+export interface Store {
+  id: number;
+  name: string;
+  distance: number;
+}
+
+export interface GetLocationListRes {
+  closestShops: Store[];
+}
+
+export interface LocationReq {
+  id: number;
+  latitude: number;
+  longitude: number;
+}

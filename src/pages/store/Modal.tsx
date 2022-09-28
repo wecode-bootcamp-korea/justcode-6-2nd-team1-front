@@ -75,7 +75,6 @@ const StyledModal = styled.div`
 
         td {
           width: 80%;
-
           margin-right: 10px;
           padding: 10px;
           font-size: 12px;
@@ -108,8 +107,6 @@ const Modal = ({ onClickModal, setModal, latitude, longitude, addressList, name,
       <div className='container'>
         <div className='modal'>
           <div className='name'>
-            <img src='http://www.gong-cha.co.kr/view/m/images/common/icon_new_p.png' />
-
             <span className='title'>{name}</span>
             <button onClick={() => setModal(false)}>
               <span>X</span>

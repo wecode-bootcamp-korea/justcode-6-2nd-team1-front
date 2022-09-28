@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import noticeTop from '../../assets/notice_top.jpg';
 import axios from 'axios';
@@ -7,17 +8,13 @@ import { BiSearch } from 'react-icons/bi';
 import Modal from './Modal';
 import { StyledHeader } from '../notice/Notice';
 
-export interface StoreRes {
-  addressData: Storetype[];
-}
-
-export type Storetype = {
+export interface Storetype {
   id: number;
   name: string;
   address: string;
   latitude: number;
   longitude: number;
-};
+}
 
 const StyledSearch = styled.div`
   div.container {
@@ -101,15 +98,20 @@ const Store = () => {
   const [value, setValue] = useState<string>('');
   const [modal, setModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const location = useLocation();
 
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
   // const { data } = await axios.get<Storetype>(`localhost:8000/shops`);
+  // const { data } = await axios.get<Storetype>('./data/addressData.json');
+
+  const text = location.state.text;
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get<Storetype[]>('./data/addressData.json');
+        const { data } = await axios.get<Storetype[]>('http://localhost:8000/shops');
         setAddressList(data);
+        console.log(data);
       } catch (error) {
         console.log(error);
       }
@@ -174,7 +176,7 @@ const Store = () => {
               if (selectedOption == '시,도') {
                 return val;
               }
-              if (val.address.slice(0, 3).includes(selectedOption.slice(0, 3))) {
+              if (val.address.slice(0, 2).includes(selectedOption.slice(0, 2))) {
                 return val;
               }
             })

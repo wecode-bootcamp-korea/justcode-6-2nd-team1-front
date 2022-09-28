@@ -7,31 +7,34 @@ import addressData from '../pages/store/addressData.json';
 
 const StyledStore = styled.div`
   display: block;
-  height: 200px;
+  height: 25vh;
   background-color: #f5f4f2;
   text-align: center;
+  align-items: center;
   margin-top: 30px;
-  padding-top: 20px;
+  padding-top: 60px;
 
-  search_wrap {
-    width: 240px;
-    height: 200px;
+  div.search_wrap {
+    display: block;
+    width: 100%;
+    height: 25vh;
   }
 
   h3 {
-    font-size: 20px;
+    font-size: 5em;
     padding-bottom: 20px;
   }
 
   p {
     color: #666666;
-    font-size: 20px;
-    margin-bottom: 10px;
+    font-size: 3em;
+    margin-bottom: 20px;
   }
 
   input {
     width: 70%;
-    height: 40px;
+    height: 5vh;
+    font-size: 2em;
     margin-bottom: 10px;
     padding: 10px;
     outline: none;
@@ -41,7 +44,7 @@ const StyledStore = styled.div`
   button {
     font-size: 15px;
     width: 70%;
-    height: 40px;
+    height: 5vh;
     background: #3b3230;
     color: white;
     border: none;

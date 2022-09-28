@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, PropsWithChildren } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import theme from '../../theme';
 import Location from './Location';

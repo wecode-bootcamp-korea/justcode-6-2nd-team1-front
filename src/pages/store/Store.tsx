@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import noticeTop from '../../assets/notice_top.jpg';
 import axios from 'axios';
-// import addressData from '././addressData.json';
 import { BiSearch } from 'react-icons/bi';
 import Modal from './Modal';
 import { StyledHeader } from '../notice/Notice';
@@ -63,7 +62,6 @@ const StyledList = styled.ul`
   margin: 10px;
   padding: 0px 10px;
   background-color: #f1f2f2;
-  // background: 'http://www.gong-cha.co.kr/view/m/images/common/store_list_arr.png';
 
   li {
     border-bottom: 1px solid #666666;
@@ -101,15 +99,12 @@ const Store = () => {
   const location = useLocation();
 
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
-  // const { data } = await axios.get<Storetype>(`localhost:8000/shops`);
-  // const { data } = await axios.get<Storetype>('./data/addressData.json');
 
   useEffect(() => {
     (async () => {
       try {
         const { data } = await axios.get<Storetype[]>('http://localhost:8000/shops');
         setAddressList(data);
-        console.log(data);
       } catch (error) {
         console.log(error);
       }

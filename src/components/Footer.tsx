@@ -7,7 +7,7 @@ const StyledFooter = styled.div`
   div.footer-wrap {
     bottom: 0;
     display: flex;
-    height: 190px;
+    height: 30vh;
 
     div.footer-left {
       width: 20%;
@@ -31,6 +31,7 @@ const StyledFooter = styled.div`
       }
     }
     div.footer-right {
+      display: inline-block;
       width: 80%;
       height: 100%;
       color: #666666;
@@ -41,17 +42,18 @@ const StyledFooter = styled.div`
       padding: 18px;
 
       p.first-right {
-        font-size: 12px;
-        line-height: 1.4;
+        font-size: 3.5vw;
+        line-height: 1.2em;
         color: #444444;
       }
       p.middle-right {
+        font-size: 3vw;
         margin-top: 10px;
         margin-bottom: 10px;
       }
       p.bottom-right {
-        font-size: 9.3px;
-        line-height: 1.3;
+        font-size: 3vw;
+        line-height: 1.2em;
       }
     }
   }

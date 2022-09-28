@@ -1,5 +1,5 @@
 import Spinner from '../Spinner';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import useStore from '../../context/store';
 import { useNavigate } from 'react-router-dom';
@@ -20,8 +20,6 @@ const RedirectHandler = () => {
     const { data } = await axios.post<KakaoRes, AxiosResponse<KakaoRes>, KakaoReq>('http://localhost:8000/kakaologin', {
       token: kakaoData.access_token,
     });
-    console.log('kakaodata', kakaoData);
-    console.log('data', data);
     login(data);
     navigate('/'); //포인트 지급 모달 넣을지 정해야함
   };

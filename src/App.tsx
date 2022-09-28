@@ -16,6 +16,7 @@ import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 import History from './pages/history/History';
 import useStore from './context/store';
+import RedirectHandler from './components/login/RedirectHandler';
 import MatchModal from './components/MatchModal';
 import AskStore from './pages/store/AskStore';
 
@@ -44,6 +45,7 @@ const App = () => {
         <Route path='/cart/*' element={<CartRoutes />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/kakaologin' element={<RedirectHandler />} />
         <Route path='/search' element={<Search />} />
       </Routes>
     </>

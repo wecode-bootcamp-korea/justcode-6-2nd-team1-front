@@ -27,7 +27,7 @@ export interface KakaoRes {
   message: string;
 }
 
-export interface KakaoPostReq {
+export interface KakaoPostRes {
   access_token: string;
 }
 

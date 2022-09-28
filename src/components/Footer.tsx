@@ -5,9 +5,10 @@ import { FaPhoneAlt } from 'react-icons/fa';
 
 const StyledFooter = styled.div`
   div.footer-wrap {
+    position: relative;
     bottom: 0;
     display: flex;
-    height: 190px;
+    height: 25vh;
 
     div.footer-left {
       width: 20%;
@@ -31,27 +32,31 @@ const StyledFooter = styled.div`
       }
     }
     div.footer-right {
+      display: inline-block;
       width: 80%;
-      height: 100%;
       color: #666666;
       background-color: #f1f2f2;
       text-align: left;
-      box-sizing: border-box;
+      /* box-sizing: border-box; */
       vertical-align: middle;
-      padding: 18px;
+      padding: 10px;
 
       p.first-right {
-        font-size: 12px;
-        line-height: 1.4;
+        display: flex;
+        font-size: 0.7em;
+        line-height: 1.2em;
         color: #444444;
       }
       p.middle-right {
+        display: flex;
+        font-size: 0.9em;
         margin-top: 10px;
         margin-bottom: 10px;
       }
       p.bottom-right {
-        font-size: 9.3px;
-        line-height: 1.3;
+        display: flex;
+        font-size: 0.5em;
+        line-height: 1.2em;
       }
     }
   }

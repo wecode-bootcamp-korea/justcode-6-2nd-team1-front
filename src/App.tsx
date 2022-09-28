@@ -18,6 +18,7 @@ import History from './pages/history/History';
 import useStore from './context/store';
 import RedirectHandler from './components/login/RedirectHandler';
 import MatchModal from './components/MatchModal';
+import AskStore from './pages/store/AskStore';
 
 const App = () => {
   const { isLogin, isMatch } = useStore();
@@ -31,6 +32,7 @@ const App = () => {
         <Route path='/' element={<Main />} />
         <Route path='/brand' element={<Brand />} />
         <Route path='/store' element={<Store />} />
+        <Route path='/askstore' element={<AskStore />} />
 
         <Route path='/order' element={<Order />} />
         <Route path='/notice' element={<NoticePage />} />

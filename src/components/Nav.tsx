@@ -208,7 +208,7 @@ const Nav = () => {
             </h3>
             <ul className='inner-menu'>
               <li onClick={() => pageTransition('/store')}>매장 찾기</li>
-              <li>가맹점 개설 문의</li>
+              <li onClick={() => pageTransition('/askstore')}>가맹점 개설 문의</li>
             </ul>
           </li>
           <li onClick={() => pageTransition('/notice')}>

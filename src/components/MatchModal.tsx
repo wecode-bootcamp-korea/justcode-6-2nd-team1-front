@@ -35,9 +35,14 @@ const StyledModal = styled.div`
 
     h3 {
       width: 100%;
+<<<<<<< HEAD
       word-break: keep-all;
       line-height: 1.3;
       text-align: center;
+=======
+      display: flex;
+      gap: 10px;
+>>>>>>> main
     }
 
     h4 {
@@ -71,6 +76,7 @@ const MatchModal = () => {
     latitude: 0,
     longitude: 0,
   });
+<<<<<<< HEAD
   const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState(false);
 
@@ -98,6 +104,30 @@ const MatchModal = () => {
         setError(true);
       }
     );
+=======
+
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(async ({ coords: { latitude, longitude } }) => {
+      setDisabled(true);
+      setPosition({
+        latitude,
+        longitude,
+      });
+
+      const {
+        data: { closestShops },
+      } = await axios.get<GetLocationListRes>(`http://localhost:8000/users/user_location/${latitude}/${longitude}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      setClosestList(closestShops);
+      setDisabled(false);
+    });
+>>>>>>> main
   }, []);
 
   const matchHandler = async (id: number) => {
@@ -132,6 +162,7 @@ const MatchModal = () => {
       <div className='container'>
         <h2>원하는 매장을 선택하세요</h2>
         <Line />
+<<<<<<< HEAD
         {error ? (
           closestList && !disabled ? (
             <ul>
@@ -156,6 +187,22 @@ const MatchModal = () => {
             </h3>
             <h4>동의하신 후 새로고침 해주세요.</h4>
           </>
+=======
+        {closestList && !disabled ? (
+          <ul>
+            {closestList.map(store => (
+              <li key={store.id} onClick={() => matchHandler(store.id)}>
+                <h3>
+                  {store.name}
+                  <AiOutlineSwapRight />
+                </h3>
+                <h4>{Math.ceil(store.distance * 100000) / 100}m</h4>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <Spinner />
+>>>>>>> main
         )}
       </div>
     </StyledModal>

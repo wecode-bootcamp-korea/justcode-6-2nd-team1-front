@@ -7,31 +7,34 @@ import addressData from '../pages/store/addressData.json';
 
 const StyledStore = styled.div`
   display: block;
-  height: 200px;
+  height: 25vh;
   background-color: #f5f4f2;
   text-align: center;
+  align-items: center;
   margin-top: 30px;
-  padding-top: 20px;
+  padding-top: 10px;
 
-  search_wrap {
-    width: 240px;
-    height: 200px;
+  div.search_wrap {
+    display: block;
+    width: 100%;
+    height: 25vh;
   }
 
   h3 {
-    font-size: 20px;
+    font-size: 1.2em;
     padding-bottom: 20px;
   }
 
   p {
     color: #666666;
-    font-size: 20px;
+    font-size: 1em;
     margin-bottom: 10px;
   }
 
   input {
     width: 70%;
-    height: 40px;
+    height: 5vh;
+    font-size: 0.8em;
     margin-bottom: 10px;
     padding: 10px;
     outline: none;
@@ -39,9 +42,9 @@ const StyledStore = styled.div`
   }
 
   button {
-    font-size: 15px;
+    font-size: 1em;
+    height: 5vh;
     width: 70%;
-    height: 40px;
     background: #3b3230;
     color: white;
     border: none;
@@ -75,11 +78,8 @@ const Search = () => {
     if (e.target instanceof HTMLInputElement) {
       let target = e;
       setInputValue(e.target.value);
-      inputValue.slice;
     }
   };
-
-  const goToOrderFilter = {};
 
   const submitHandler: React.MouseEventHandler<HTMLButtonElement> = e => {
     e.preventDefault();
@@ -88,21 +88,11 @@ const Search = () => {
     }
     if (inputValue.length >= 1) {
       goToStore();
-      //store 페이지에 넘어가서...자동 입력
-      // addressData
-      //   .filter(val => {
-      //     if (inputValue == ' ') {
-      //       return val;
-      //     } else if (val.title.toLowerCase().includes(inputValue.toLowerCase())) {
-      //       return val;
-      //     }
-      //   })
-      //   .map((add, i) => (
-      //     <>
-      //       <h4>{add.title}</h4>
-      //       <p>{add.address}</p>
-      //     </>
-      //   ));
+      // navigate('/store', {
+      //   state: {
+      //     text: inputValue,
+      //   },
+      // });
     }
   };
 
@@ -113,7 +103,7 @@ const Search = () => {
           <h3>매장검색</h3>
           <p className='speed'>공차 매장을 쉽고 빠르게 찾아보세요</p>
           <form>
-            <input onChange={inputHandler} type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
+            <input onChange={inputHandler} name='store' type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
             <div>
               <button type='submit' onClick={submitHandler}>
                 매장 검색하기

@@ -10,7 +10,7 @@ import Main from './pages/Main';
 import NoticePage from './pages/notice/Notice';
 import Order from './pages/order/Order';
 import Product from './pages/product/Product';
-import ProductDetail from './pages/product/ProductDetail';
+import ProductDetailRoutes from './pages/product/ProductDetailRoutes';
 import Search from './pages/search/Search';
 import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
@@ -35,8 +35,8 @@ const App = () => {
         <Route path='/notice' element={<NoticePage />} />
         <Route path='/news' element={<NoticePage />} />
         <Route path='/product' element={<Product />} />
-        <Route path='/product/detail/*' element={<ProductDetail />} />
-        <Route path='/product/detail/:id/*' element={<ProductDetail />} />
+        <Route path='/product/detail/*' element={<ProductDetailRoutes />} />
+        <Route path='/product/detail/:id/*' element={<ProductDetailRoutes />} />
         <Route path='/history' element={<History />} />
 
         <Route path='/cart/*' element={<CartRoutes />} />

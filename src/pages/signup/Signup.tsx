@@ -126,11 +126,11 @@ const StyledSignUp = styled.div`
   }
 `;
 
-const Line = styled.div`
-  height: 17px;
-  margin: 25px 2px 0 0;
-  border-right: 1px solid gray;
-`;
+// const Line = styled.div`
+//   height: 17px;
+//   margin: 25px 2px 0 0;
+//   border-right: 1px solid gray;
+// `;
 
 export const AgreeBtn = styled.div`
   display: flex;
@@ -197,7 +197,7 @@ export const CheckList = styled.form`
   }
 `;
 
-export const SignUpForm = styled.div`
+export const SignUpDiv = styled.div`
   .head {
     width: 95%;
     margin-top: 30px;

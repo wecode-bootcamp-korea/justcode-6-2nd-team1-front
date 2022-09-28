@@ -181,7 +181,7 @@ const useOption = () => {
   ];
 
   const addCartHandler = async () => {
-    if (info) {
+    if (info && isLogin) {
       setCartDisabled(true);
       const toppingData = [];
 
@@ -220,6 +220,9 @@ const useOption = () => {
         setErrorModal(true);
         setErrorMessage('장바구니 추가 실패!');
       }
+    } else {
+      setErrorMessage('로그인을 먼저 해주세요!');
+      setErrorModal(true);
     }
   };
 

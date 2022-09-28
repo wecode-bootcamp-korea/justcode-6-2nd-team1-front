@@ -16,21 +16,16 @@ import Signup from './pages/signup/Signup';
 import Store from './pages/store/Store';
 import History from './pages/history/History';
 import useStore from './context/store';
+import MatchModal from './components/MatchModal';
 
 const App = () => {
-  const { login, isLogin } = useStore();
-  const {} = useState();
-
-  useEffect(() => {
-    if (isLogin) {
-      // 매장 선택
-    }
-  }, [isLogin]);
+  const { isLogin, isMatch } = useStore();
 
   return (
     <>
       <GlobalStyle />
       <Nav />
+      {isLogin && !isMatch && <MatchModal />}
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/brand' element={<Brand />} />

@@ -34,6 +34,8 @@ const StyledModal = styled.div`
     }
 
     h3 {
+      display: flex;
+      gap: 10px;
       width: 100%;
       word-break: keep-all;
       line-height: 1.3;

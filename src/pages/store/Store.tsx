@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BiSearch } from 'react-icons/bi';
 import Modal from './Modal';
 import { StyledHeader } from '../notice/Notice';
+import StoreSkeleton from '../store/StoreSkeleton';
 
 export interface Storetype {
   id: number;
@@ -96,15 +97,18 @@ const Store = () => {
   const [value, setValue] = useState<string>('');
   const [modal, setModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
 
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       try {
         const { data } = await axios.get<Storetype[]>('http://localhost:8000/shops');
         setAddressList(data);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -164,32 +168,34 @@ const Store = () => {
       </StyledSearch>
       <StyledList>
         <>
-          {addressList
-            .filter(val => {
-              if (selectedOption == '시,도') {
-                return val;
-              }
-              if (val.address.slice(0, 2).includes(selectedOption.slice(0, 2))) {
-                return val;
-              }
-            })
-            .filter(val => {
-              if (value == ' ') {
-                return val;
-              }
-              if (val.name.toLowerCase().includes(value.toLowerCase())) {
-                return val;
-              }
-            })
-            .map((add, i) => (
-              <li onClick={() => onClickModal(add)} key={add.id}>
-                <h4>{add.name}</h4>
-                <p>{add.address}</p>
-              </li>
-            ))}
+          {!loading &&
+            addressList
+              .filter(val => {
+                if (selectedOption == '시,도') {
+                  return val;
+                }
+                if (val.address.slice(0, 2).includes(selectedOption.slice(0, 2))) {
+                  return val;
+                }
+              })
+              .filter(val => {
+                if (value == ' ') {
+                  return val;
+                }
+                if (val.name.toLowerCase().includes(value.toLowerCase())) {
+                  return val;
+                }
+              })
+              .map((add, i) => (
+                <li onClick={() => onClickModal(add)} key={add.id}>
+                  <h4>{add.name}</h4>
+                  <p>{add.address}</p>
+                </li>
+              ))}
           {modal && <Modal latitude={latitude} longitude={longitude} setModal={setModal} name={name} address={address} addressList={addressList} onClickModal={onClickModal}></Modal>}
         </>
       </StyledList>
+      {loading && <StoreSkeleton />}
     </div>
   );
 };

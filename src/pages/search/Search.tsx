@@ -60,7 +60,7 @@ const Search = () => {
       ) : (
         <StyledList>
           {product.map(info => (
-            <li key={info.id} onClick={() => navigate(`/beverages/detail/${info.id}`)}>
+            <li key={info.id} onClick={() => navigate(`/product/detail/${info.id}`)}>
               <div className='imgContainer'>
                 <img src={info['beverage_image']} alt='productImage' />
               </div>

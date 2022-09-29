@@ -22,8 +22,7 @@ const Search = () => {
     setLoading(true);
 
     (async () => {
-      // const { data } = await axios.get<SearchInfo[]>(`http://localhost:8000/beverages/search?keyword=${value}`);
-      const { data } = await axios.get<SearchInfo[]>(`/data/search/search.json`);
+      const { data } = await axios.get<SearchInfo[]>(`http://localhost:8000/beverages/search?keyword=${value}`);
       if (value) {
         const list = data.filter(search => {
           return search.beverage_name.includes(value);

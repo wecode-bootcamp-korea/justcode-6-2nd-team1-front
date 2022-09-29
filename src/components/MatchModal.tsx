@@ -34,9 +34,12 @@ const StyledModal = styled.div`
     }
 
     h3 {
-      width: 100%;
       display: flex;
       gap: 10px;
+      width: 100%;
+      word-break: keep-all;
+      line-height: 1.3;
+      text-align: center;
     }
 
     h4 {
@@ -70,28 +73,33 @@ const MatchModal = () => {
     latitude: 0,
     longitude: 0,
   });
-
   const [disabled, setDisabled] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(async ({ coords: { latitude, longitude } }) => {
-      setDisabled(true);
-      setPosition({
-        latitude,
-        longitude,
-      });
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords: { latitude, longitude } }) => {
+        setDisabled(true);
+        setPosition({
+          latitude,
+          longitude,
+        });
 
-      const {
-        data: { closestShops },
-      } = await axios.get<GetLocationListRes>(`http://localhost:8000/users/user_location/${latitude}/${longitude}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+        const {
+          data: { closestShops },
+        } = await axios.get<GetLocationListRes>(`http://localhost:8000/users/user_location/${latitude}/${longitude}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
 
-      setClosestList(closestShops);
-      setDisabled(false);
-    });
+        setClosestList(closestShops);
+        setDisabled(false);
+      },
+      () => {
+        setError(true);
+      }
+    );
   }, []);
 
   const matchHandler = async (id: number) => {
@@ -126,20 +134,30 @@ const MatchModal = () => {
       <div className='container'>
         <h2>원하는 매장을 선택하세요</h2>
         <Line />
-        {closestList && !disabled ? (
-          <ul>
-            {closestList.map(store => (
-              <li key={store.id} onClick={() => matchHandler(store.id)}>
-                <h3>
-                  {store.name}
-                  <AiOutlineSwapRight />
-                </h3>
-                <h4>{Math.ceil(store.distance * 100000) / 100}m</h4>
-              </li>
-            ))}
-          </ul>
+        {error ? (
+          closestList && !disabled ? (
+            <ul>
+              {closestList.map(store => (
+                <li key={store.id} onClick={() => matchHandler(store.id)}>
+                  <h3>
+                    {store.name}
+                    <AiOutlineSwapRight />
+                  </h3>
+                  <h4>{Math.ceil(store.distance * 100000) / 100}m</h4>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Spinner />
+          )
         ) : (
-          <Spinner />
+          <>
+            <h3>
+              위치 정보에 동의하지 않으면 이용할 수 없습니다.
+              <br />
+            </h3>
+            <h4>동의하신 후 새로고침 해주세요.</h4>
+          </>
         )}
       </div>
     </StyledModal>

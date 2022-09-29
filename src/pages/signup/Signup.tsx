@@ -124,6 +124,11 @@ const StyledSignUp = styled.div`
   .on {
     opacity: 0.6;
   }
+  input {
+    &:focus {
+      outline: none;
+    }
+  }
 `;
 
 // const Line = styled.div`
@@ -231,7 +236,7 @@ export const SignUpDiv = styled.div`
           color: #a71e1eed;
         }
         .border {
-          border: 3px solid #a71e1eed;
+          border: 2px solid #a71e1eed;
         }
         input {
           width: 90%;

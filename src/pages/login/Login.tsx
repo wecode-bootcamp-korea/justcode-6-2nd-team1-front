@@ -85,6 +85,11 @@ const StyledLogin = styled.div`
       opacity: 0.6;
     }
   }
+  input {
+    &:focus {
+      outline: none;
+    }
+  }
 
   div.signUp {
     display: flex;

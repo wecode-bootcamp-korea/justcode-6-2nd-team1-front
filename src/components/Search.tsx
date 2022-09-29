@@ -3,7 +3,6 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import combi from '../assets/combination.jpeg';
 import order from '../assets/order.jpeg';
-import addressData from '../pages/store/addressData.json';
 
 const StyledStore = styled.div`
   display: block;

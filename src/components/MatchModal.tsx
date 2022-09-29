@@ -134,7 +134,7 @@ const MatchModal = () => {
       <div className='container'>
         <h2>원하는 매장을 선택하세요</h2>
         <Line />
-        {error ? (
+        {!error ? (
           closestList && !disabled ? (
             <ul>
               {closestList.map(store => (

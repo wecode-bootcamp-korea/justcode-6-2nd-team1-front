@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 import { HiMenu, HiMenuAlt3 } from 'react-icons/hi';
 import logo from '../assets/ilcha_logo.png';
-import facebook from '../assets/sns/facebook.png';
-import insta from '../assets/sns/insta.png';
-import kakao from '../assets/sns/kakao.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlinePlus, AiOutlineShoppingCart } from 'react-icons/ai';

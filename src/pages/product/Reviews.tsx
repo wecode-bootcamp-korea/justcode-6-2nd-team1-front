@@ -234,7 +234,9 @@ const Reviews = () => {
                 <div>
                   <span className='content'>{data.content}&nbsp;</span>
                 </div>
-                <span className='date'>{data.created_at || '2022-01-01'}</span>
+                <span className='date'>
+                  {new Date(data.created_at).getFullYear()}년 {new Date(data.created_at).getMonth() + 1}월 {new Date(data.created_at).getDate()}일 {new Date(data.created_at).getHours()}시 {new Date(data.created_at).getMinutes()}분
+                </span>
                 <form onSubmit={e => e.preventDefault()}>
                   <button className='deleteButton' onClick={() => removeReviewHandler(data.id)} disabled={disabled}>
                     {disabled ? <Spinner /> : '삭제'}

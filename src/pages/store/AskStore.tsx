@@ -72,7 +72,7 @@ const StyledMiddle = styled.div`
     }
     button {
       font-size: 0.9em;
-      width: 17vw;
+      width: 20vw;
       height: 8vw;
       background-color: white;
       outline: none;
@@ -91,6 +91,7 @@ const StyledMiddle = styled.div`
       height: 50%;
       padding: 10px;
       line-height: 1.4em;
+      overflow: inherit;
     }
     div.gray {
       background-color: #f5f4f2;

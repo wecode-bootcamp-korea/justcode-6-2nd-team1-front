@@ -8,7 +8,7 @@ import { BsArrowLeftRight } from 'react-icons/bs';
 import { AiOutlineSwapRight } from 'react-icons/ai';
 import Spinner from './Spinner';
 
-const StyledModal = styled.div`
+const StyledModal = styled.div<{ disabled: boolean }>`
   position: fixed;
   width: 100%;
   height: 100%;
@@ -22,6 +22,7 @@ const StyledModal = styled.div`
 
   div.container {
     width: 90%;
+    max-height: 50vh;
     background-color: white;
     padding: 14px;
     border-radius: 10px;
@@ -31,6 +32,9 @@ const StyledModal = styled.div`
 
     h2 {
       width: 100%;
+      padding-bottom: 20px;
+      margin-bottom: ${({ disabled }) => (disabled ? '20px' : '0')};
+      border-bottom: 1px solid black;
     }
 
     h3 {
@@ -49,9 +53,8 @@ const StyledModal = styled.div`
 
     ul {
       width: 100%;
-      border: 1px solid gray;
       border-radius: 10px;
-      padding: 0 10px;
+      overflow-y: scroll;
 
       li {
         padding: 10px 0;
@@ -85,16 +88,21 @@ const MatchModal = () => {
           longitude,
         });
 
-        const {
-          data: { closestShops },
-        } = await axios.get<GetLocationListRes>(`http://localhost:8000/users/user_location/${latitude}/${longitude}`, {
-          headers: {
-            Authorization: token,
-          },
-        });
+        try {
+          const {
+            data: { closestShops },
+          } = await axios.get<GetLocationListRes>(`http://localhost:8000/users/user_location/${latitude}/${longitude}`, {
+            headers: {
+              Authorization: token,
+            },
+          });
 
-        setClosestList(closestShops);
-        setDisabled(false);
+          setClosestList(closestShops);
+          setDisabled(false);
+        } catch (error) {
+          setError(true);
+          setDisabled(false);
+        }
       },
       () => {
         setError(true);
@@ -130,10 +138,9 @@ const MatchModal = () => {
   };
 
   return (
-    <StyledModal>
+    <StyledModal disabled={disabled}>
       <div className='container'>
-        <h2>원하는 매장을 선택하세요</h2>
-        <Line />
+        <h2>원하는 매장을 스크롤하여 선택하세요.</h2>
         {!error ? (
           closestList && !disabled ? (
             <ul>
@@ -153,7 +160,7 @@ const MatchModal = () => {
         ) : (
           <>
             <h3>
-              위치 정보에 동의하지 않으면 이용할 수 없습니다.
+              위치 정보에 동의하지 않았거나 통신에 실패하였습니다.
               <br />
             </h3>
             <h4>동의하신 후 새로고침 해주세요.</h4>

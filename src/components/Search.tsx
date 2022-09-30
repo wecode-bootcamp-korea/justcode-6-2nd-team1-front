@@ -55,7 +55,12 @@ const StyledCombi = styled.div`
   }
 `;
 
-const Search = () => {
+interface SearchProps {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Search = ({ search, setSearch }: SearchProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState('');
   const navigate = useNavigate();
@@ -75,23 +80,18 @@ const Search = () => {
 
   const inputHandler: React.FormEventHandler<HTMLInputElement> = e => {
     if (e.target instanceof HTMLInputElement) {
-      let target = e;
       setInputValue(e.target.value);
     }
   };
 
-  const submitHandler: React.MouseEventHandler<HTMLButtonElement> = e => {
+  const submitHandler: React.FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    if (inputValue.length < 1) {
+
+    if (!inputValue) {
       alert('매장명을 입력해주세요');
-    }
-    if (inputValue.length >= 1) {
-      goToStore();
-      // navigate('/store', {
-      //   state: {
-      //     text: inputValue,
-      //   },
-      // });
+    } else {
+      setSearch(inputValue);
+      navigate('/store');
     }
   };
 
@@ -101,12 +101,10 @@ const Search = () => {
         <div className='search_wrap'>
           <h3>매장검색</h3>
           <p className='speed'>공차 매장을 쉽고 빠르게 찾아보세요</p>
-          <form>
+          <form onSubmit={submitHandler}>
             <input onChange={inputHandler} name='store' type='text' ref={inputRef} placeholder='매장명 또는 주소를 입력하세요' />
             <div>
-              <button type='submit' onClick={submitHandler}>
-                매장 검색하기
-              </button>
+              <button type='submit'>매장 검색하기</button>
             </div>
           </form>
         </div>

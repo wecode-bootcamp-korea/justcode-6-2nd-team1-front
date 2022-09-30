@@ -23,15 +23,17 @@ import AskStore from './pages/store/AskStore';
 const App = () => {
   const { isLogin, isMatch } = useStore();
 
+  const [search, setSearch] = useState('');
+
   return (
     <>
       <GlobalStyle />
-      <Nav />
+      <Nav setSearch={setSearch} />
       {isLogin && !isMatch && <MatchModal />}
       <Routes>
-        <Route path='/' element={<Main />} />
+        <Route path='/' element={<Main search={search} setSearch={setSearch} />} />
         <Route path='/brand' element={<Brand />} />
-        <Route path='/store' element={<Store />} />
+        <Route path='/store' element={<Store search={search} setSearch={setSearch} />} />
         <Route path='/askstore' element={<AskStore />} />
 
         <Route path='/order' element={<Order />} />

@@ -87,7 +87,12 @@ const StyledList = styled.ul`
   }
 `;
 
-const Store = () => {
+interface StoreProps {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Store = ({ search, setSearch }: StoreProps) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [addressList, setAddressList] = useState<Storetype[]>([]);
   const [address, setAddress] = useState<string>('');
@@ -98,7 +103,6 @@ const Store = () => {
   const [modal, setModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
 
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
@@ -106,14 +110,16 @@ const Store = () => {
     (async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get<Storetype[]>('http://localhost:8000/shops');
-        setAddressList(data);
+        const { data } = await axios.get<Storetype[]>('lhttp://localhost:8000/shops');
+
+        const filteredData = data.filter(store => store.name.includes(search));
+        setAddressList(filteredData);
         setLoading(false);
       } catch (error) {
         console.log(error);
       }
     })();
-  }, []);
+  }, [search]);
 
   const onClickModal = useCallback(
     (add: { id: number; name: string; address: string; latitude: number; longitude: number }) => {
@@ -158,7 +164,7 @@ const Store = () => {
               ))}
             </select>
             <form>
-              <input type='text' ref={inputRef} placeholder='매장명을 검색해 주세요'></input>
+              <input type='text' ref={inputRef} placeholder='매장명을 검색해 주세요' onChange={e => setSearch(e.target.value)} />
               <button onClick={submitHandler}>
                 <BiSearch />
               </button>

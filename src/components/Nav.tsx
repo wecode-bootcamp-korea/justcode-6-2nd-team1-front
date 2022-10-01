@@ -132,7 +132,11 @@ const StyledNav = styled.nav<{ menu: boolean }>`
   }
 `;
 
-const Nav = () => {
+interface NavProps {
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Nav = ({ setSearch }: NavProps) => {
   const [menu, setMenu] = useState(false);
   const navigate = useNavigate();
   const { isLogin, logout, matchStore } = useStore();
@@ -144,6 +148,7 @@ const Nav = () => {
   };
 
   const pageTransition = (url: string) => {
+    setSearch('');
     navigate(url);
     setMenu(false);
   };

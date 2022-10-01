@@ -38,7 +38,12 @@ const DivPre = styled.div`
   line-height: 50px;
 `;
 
-const Main = () => {
+interface MainProps {
+  search: string;
+  setSearch: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Main = ({ search, setSearch }: MainProps) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -98,7 +103,7 @@ const Main = () => {
               <SlideImage alt='slide_5' src={slide_5} />
             </div>
           </Slider>
-          <Search></Search>
+          <Search search={search} setSearch={setSearch}></Search>
         </Container>
       </div>
       <Footer />

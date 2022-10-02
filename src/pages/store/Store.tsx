@@ -103,14 +103,17 @@ const Store = ({ search, setSearch }: StoreProps) => {
   const [modal, setModal] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(true);
+  const debounce = useRef<NodeJS.Timeout>();
 
   const addresses = ['시,도', '서울특별시', '부산광역시', '대구광역시', '인천광역시', '경기도'];
 
   useEffect(() => {
-    (async () => {
+    clearTimeout(debounce.current);
+
+    const loadStoreList = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get<Storetype[]>('lhttp://localhost:8000/shops');
+        const { data } = await axios.get<Storetype[]>('http://localhost:8000/shops');
 
         const filteredData = data.filter(store => store.name.includes(search));
         setAddressList(filteredData);
@@ -118,7 +121,9 @@ const Store = ({ search, setSearch }: StoreProps) => {
       } catch (error) {
         console.log(error);
       }
-    })();
+    };
+
+    debounce.current = setTimeout(loadStoreList, 500);
   }, [search]);
 
   const onClickModal = useCallback(

@@ -20,8 +20,8 @@
 
 ### **프로젝트 구현 영상**
 
-
-[![공차 모바일 웹 클론프로젝트 유튜브 동영상](https://www.youtube.com/embed/pkfz51tCebQ/0.jpg)](https://www.youtube.com/embed/pkfz51tCebQ?t=0s)
+https://youtu.be/pkfz51tCebQ
+[![공차 모바일 웹 클론프로젝트 유튜브 동영상](https://www.youtube.com/pkfz51tCebQ/0.jpg)](https://www.youtube.com/pkfz51tCebQ?t=0s)
 
 
 <br>

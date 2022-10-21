@@ -1,4 +1,4 @@
-![ilcha_logo](https://user-images.githubusercontent.com/108816777/197122672-123669e9-134a-49d9-8d9f-b4517d8b0899.png)
+![ilcha_logo](https://user-images.githubusercontent.com/108816777/197122672-123669e9-134a-49d9-8d9f-b4517d8b0899.png width="100px)
 ### 일일일차(一日一茶_팀의 **`공차`** 모바일웹 Clone 코딩 프로젝트입니다.
 
 👉[공차](https://www.gong-cha.co.kr)

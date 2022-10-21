@@ -20,8 +20,8 @@
 
 ### **프로젝트 구현 영상**
 
-<iframe width="897" height="360" src="https://www.youtube.com/embed/pkfz51tCebQ" title="1팀) 공차 모바일 웹 클론 프로젝트" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+[![공차 모바일 웹 클론프로젝트 유튜브 동영상](https://www.youtube.com/embed/pkfz51tCebQ/0.jpg)](https://www.youtube.com/embed/pkfz51tCebQ)
 
 <br>
 

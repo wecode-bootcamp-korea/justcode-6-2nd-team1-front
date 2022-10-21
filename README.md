@@ -1,5 +1,4 @@
-<img src="https://velog.velcdn.com/images/hh1008/post/8bf080da-6a3c-4cbd-881e-f41fb3fbb0e3/image.png" width="200px"/>
-
+![ilcha_logo](https://user-images.githubusercontent.com/108816777/197122672-123669e9-134a-49d9-8d9f-b4517d8b0899.png)
 ### 일일일차(一日一茶_팀의 **`공차`** 모바일웹 Clone 코딩 프로젝트입니다.
 
 👉[공차](https://www.gong-cha.co.kr)

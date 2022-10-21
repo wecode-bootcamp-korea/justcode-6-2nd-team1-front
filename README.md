@@ -21,11 +21,7 @@
 ### **프로젝트 구현 영상**
 
 
-[![공차 모바일 웹 클론프로젝트 유튜브 동영상](https://www.youtube.com/embed/pkfz51tCebQ/0.jpg)](https://www.youtube.com/embed/pkfz51tCebQ)
-
-<iframe width="100%" height="100%" src="https://www.youtube.com/embed/eitDnP0_83k?controls=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-</div>
+[![공차 모바일 웹 클론프로젝트 유튜브 동영상](https://www.youtube.com/embed/pkfz51tCebQ/0.jpg)](https://www.youtube.com/embed/pkfz51tCebQ?t=0s)
 
 
 <br>
